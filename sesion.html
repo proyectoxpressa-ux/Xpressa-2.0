@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+</head>
+<body>
+    <img src="logo.png" alt="Logo de la aplicacion" width="100" height="100"><h2>Xpressa+</h2>
+    <form action="/login" method="POST">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <button onclick="location.href='Home.html'">Iniciar Sesión</button>
+        <h2>¿No tienes cuenta? <a href="registro.html">Crear cuenta</a></h2>
+    </form>
+</body>
+</html>
