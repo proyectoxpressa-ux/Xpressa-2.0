@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es"> <!-- Importante usar 'es' para accesibilidad y lectores de pantalla -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Inicio</title>
+    
+    <!-- Importamos la fuente Nunito (redondeada y amigable) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Vinculamos nuestra hoja de estilos mágica -->
+    <link rel="stylesheet" href="stylehome.css">
+</head>
+<body>
+    <!-- CABECERA FIJA -->
+    <header class="header-top">
+        <div class="logo-container">
+            <img src="logo.png" alt="Xpressa+" class="logo-img">
+            <h1 class="logo-text">Xpressa+</h1>
+        </div>
+        
+        <div class="user-container">
+            <!-- Espacio reservado para la fotito del niño -->
+            <div class="avatar-placeholder" >
+                <a href="Perfil.html" style="text-decoration: none;">🧒🏽</a></div> 
+            <span class="user-greeting">¡Hola, Ian!</span>
+        </div>
+    </header>
+
+    <!-- ZONA CENTRAL DE JUEGO -->
+    <main class="main-content">    
+        <!-- El gran botón animado -->
+        <button class="btn-play" onclick="location.href='Juego.html'">
+            <span class="btn-icon">→</span>
+            <span class="btn-text">¡A JUGAR AHORA!</span>
+        </button>
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="Home.html" class="nav-item active">
+            <span class="nav-icon">🏠</span> Inicio
+        </a>
+
+        <a href="Juego.html" class="nav-item">
+            <span class="nav-icon">🎮</span> Juegos
+        </a>
+
+        <a href="Perfil.html" class="nav-item">
+            <span class="nav-icon">🔩</span> Mi Perfil
+        </a>
+    </nav>
+</body>
+</html>

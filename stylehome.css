@@ -1,0 +1,191 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+    -webkit-tap-highlight-color: transparent; /* Quita el recuadro azul molesto al tocar en móviles */
+}
+
+:root {
+    --bg-color: #F0F8FF;        /* Fondo pastel relajante */
+    --primary-blue: #4A90E2;    /* Azul principal vibrante */
+    --light-blue: #5C9CE6;      /* Azul de apoyo */
+    --card-bg: #FFFFFF;         /* Blanco para contraste */
+    --text-dark: #333333;       /* Texto oscuro pero no negro (menos agresivo) */
+    --shadow: 0 8px 16px rgba(74, 144, 226, 0.15); /* Sombra azulada suave */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    /* Preparamos el body para dispositivos móviles / tablets */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--primary-blue);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Separación automática entre logo y texto */
+}
+
+.logo-img {
+    width: 35px;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    border-radius: 7px;
+}
+
+.logo-text {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.user-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 30px; /* Bordes de pastilla */
+}
+
+.avatar-placeholder {
+    font-size: 1.5rem;
+    background: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-greeting {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    margin: 20px;
+    gap: 2rem; /* Separación mágica sin usar margins */
+}
+
+/* EL BOTÓN GIGANTE */
+.btn-play {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 6px 30px 6px 6px; /* Deja espacio a la izquierda para el círculo */
+    font-size: 1.4rem;
+    font-weight: 800;
+    border-radius: 50px;
+    box-shadow: 0 6px 0 #3A78C4, var(--shadow); 
+    cursor: pointer;
+    transition: all 0.1s ease;
+    
+    /* Mantenemos tu animación de latido */
+    animation: heartbeat 2s infinite;
+}
+
+/* El círculo blanco de la izquierda */
+.btn-play .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: #ffffff;
+    color: #17b99c; /* Color de la flecha */
+    border-radius: 50%;
+    margin: 5px 18px 5px 7px;
+
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto del botón */
+.btn-play .btn-text {
+    letter-spacing: 0.5px;
+}
+
+/* Efecto al hacer click (se hunde) */
+.btn-play:active {
+    transform: translateY(6px);
+    box-shadow: 0 0 0 #108a73;
+}
+
+/* La magia del CSS: El latido */
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.05); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.05); }
+    60% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--primary-blue);
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* Alinea verticalmente todos los elementos hijos */
+    padding: 1rem 0 1.5rem 0; /* Padding extra abajo para ciertos celulares */
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 10;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #A0B4C8;
+    flex: 1; /* Distribuye el espacio equitativamente para que queden centrados */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-icon {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estado Activo (La sección donde estamos) */
+.nav-item.active {
+    color: #FFFFFF; /* Cambiado a blanco o el color activo deseado para contraste */
+    transform: translateY(-3px); /* Salta un poquito hacia arriba de forma sutil */
+}
+
+.nav-item.active .nav-icon {
+    filter: drop-shadow(0 4px 6px rgba(74, 144, 226, 0.4));
+}

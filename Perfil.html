@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - FonoApp</title>
+    <!-- Importamos la fuente Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-color: #F0F8FF;        /* Fondo pastel relajante */
+            --primary-blue: #4A90E2;    /* Azul principal vibrante */
+            --light-blue: #5C9CE6;      /* Azul de apoyo */
+            --card-bg: #FFFFFF;         /* Blanco para contraste */
+            --text-dark: #333333;       /* Texto oscuro menos agresivo */
+            --shadow: 0 8px 16px rgba(74, 144, 226, 0.15); /* Sombra azulada suave */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 90px; /* Espacio para la barra inferior */
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: #4A90E2;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Separación automática entre logo y texto */
+        }
+
+        .logo-img {
+            width: 35px;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            border-radius: 7px;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        /* Contenido principal configurado para ocupar todo el ancho con un pequeño margen seguro */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch; /* Estira los elementos hijos al 100% del ancho */
+            padding: 1.5rem 1rem;
+            width: 100%;
+            gap: 1.2rem;
+        }
+
+        /* Tarjeta de perfil de bienvenida estirada a lo ancho */
+        .user-greeting {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: var(--card-bg);
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 2px solid #E1EDF8;
+        }
+
+        .greeting-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: #E1EDF8;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .greeting-info h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .greeting-info p {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #A0B4C8;
+        }
+
+        /* Contenedor de opciones de ancho completo real */
+        .menu-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .menu-card {
+            background-color: var(--card-bg);
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%; /* Ocupa el 100% de la pantalla */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-dark);
+            border: 2px solid #E1EDF8;
+            transition: all 0.2s ease;
+        }
+
+        .menu-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .menu-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-icon-box {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background-color: #F0F8FF;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            border: 1px solid #E1EDF8;
+        }
+
+        .menu-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-title {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        .menu-subtitle {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #A0B4C8;
+        }
+
+        .menu-arrow {
+            font-size: 1.2rem;
+            color: #A0B4C8;
+            font-weight: 800;
+        }
+
+        /* Barra de navegación inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary-blue);
+            display: flex;
+            justify-content: space-around;
+            padding: 1rem 0 1.5rem 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #A0B4C8;
+            transition: color 0.3s ease;
+        }
+
+        .nav-icon {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Estado Activo */
+        .nav-item.active {
+            color: #FFFFFF;
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active .nav-icon {
+            filter: drop-shadow(0 4px 6px rgba(74, 144, 226, 0.4));
+        }
+
+        .perfil{
+            display: flex;
+            align-items: center;
+
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Cabecera limpia -->
+    <header class="header-top">
+        <div class="logo-container">
+            <img src="logo.png" alt="Xpressa+" class="logo-img">
+            <h1 class="logo-text">Xpressa+</h1>
+        </div>
+        <div class="perfil"> 
+            <span>
+                Perfil
+            </span>
+        </div>
+    </header>
+    <!-- Contenido estirado -->
+    <main>
+        <!-- Opciones estiradas a todo el ancho -->
+        <div class="menu-section">
+            <a href="EditarPerfil.html" class="menu-card">
+                <div class="menu-left">
+                    <div class="menu-icon-box">
+                        ✏️
+                    </div>
+                    <div class="menu-text">
+                        <span class="menu-title">Editar perfil</span>
+                        <span class="menu-subtitle">Actualiza tu información y foto</span>
+                    </div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </a>
+
+            <a href="EditarLetras.html" class="menu-card">
+                <div class="menu-left">
+                    <div class="menu-icon-box">
+                        🔤
+                    </div>
+                    <div class="menu-text">
+                        <span class="menu-title">Editar letras</span>
+                        <span class="menu-subtitle">Configura los fonemas a practicar</span>
+                    </div>
+                </div>
+                <span class="menu-arrow">›</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="Home.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Inicio</span>
+        </a>
+        <a href="Juego.html" class="nav-item">
+            <span class="nav-icon">🎮</span>
+            <span class="nav-label">Juegos</span>
+        </a>
+        <a href="Perfil.html" class="nav-item active">
+            <span class="nav-icon">🔩</span>
+            <span class="nav-label">Perfil</span>
+        </a>
+    </nav>
+
+</body>
+</html>

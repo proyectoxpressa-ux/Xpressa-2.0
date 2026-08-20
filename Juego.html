@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juegos</title>
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-color: #F0F8FF;        /* Fondo pastel relajante */
+            --primary-blue: #4A90E2;    /* Azul principal vibrante */
+            --light-blue: #5C9CE6;      /* Azul de apoyo */
+            --card-bg: #FFFFFF;         /* Blanco para contraste */
+            --text-dark: #333333;       /* Texto oscuro menos agresivo */
+            --shadow: 0 8px 16px rgba(74, 144, 226, 0.15); /* Sombra azulada suave */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 90px; /* Espacio para la barra inferior */
+        }
+
+        /* Barra de navegación inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary-blue);
+            display: flex;
+            justify-content: space-around;
+            padding: 1rem 0 1.5rem 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #A0B4C8;
+            transition: color 0.3s ease;
+        }
+
+        .nav-icon {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Estado Activo */
+        .nav-item.active {
+            color: #FFFFFF;
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active .nav-icon {
+            filter: drop-shadow(0 4px 6px rgba(74, 144, 226, 0.4));
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="Home.html" class="nav-item active">
+            <span class="nav-icon">🏠</span> Inicio
+        </a>
+
+        <a href="Juego.html" class="nav-item">
+            <span class="nav-icon">🎮</span> Juegos
+        </a>
+
+        <a href="Perfil.html" class="nav-item">
+            <span class="nav-icon">🔩</span> Mi Perfil
+        </a>
+    </nav>
+</body>
+</html>

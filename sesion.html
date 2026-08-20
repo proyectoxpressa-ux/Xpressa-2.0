@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión — Xpressa+</title>
+
+    <!-- Fuente Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #5C9CE6 0%, #4A90E2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Caja de Inicio de Sesión */
+        .caja-iniciodesesion {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 35px;
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Estilos para la marca con mayor tamaño */
+        .brand-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px; /* Mayor espacio entre logo y texto */
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .brand-logo {
+            width: 60px;  /* Tamaño del logo incrementado */
+            height: 60px; /* Tamaño del logo incrementado */
+            object-fit: contain;
+            background-color: transparent;
+            border-radius: 16px;
+        }
+
+        .brand-title {
+            color: #4A90E2;
+            font-size: 2.2rem; /* Tamaño de fuente más grande y llamativo */
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+
+        .caja-iniciodesesion h1 {
+            color: #333333;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Formulario y Distribución */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #555555;
+            margin-bottom: 6px;
+        }
+
+        .input-texto {
+            width: 100%;
+            padding: 14px 18px;
+            background-color: #F8FAFC;
+            border-radius: 14px;
+            border: 2px solid #E2E8F0;
+            font-size: 0.95rem;
+            color: #333;
+            transition: all 0.25s ease;
+        }
+
+        .input-texto::placeholder {
+            color: #A0AEC0;
+        }
+
+        .input-texto:focus {
+            outline: none;
+            border-color: #5C9CE6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(92, 156, 230, 0.15);
+        }
+
+        /* Botón de Envío */
+        .btn-iniciar {
+            background-color: #4A90E2;
+            color: #ffffff;
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            margin-bottom: 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-iniciar:hover {
+            background-color: #3a7bc8;
+            box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn-iniciar:active {
+            transform: translateY(1px);
+        }
+
+        /* Texto de Registro secundario */
+        .caja-iniciodesesion h3 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #666666;
+        }
+
+        .caja-iniciodesesion h3 a {
+            color: #4A90E2;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+
+        .caja-iniciodesesion h3 a:hover {
+            text-decoration: underline;
+            color: #3a7bc8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="caja-iniciodesesion"> 
+        <!-- Contenedor con Logo y Xpressa+ más grandes -->
+        <div class="brand-box">
+            <img src="logo.png" alt="Logo Xpressa+" class="brand-logo">
+            <span class="brand-title">Xpressa+</span>
+        </div>
+
+        <h1>Iniciar Sesión</h1>
+        
+        <form action="ElegirLetras.html" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="username">Nombre de usuario</label>
+                <input class="input-texto" type="text" id="username" name="username" placeholder="Ingrese su nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Contraseña</label>
+                <input class="input-texto" type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-iniciar">Iniciar Sesión</button>
+
+            <h3>¿No tienes cuenta? <a href="crearcuenta.html">Crear cuenta</a></h3>
+        </form>
+    </div>
+
+</body>
+</html>

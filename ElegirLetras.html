@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xpressa+ · ¿Qué sonidos querés practicar?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F8FF;
+    --surface:#FFFFFF;
+    --brand:#4F8EF7;
+    --brand-dark:#3572D6;
+    --brand-fill:#DCEAFD;
+    --ink:#22304D;
+    --muted:#71809E;
+    --radius-lg:28px;
+    --radius-md:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% -10%, #E8F2FF 0%, transparent 55%),
+      radial-gradient(circle at 100% 10%, #EAF9F5 0%, transparent 45%),
+      var(--bg);
+    font-family:'Nunito', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+  }
+  .app{
+    width:100%;
+    max-width:560px;
+    min-height:100vh;
+    padding:20px 18px 110px;
+    position:relative;
+  }
+  .wordmark{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--brand-dark);
+    letter-spacing:.02em;
+    margin:0 0 18px 2px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .wordmark .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);}
+
+  /* --- mascot speech bubble --- */
+  .mascot-bubble{
+    background:var(--surface);
+    border:3px solid var(--brand-fill);
+    border-radius:24px 24px 24px 6px;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    box-shadow:0 6px 18px -10px rgba(53,114,214,.35);
+    margin-bottom:22px;
+  }
+  .mascot-avatar{
+    font-size:34px;
+    flex:0 0 auto;
+    animation:bob 3.4s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0) rotate(-3deg);}
+    50%{transform:translateY(-4px) rotate(3deg);}
+  }
+  #mascotText{
+    margin:0;
+    font-weight:700;
+    font-size:14.5px;
+    line-height:1.4;
+    color:var(--ink);
+  }
+
+  main h1{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:22px;
+    line-height:1.25;
+    margin:0 0 6px;
+  }
+  .subtitle{
+    margin:0;
+    font-size:14px;
+    color:var(--muted);
+    font-weight:700;
+  }
+  .helper{
+    margin:6px 0 20px;
+    font-size:12.5px;
+    color:var(--muted);
+    font-weight:500;
+  }
+
+  .egg-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+  @media(min-width:420px){
+    .egg-grid{grid-template-columns:repeat(3,1fr);}
+  }
+
+  .egg-card{
+    background:var(--surface);
+    border-radius:var(--radius-md);
+    padding:14px 10px 12px;
+    text-align:center;
+    cursor:pointer;
+    border:3px solid transparent;
+    transition:border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+    box-shadow:0 4px 14px -8px rgba(34,48,77,.18);
+    position:relative;
+    user-select:none;
+  }
+  .egg-card:hover{transform:translateY(-2px);}
+  .egg-card:focus-visible{outline:3px solid var(--brand-dark); outline-offset:2px;}
+  .egg-card.selected{border-color:var(--accent-dark);}
+
+  .egg-stage{
+    position:relative;
+    width:88px;
+    height:100px;
+    margin:0 auto 8px;
+  }
+  .egg-stage svg{
+    width:100%;
+    height:100%;
+    display:block;
+    transition:opacity .35s ease, transform .35s ease;
+    transform-origin:50% 60%;
+  }
+  .egg-fill-bottom{fill:var(--accent-fill);}
+  .egg-fill-top{fill:#ffffff;}
+  .egg-outline{fill:none; stroke:var(--accent-dark); stroke-width:4;}
+  .egg-crack-line{fill:none; stroke:var(--accent-dark); stroke-width:2.5; stroke-linejoin:round;}
+
+  .egg-card.opened .egg-stage svg{
+    opacity:0;
+    transform:scale(.6) translateY(6px);
+  }
+
+  .character{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+    opacity:0;
+    transform:scale(.3) rotate(-8deg);
+    transition:opacity .3s ease .12s, transform .35s cubic-bezier(.34,1.56,.64,1) .12s;
+  }
+  .egg-card.opened .character{
+    opacity:1;
+    transform:scale(1) rotate(0deg);
+  }
+
+  /* --- Estilo principal para la letra grande --- */
+  .group-letters{
+    font-family:'Fredoka', sans-serif;
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:.03em;
+    color:var(--accent-dark);
+    margin:0 0 2px;
+  }
+
+  .example-row{
+    margin-top:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--muted);
+    height:0;
+    opacity:0;
+    overflow:hidden;
+    transition:opacity .25s ease .2s, height .25s ease .2s;
+  }
+  .egg-card.opened .example-row{
+    height:20px;
+    opacity:1;
+  }
+  .speak-btn{
+    border:none;
+    background:var(--accent-fill);
+    color:var(--accent-dark);
+    width:20px;height:20px;
+    border-radius:50%;
+    font-size:11px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex:0 0 auto;
+  }
+
+  .badge-check{
+    position:absolute;
+    top:6px;
+    right:6px;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:var(--accent-dark);
+    color:#fff;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transform:scale(.4);
+    transition:opacity .2s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
+  }
+  .egg-card.selected .badge-check{opacity:1; transform:scale(1);}
+
+  /* --- bottom backpack bar --- */
+  .backpack-bar{
+    position:fixed;
+    bottom:0; left:0; right:0;
+    display:flex;
+    justify-content:center;
+    padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg, rgba(243,248,255,0) 0%, var(--bg) 35%);
+  }
+  .backpack-inner{
+    width:100%;
+    max-width:560px;
+    background:var(--surface);
+    border-radius:20px;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    box-shadow:0 10px 30px -12px rgba(34,48,77,.3);
+  }
+  .backpack-icon{font-size:22px;}
+  .backpack-label{
+    flex:1;
+    font-weight:800;
+    font-size:13.5px;
+    color:var(--ink);
+  }
+  .backpack-label span{color:var(--brand-dark);}
+  #continueBtn{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    border:none;
+    border-radius:14px;
+    padding:11px 18px;
+    background:var(--brand);
+    color:#fff;
+    cursor:pointer;
+    transition:transform .15s ease, background .2s ease, opacity .2s ease;
+  }
+  #continueBtn:disabled{
+    background:#C7D6EE;
+    color:#fff;
+    cursor:not-allowed;
+    opacity:.8;
+  }
+  #continueBtn:not(:disabled):active{transform:scale(.96);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <p class="wordmark"><span class="dot"></span>Xpressa+</p>
+
+    <div class="mascot-bubble">
+      <div class="mascot-avatar" aria-hidden="true">🐣</div>
+      <p id="mascotText">¡Hola! Soy Xpri. Tocá los huevitos y descubrí qué sonidos querés practicar 🎈</p>
+    </div>
+
+    <main>
+      <h1>¿Qué sonidos querés aprender a decir mejor?</h1>
+      <p class="subtitle">Elegí uno o más. ¡Podés cambiarlos cuando quieras!</p>
+      <p class="helper">¿No sabés cuáles elegir? Pedile ayuda a mamá, papá o a tu seño 💬</p>
+
+      <div class="egg-grid" id="eggGrid"></div>
+    </main>
+  </div>
+
+  <div class="backpack-bar">
+    <div class="backpack-inner">
+      <span class="backpack-icon">🎒</span>
+      <span class="backpack-label"><span id="backpackCount">0</span> sonidos en tu mochila</span>
+      <button id="continueBtn" disabled>Continuar →</button>
+    </div>
+  </div>
+
+<script>
+  const groups = [
+    { id:'ruedan',      name:'Sonidos que ruedan',     letters:'R · RR', example:'rana',     emoji:'🐦', accent:'#4F8EF7', accentDark:'#3572D6', fill:'#DCEAFD' },
+    { id:'silban',      name:'Sonidos que silban',     letters:'S',      example:'sol',       emoji:'🦢', accent:'#2FB6A3', accentDark:'#1F8E7E', fill:'#D8F5EF' },
+    { id:'abrazados',   name:'Sonidos abrazados',      letters:'BR·FL·TR', example:'flor',    emoji:'🦆', accent:'#8C6FE0', accentDark:'#6B4FC2', fill:'#E9E2FB' },
+    { id:'soplan',      name:'Sonidos que soplan',     letters:'F · J',  example:'foca',      emoji:'🦉', accent:'#E8A23C', accentDark:'#C97F1F', fill:'#FBEAD2' },
+    { id:'chasquean',   name:'Sonidos que chasquean',  letters:'CH·LL·Ñ', example:'chocolate',emoji:'🐧', accent:'#EF6F8E', accentDark:'#D14E70', fill:'#FCE1E8' },
+    { id:'golpean',     name:'Sonidos que golpean',    letters:'K·G·D·T', example:'casa',     emoji:'🦜', accent:'#4FBE72', accentDark:'#359A54', fill:'#DEF5E5' },
+  ];
+
+  const eggSVG = () => `
+    <svg viewBox="0 0 120 140">
+      <defs><clipPath id="clip"><path d="M60,6 C88,6 108,40 108,78 C108,116 86,134 60,134 C34,134 12,116 12,78 C12,40 32,6 60,6 Z"/></clipPath></defs>
+      <g clip-path="url(#clip)">
+        <rect x="0" y="0" width="120" height="140" class="egg-fill-bottom"/>
+        <polygon points="0,70 40,70 40,53 60,53 60,80 80,80 80,58 120,58 120,0 0,0" class="egg-fill-top"/>
+      </g>
+      <path d="M60,6 C88,6 108,40 108,78 C108,116 86,134 60,134 C34,134 12,116 12,78 C12,40 32,6 60,6 Z" class="egg-outline"/>
+      <polyline points="12,70 40,70 40,53 60,53 60,80 80,80 80,58 108,58" class="egg-crack-line"/>
+    </svg>`;
+
+  const grid = document.getElementById('eggGrid');
+  const mascotText = document.getElementById('mascotText');
+  const backpackCount = document.getElementById('backpackCount');
+  const continueBtn = document.getElementById('continueBtn');
+  const selected = new Set();
+
+  const encouragements = [
+    '¡Buena elección! Vamos a practicar ese sonido juntos 🌟',
+    '¡Genial! Ya tenés {n} en tu mochila 🎒',
+    '¡Ese pajarito quería salir hace rato! 🐣',
+    '¡Perfecto! Cuantos más elijas, más juegos vas a desbloquear 🎮',
+  ];
+
+  function speak(text){
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const esVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('es'));
+    if(esVoice) u.voice = esVoice;
+    u.lang = 'es-ES';
+    u.rate = 0.9;
+    u.pitch = 1.15;
+    window.speechSynthesis.speak(u);
+  }
+
+  function updateBackpack(){
+    backpackCount.textContent = selected.size;
+    continueBtn.disabled = selected.size === 0;
+    if(selected.size > 0){
+      const msg = encouragements[Math.min(selected.size - 1, encouragements.length - 1)]
+        .replace('{n}', selected.size);
+      mascotText.textContent = msg;
+    } else {
+      mascotText.textContent = '¡Hola! Soy Xpri. Tocá los huevitos y descubrí qué sonidos querés practicar 🎈';
+    }
+  }
+
+  groups.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'egg-card';
+    card.style.setProperty('--accent', g.accent);
+    card.style.setProperty('--accent-dark', g.accentDark);
+    card.style.setProperty('--accent-fill', g.fill);
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-pressed', 'false');
+    
+    // AQUÍ SE QUITÓ EL TÍTULO "group-name" Y SOLO QUEDÓ "group-letters"
+    card.innerHTML = `
+      <div class="badge-check">✓</div>
+      <div class="egg-stage">
+        ${eggSVG()}
+        <div class="character">${g.emoji}</div>
+      </div>
+      <p class="group-letters">${g.letters}</p>
+      <div class="example-row">
+        "${g.example}"
+        <button class="speak-btn" aria-label="Escuchar ${g.example}">🔊</button>
+      </div>
+    `;
+
+    function toggle(){
+      const wasSelected = selected.has(g.id);
+      if(wasSelected){
+        selected.delete(g.id);
+        card.classList.remove('opened','selected');
+        card.setAttribute('aria-pressed','false');
+      } else {
+        selected.add(g.id);
+        card.classList.add('opened','selected');
+        card.setAttribute('aria-pressed','true');
+        speak(g.example);
+      }
+      updateBackpack();
+    }
+
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+    });
+    card.querySelector('.speak-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      speak(g.example);
+    });
+
+    grid.appendChild(card);
+  });
+
+  continueBtn.addEventListener('click', () => {
+    if(continueBtn.disabled) return;
+    
+    const sonidosSeleccionados = Array.from(selected);
+    localStorage.setItem('sonidosPractica', JSON.stringify(sonidosSeleccionados));
+
+    mascotText.textContent = `¡Vamos a jugar con ${selected.size} ${selected.size === 1 ? 'sonido' : 'sonidos'}! Te llevo al inicio 🚀`;
+
+    setTimeout(() => {
+      window.location.href = 'Home.html'; // Cambiá esto por la página que prefieras
+    }, 600);
+  });
+</script>
+</body>
+</html>
