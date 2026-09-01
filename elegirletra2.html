@@ -1,13 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegir letra</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xpressa+ · Elegir Letras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F3F8FF;
+    --surface: #FFFFFF;
+    --brand: #4F8EF7;
+    --brand-fill: #DCEAFD;
+    --ink: #22304D;
+  }
+  
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+    display: flex; justify-content: center;
+    /* 1. Inicializamos el contador de sonidos */
+    counter-reset: sonidos;
+  }
+  
+  .app {
+    width: 100%; max-width: 560px;
+    padding: 20px 18px 110px;
+  }
+  
+  /* --- Burbuja de la mascota --- */
+  .mascot-bubble {
+    background: var(--surface);
+    border: 3px solid var(--brand-fill);
+    border-radius: 24px 24px 24px 6px;
+    padding: 16px 18px;
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 22px;
+  }
+  .mascot-avatar { font-size: 34px; }
+  .mascot-bubble p { margin: 0; font-weight: 700; font-size: 14.5px; }
 
+  /* --- Grilla --- */
+  .egg-grid {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 14px;
+  }
+  @media(min-width: 420px){
+    .egg-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* --- TRUCO CSS: Checkboxes --- */
+  .egg-card-wrapper { 
+    display: block; 
+    cursor: pointer; 
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .egg-card-wrapper input[type="checkbox"] { 
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+  
+  /* 2. Incrementamos el contador cuando el input está marcado */
+  .egg-card-wrapper input[type="checkbox"]:checked {
+    counter-increment: sonidos;
+  }
+
+  /* --- Estilo de la Tarjeta (Rectángulo Vertical) --- */
+  .egg-card {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 20px 10px;
+    text-align: center;
+    border: 3px solid transparent;
+    position: relative;
+    transition: border-color 0.2s ease, transform 0.1s ease;
+    
+    /* Configuración para rectángulo vertical */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 3 / 4; 
+    min-height: 150px;
+    box-shadow: 0 4px 14px -8px rgba(34,48,77,0.18);
+  }
+  
+  .egg-card:active { transform: scale(0.97); }
+  
+  .character { 
+    font-size: 50px; 
+    margin-bottom: 16px; 
+  }
+  
+  .group-letters {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 22px; 
+    font-weight: 700;
+    margin: 0; 
+    color: var(--accent);
+  }
+
+  .badge-check {
+    position: absolute; top: 10px; right: 10px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 14px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: scale(0.5);
+  }
+
+  /* --- ANIMACIÓN CSS AL SELECCIONAR --- */
+  .egg-card-wrapper input[type="checkbox"]:checked + .egg-card {
+    border-color: var(--accent);
+  }
+  .egg-card-wrapper input[type="checkbox"]:checked + .egg-card .badge-check {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* --- Barra Inferior (Mochila) --- */
+  .backpack-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: center;
+    padding: 14px 18px 20px;
+    background: linear-gradient(180deg, rgba(243,248,255,0) 0%, var(--bg) 35%);
+  }
+  .backpack-inner {
+    width: 100%; max-width: 560px;
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 12px 14px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 10px 30px -12px rgba(34,48,77,0.3);
+  }
+  .backpack-icon { font-size: 22px; }
+  .backpack-label { flex: 1; font-weight: 800; font-size: 13.5px; }
+  .backpack-label span { color: var(--brand); }
+  
+  /* 3. Imprimimos el número visualmente en pantalla */
+  .backpack-count::before {
+    content: counter(sonidos);
+  }
+
+  /* Botón de Continuar */
+  #continueBtn {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600; font-size: 14px;
+    border: none; border-radius: 14px;
+    padding: 11px 18px;
+    background: #C7D6EE;
+    color: #fff; 
+    text-decoration: none;
+    pointer-events: none;
+    transition: background 0.3s ease, transform 0.1s ease;
+  }
+  
+  /* Activar botón si hay al menos 1 seleccionado */
+  body:has(input[type="checkbox"]:checked) #continueBtn {
+    background: var(--brand);
+    pointer-events: auto;
+  }
+  #continueBtn:active {
+    transform: scale(0.95);
+  }
+</style>
 </head>
 <body>
-    
+  <div class="app">
+    <div class="mascot-bubble">
+      <div class="mascot-avatar">🐣</div>
+      <p>¡Hola! Soy Xpri. Tocá los animales y descubrí qué sonidos querés practicar 🎈</p>
+    </div>
+
+    <main>
+      <div class="egg-grid">
+        <!-- Tarjeta 1 -->
+        <label class="egg-card-wrapper">
+          <input type="checkbox">
+          <div class="egg-card" style="--accent: #3572D6;">
+            <div class="badge-check">✓</div>
+            <div class="character">🐦</div>
+            <p class="group-letters">R · RR</p>
+          </div>
+        </label>
+
+        <!-- Tarjeta 2 -->
+        <label class="egg-card-wrapper">
+          <input type="checkbox">
+          <div class="egg-card" style="--accent: #1F8E7E;">
+            <div class="badge-check">✓</div>
+            <div class="character">🦢</div>
+            <p class="group-letters">S</p>
+          </div>
+        </label>
+
+        <!-- Tarjeta 3 -->
+        <label class="egg-card-wrapper">
+          <input type="checkbox">
+          <div class="egg-card" style="--accent: #6B4FC2;">
+            <div class="badge-check">✓</div>
+            <div class="character">🦆</div>
+            <p class="group-letters">BR·FL·TR</p>
+          </div>
+        </label>
+
+        <!-- Tarjeta 4 -->
+        <label class="egg-card-wrapper">
+          <input type="checkbox">
+          <div class="egg-card" style="--accent: #C97F1F;">
+            <div class="badge-check">✓</div>
+            <div class="character">🦉</div>
+            <p class="group-letters">F · J</p>
+          </div>
+        </label>
+
+        <!-- Tarjeta 5 -->
+        <label class="egg-card-wrapper">
+          <input type="checkbox">
+          <div class="egg-card" style="--accent: #D14E70;">
+            <div class="badge-check">✓</div>
+            <div class="character">🐧</div>
+            <p class="group-letters">CH·LL·Ñ</p>
+          </div>
+        </label>
+
+        <!-- Tarjeta 6 -->
+        <label class="egg-card-wrapper">
+          <input type="checkbox">
+          <div class="egg-card" style="--accent: #359A54;">
+            <div class="badge-check">✓</div>
+            <div class="character">🦜</div>
+            <p class="group-letters">K·G·D·T</p>
+          </div>
+        </label>
+      </div>
+    </main>
+  </div>
+
+  <div class="backpack-bar">
+    <div class="backpack-inner">
+      <span class="backpack-icon">🎒</span>
+      <span class="backpack-label"><span class="backpack-count"></span> sonidos en tu mochila</span>
+      <a href="Home.html" id="continueBtn">Continuar →</a>
+    </div>
+  </div>
 </body>
 </html>

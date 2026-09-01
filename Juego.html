@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"> <!-- Importante usar 'es' para accesibilidad y lectores de pantalla -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juegos</title>
+    <title>Xpressa+ | Juegos</title>
+    
+    <!-- Importamos la fuente Nunito (redondeada y amigable) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    
     <style>
-         * {
+        /* --- ESTILOS INTEGADOS (stylehome.css) --- */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Nunito', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: transparent; /* Quita el recuadro azul molesto al tocar en móviles */
         }
 
         :root {
@@ -18,29 +23,58 @@
             --primary-blue: #4A90E2;    /* Azul principal vibrante */
             --light-blue: #5C9CE6;      /* Azul de apoyo */
             --card-bg: #FFFFFF;         /* Blanco para contraste */
-            --text-dark: #333333;       /* Texto oscuro menos agresivo */
+            --text-dark: #333333;       /* Texto oscuro pero no negro (menos agresivo) */
             --shadow: 0 8px 16px rgba(74, 144, 226, 0.15); /* Sombra azulada suave */
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-dark);
+            /* Preparamos el body para dispositivos móviles / tablets */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding-bottom: 90px; /* Espacio para la barra inferior */
         }
 
-        /* Barra de navegación inferior */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Separación automática entre logo y texto */
+        }
+
+        .logo-img {
+            width: 35px;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            border-radius: 7px;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
-            left: 0;
             width: 100%;
             background-color: var(--primary-blue);
             display: flex;
             justify-content: space-around;
-            padding: 1rem 0 1.5rem 0;
+            align-items: center; /* Alinea verticalmente todos los elementos hijos */
+            padding: 1rem 0 1.5rem 0; /* Padding extra abajo para ciertos celulares */
             box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
@@ -51,25 +85,25 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             text-decoration: none;
             color: #A0B4C8;
-            transition: color 0.3s ease;
+            flex: 1; /* Distribuye el espacio equitativamente para que queden centrados */
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .nav-icon {
             font-size: 1.8rem;
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .nav-label {
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        /* Estado Activo */
+        /* Estado Activo (La sección donde estamos) */
         .nav-item.active {
-            color: #FFFFFF;
-            transform: translateY(-5px);
+            color: #FFFFFF; /* Cambiado a blanco o el color activo deseado para contraste */
+            transform: translateY(-3px); /* Salta un poquito hacia arriba de forma sutil */
         }
 
         .nav-item.active .nav-icon {
@@ -78,13 +112,23 @@
     </style>
 </head>
 <body>
+    <!-- CABECERA FIJA -->
+    <header class="header-top">
+        <div class="logo-container">
+            <img src="logo.png" alt="Xpressa+" class="logo-img">
+            <h1 class="logo-text">Xpressa+</h1>
+        </div>
+    </header>
+  
     <!-- NAVEGACIÓN INFERIOR -->
     <nav class="bottom-nav">
-        <a href="Home.html" class="nav-item active">
+        <!-- A 'Inicio' le sacamos la clase active -->
+        <a href="Home.html" class="nav-item">
             <span class="nav-icon">🏠</span> Inicio
         </a>
 
-        <a href="Juego.html" class="nav-item">
+        <!-- A 'Juegos' le ponemos la clase active para que resalte -->
+        <a href="Juego.html" class="nav-item active">
             <span class="nav-icon">🎮</span> Juegos
         </a>
 

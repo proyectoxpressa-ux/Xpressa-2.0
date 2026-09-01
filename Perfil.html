@@ -43,6 +43,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
+            position: relative;
         }
 
         .logo-container {
@@ -227,10 +228,13 @@
             filter: drop-shadow(0 4px 6px rgba(74, 144, 226, 0.4));
         }
 
-        .perfil{
+        .perfil {
             display: flex;
             align-items: center;
-
+            position: absolute; /* <-- AGREGAR */
+            left: 50%;          /* <-- Mueve el elemento al 50% de la pantalla */
+            transform: translateX(-50%); /* <-- Lo centra exactamente sobre su propio eje */
+            font-weight: 750;   /* Opcional: para que resalte un poco más */
         }
     </style>
 </head>
