@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Elegir Superpoderes</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. ESTILOS GENERALES XPRESSA+
+           ========================================= */
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        body {
+            background-color: #a3ceef;
+            display: flex; 
+            justify-content: center;
+        }
+        
+        .contenedor-principal {
+            width: 100%; 
+            max-width: 500px; 
+            padding: 20px; 
+            padding-bottom: 120px; /* Espacio para que la mochila no tape nada */
+            user-select: none;
+        }
+        
+        /* =========================================
+           2. TARJETA DE MENSAJE (Estilo Home)
+           ========================================= */
+        .tarjeta-mensaje {
+            background-color: #FFFFFF;
+            border: 5px solid #E8F2FC; /* Borde celeste muy suave */
+            border-radius: 20px;
+            padding: 15px 20px;
+            display: flex; 
+            align-items: center; 
+            box-shadow: 0 6px 14px rgba(74, 144, 226, 0.15); /* Nuestra sombra característica */
+            margin-bottom: 25px;
+        }
+        
+        .avatar-xpri {
+            font-size: 35px; 
+            margin-right: 15px;
+        }
+        
+        .tarjeta-mensaje p {
+            font-weight: 700; 
+            font-size: 15px;
+            color: #64748B; /* Nuestro celeste de apoyo */
+        }
+
+        /* =========================================
+           3. GRILLA Y TARJETAS DE ANIMALES
+           ========================================= */
+        .grilla-animales {
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px;
+        }
+
+        .envoltorio-tarjeta { 
+            display: block; 
+            cursor: pointer; 
+        }
+        
+        .envoltorio-tarjeta input[type="checkbox"] { 
+            display: none; /* Escondemos la cajita fea del navegador */
+        }
+
+        .tarjeta-animal {
+            background-color: #FFFFFF;
+            border: 3px solid #E8F2FC; /* Borde inactivo */
+            border-radius: 20px;
+            padding: 20px 10px;
+            text-align: center;
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 140px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.2s ease; 
+        }
+        
+        .tarjeta-animal:active { transform: scale(0.95); }
+        
+        .emoji-animal { font-size: 50px; margin-bottom: 10px; }
+        
+        .texto-letras {
+            font-family: 'Nunito', sans-serif;
+            font-size: 22px; 
+            font-weight: 700;
+            color: #A0B4C8; /* Color grisáceo cuando no está seleccionado */
+            transition: color 0.2s ease;
+        }
+
+        /* La tilde redonda de Xpressa+ */
+        .tilde-ok {
+            position: absolute; top: 10px; right: 10px;
+            width: 25px; height: 25px; border-radius: 50%;
+            background-color: #4A90E2; /* Nuestro Azul principal */
+            color: #FFFFFF; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.5);
+            transition: all 0.2s ease;
+        }
+
+        /* --- LA MAGIA: CUANDO EL NIÑO TOCA LA TARJETA --- */
+        .envoltorio-tarjeta input[type="checkbox"]:checked + .tarjeta-animal {
+            border-color: #4A90E2;
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.2);
+        }
+        
+        .envoltorio-tarjeta input[type="checkbox"]:checked + .tarjeta-animal .texto-letras {
+            color: #4A90E2;
+        }
+
+        .envoltorio-tarjeta input[type="checkbox"]:checked + .tarjeta-animal .tilde-ok {
+            opacity: 1; transform: scale(1);
+        }
+
+        /* =========================================
+           4. BARRA INFERIOR FLOTANTE
+           ========================================= */
+        .barra-mochila {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            display: flex; justify-content: center;
+            padding: 15px; 
+            background-color: #a3ceef; /* Mismo celeste que el fondo */
+        }
+        
+        .caja-mochila {
+            width: 100%; max-width: 500px;
+            background-color: #FFFFFF;
+            border-radius: 25px;
+            padding: 10px 15px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .info-mochila { font-weight: 800; font-size: 15px; color: #333; margin-left: 5px; }
+        .numero-destacado { color: #FF7F50; font-size: 18px; } /* Naranja para resaltar el numero de sonidos */
+        
+        /* Botón de Xpressa+ (Estilo 3D) */
+        .btn-jugar {
+            background-color: #A0B4C8; /* Gris cuando está apagado */
+            color: white; border: none;
+            padding: 12px 25px; font-size: 1.1rem; font-weight: 800;
+            border-radius: 20px; cursor: default;
+            text-decoration: none; pointer-events: none;
+            transition: all 0.2s ease;
+        }
+        
+        /* Cuando Javascript enciende el botón */
+        .btn-jugar.activado {
+            background-color: #4A90E2;
+            cursor: pointer; pointer-events: auto;
+            box-shadow: 0 6px 0 #3A78C4; /* El efecto 3D que hicimos en el Home */
+        }
+
+        .btn-jugar.activado:active {
+            transform: translateY(6px);
+            box-shadow: 0 10px 16px #3A78C4;
+        }
+    </style>
+</head>
+<body>
+
+  <div class="contenedor-principal">
+    
+    <div class="tarjeta-mensaje">
+      <div class="avatar-xpri">🐣</div>
+      <p><b>¡Hola! Tocá los animales y descubrí con qué sonidos querés jugar.</b></p>
+    </div>
+
+    <div class="grilla-animales">
+      
+      <label class="envoltorio-tarjeta">
+        <input type="checkbox" class="checkbox-letra">
+        <div class="tarjeta-animal">
+          <div class="tilde-ok">✓</div>
+          <div class="emoji-animal">🐭</div>
+          <p class="texto-letras">R · RR</p>
+        </div>
+      </label>
+
+      <label class="envoltorio-tarjeta">
+        <input type="checkbox" class="checkbox-letra">
+        <div class="tarjeta-animal">
+          <div class="tilde-ok">✓</div>
+          <div class="emoji-animal">🚂</div>
+          <p class="texto-letras">TR</p>
+        </div>
+      </label>
+
+      <label class="envoltorio-tarjeta">
+        <input type="checkbox" class="checkbox-letra">
+        <div class="tarjeta-animal">
+          <div class="tilde-ok">✓</div>
+          <div class="emoji-animal">🤴🏻</div>
+          <p class="texto-letras">PR</p>
+        </div>
+      </label>
+
+      <label class="envoltorio-tarjeta">
+        <input type="checkbox" class="checkbox-letra">
+        <div class="tarjeta-animal">
+          <div class="tilde-ok">✓</div>
+          <div class="emoji-animal">🐲</div>
+          <p class="texto-letras">DR</p>
+        </div>
+      </label>
+
+      <label class="envoltorio-tarjeta">
+        <input type="checkbox" class="checkbox-letra">
+        <div class="tarjeta-animal">
+          <div class="tilde-ok">✓</div>
+          <div class="emoji-animal">🪶</div>
+          <p class="texto-letras">PL</p>
+        </div>
+      </label>
+
+      <label class="envoltorio-tarjeta">
+        <input type="checkbox" class="checkbox-letra">
+        <div class="tarjeta-animal">
+          <div class="tilde-ok">✓</div>
+          <div class="emoji-animal">🐌</div>
+          <p class="texto-letras">C</p>
+        </div>
+      </label>
+
+    </div>
+  </div>
+
+  <div class="barra-mochila">
+    <div class="caja-mochila">
+      <div>
+          <span style="font-size: 24px;">🎒</span>
+          <span class="info-mochila"><span id="cantidad-mochila" class="numero-destacado">0</span> sonidos en tu mochila </span>
+      </div>
+      <a href="Home.html" id="boton-avanzar" class="btn-jugar">¡Listo!</a>
+    </div>
+  </div>
+
+  <script>
+    // 1. Buscamos los elementos usando nombres muy claros y descriptivos
+    const checkboxesDeLetras = document.querySelectorAll('.checkbox-letra');
+    const textoCantidadMochila = document.getElementById('cantidad-mochila');
+    const botonAvanzar = document.getElementById('boton-avanzar');
+
+    // 2. Función que revisa la mochila cada vez que tocamos una tarjeta
+    function revisarMochila() {
+        let letrasElegidas = 0;
+
+        // Revisamos cada checkbox de la pantalla
+        checkboxesDeLetras.forEach(function(checkbox) {
+            if (checkbox.checked === true) {
+                letrasElegidas = letrasElegidas + 1; // Sumamos 1 si está marcado
+            }
+        });
+
+        // Actualizamos el número en la pantalla
+        textoCantidadMochila.textContent = letrasElegidas;
+
+        // Si eligió al menos 1 letra, encendemos el botón azul
+        if (letrasElegidas > 0) {
+            botonAvanzar.classList.add('activado');
+        } else {
+            // Si desmarcó todas, lo volvemos a apagar
+            botonAvanzar.classList.remove('activado');
+        }
+    }
+
+    // 3. Le decimos a todas las tarjetas que escuchen cuando el usuario hace "click" (change)
+    checkboxesDeLetras.forEach(function(checkbox) {
+        checkbox.addEventListener('change', revisarMochila);
+    });
+  </script>
+
+</body>
+</html>

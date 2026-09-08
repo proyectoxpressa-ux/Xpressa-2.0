@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Juegos</title>
+    
+    <!-- Fuentes de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Aquí traen los estilos del encabezado y la barra inferior que ya armaron -->
+    <link rel="stylesheet" href="stylehome.css">
+    
+    <style>
+        /* =========================================
+           CONTENEDOR DE TODOS LOS JUEGOS
+           ========================================= */
+        .cont-juegos {
+            width: 100%;
+            max-width: 540px; /* Ancho máximo para que no se estire feo en PC */
+            margin: 0 auto; /* TRUCO: "auto" a los lados centra la caja en el medio de la pantalla */
+            padding: 24px 16px; /* 24px arriba/abajo, 16px a los lados */
+            display: flex; /* Usamos flex para apilar las cosas */
+            flex-direction: column; /* Apila de arriba hacia abajo (en columna) */
+            gap: 18px; /* Espacio exacto de 18 píxeles entre cada tarjeta de juego */
+        }
+
+        /* =========================================
+           TÍTULO DE LA SECCIÓN
+           ========================================= */
+        .elegiractividad {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 22px; /* Tamaño de letra en píxeles */
+            color: #2A4365; /* Azul muy oscuro para el título */
+            margin-bottom: 2px;
+        }
+
+        /* =========================================
+           TARJETAS DE LOS JUEGOS (Botones gigantes)
+           ========================================= */
+        .game-card-link {
+            background-color: #FFFFFF; /* Fondo blanco puro */
+            border-radius: 20px; /* Bordes bien redonditos */
+            padding: 18px; /* Espacio adentro de la tarjeta */
+            display: flex; /* Flexbox para ordenar lo de adentro */
+            align-items: center; /* Centra las cosas verticalmente */
+            justify-content: space-between; /* Separa la info (izquierda) del botón (derecha) */
+            text-decoration: none; /* Le saca la línea de abajo típica de los links */
+            color: #333333; /* Color del texto general */
+            border: 2px solid #DCEAFD; /* Borde celeste clarito */
+            box-shadow: 0 4px 14px rgba(74, 144, 226, 0.1); /* Sombrita suave */
+            /* transition hace que el efecto al pasar el mouse sea suave y no de golpe */
+            transition: all 0.2s ease; 
+        }
+
+        /* EFECTO: Qué pasa cuando le pasamos el mouse por encima (hover) */
+        .game-card-link:hover {
+            /* transform: translateY mueve la tarjeta 2 píxeles para arriba (da efecto de flotar) */
+            transform: translateY(-2px); 
+            border-color: #4A90E2; /* El borde se pinta de nuestro azul principal */
+            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.16); /* La sombra se hace más grande */
+        }
+
+        /* Caja que agrupa el emoji y los textos a la izquierda */
+        .game-left {
+            display: flex;
+            align-items: center; /* Centra el emoji y los textos a la misma altura */
+            gap: 18px; /* Separación entre el cuadradito del emoji y los textos */
+        }
+
+        /* Cuadradito donde va el Emoji del juego */
+        .emoji-juego {
+            width: 58px; /* Ancho en píxeles */
+            height: 58px; /* Alto en píxeles */
+            border-radius: 16px;
+            /* linear-gradient crea un fondo que cambia de un color a otro (un degradado celeste) */
+            background: linear-gradient(135deg, #EBF4FF 0%, #D5E8FF 100%);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; /* Estas 3 líneas centran el emoji perfectamente en el medio del cuadrado */
+            font-size: 35px; /* Tamaño del emoji */
+            border: 1px solid #BFDCFF;
+        }
+
+        /* Cajita que apila el título del juego y su descripción */
+        .juego-info {
+            display: flex;
+            flex-direction: column; /* Apila el nombre arriba y la descripción abajo */
+            gap: 2px; /* Apenas 2 píxeles de separación entre ellos */
+        }
+
+        /* Nombre del juego */
+        .nombre-juego {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 19px;
+            font-weight: 700; /* Negrita */
+            color: #4A90E2; /* Azul principal */
+        }
+
+        /* Descripción del juego */
+        .game-desc {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748B; /* Gris azulado para que no resalte tanto como el título */
+        }
+
+        /* =========================================
+           EL BOTONCITO AZUL QUE DICE "Jugar"
+           ========================================= */
+        .btn-playjugar {
+            background-color: #4A90E2;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 16px; /* 8px arriba/abajo y 16px a los lados */
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(74, 144, 226, 0.25);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- ENCABEZADO -->
+    <header class="header-top">
+        <div class="logo-container">
+            <img src="logo.png" alt="Xpressa+" class="logo-img">
+            <h1 class="logo-text">Xpressa+</h1>
+        </div>
+        <div class="header-title-center"> 
+            <span>Juegos</span>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL DE LOS JUEGOS -->
+    <main class="cont-juegos">
+        
+        <h2 class="elegiractividad">Elegí tu actividad 🎯</h2>
+
+        <!-- Juego 1: Viaje de letras -->
+        <a href="viaje-letras.html" class="game-card-link">
+            <div class="game-left">
+                <div class="emoji-juego">🚂</div>
+                <div class="juego-info">
+                    <span class="nombre-juego">Viaje de letras</span>
+                    <span class="game-desc">Ubica los sonidos en el vagón</span>
+                </div>
+            </div>
+            <span class="btn-playjugar">Jugar</span>
+        </a>
+
+        <!-- Juego 2: Memotest -->
+        <a href="memotest.html" class="game-card-link">
+            <div class="game-left">
+                <div class="emoji-juego">🃏</div>
+                <div class="juego-info">
+                    <span class="nombre-juego">Memotest</span>
+                    <span class="game-desc">Encuentra las parejas de fonemas</span>
+                </div>
+            </div>
+            <span class="btn-playjugar">Jugar</span>
+        </a>
+
+        <!-- Juego 3: Semáforo de palabras -->
+        <a href="semaforo-palabras.html" class="game-card-link">
+            <div class="game-left">
+                <div class="emoji-juego">🚦</div>
+                <div class="juego-info">
+                    <span class="nombre-juego">Semáforo de palabras</span>
+                    <span class="game-desc">Identifica si contiene el fonema</span>
+                </div>
+            </div>
+            <span class="btn-playjugar">Jugar</span>
+        </a>
+        
+    </main>
+  
+    <!-- BARRA INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="Home.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Inicio</span>
+        </a>
+        <a href="Juego.html" class="nav-item active">
+            <span class="nav-icon">🎮</span>
+            <span class="nav-label">Juegos</span>
+        </a>
+        <a href="Perfil.html" class="nav-item">
+            <span class="nav-icon">🔩</span>
+            <span class="nav-label">Mi Perfil</span>
+        </a>
+    </nav>
+
+</body>
+</html>
