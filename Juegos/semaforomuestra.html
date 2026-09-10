@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ · Semáforo de palabras</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --sky: #CDE8FE;
+            --purple-banner: #7864B8;
+            --btn-green: #37C864;
+            --btn-green-shadow: #219645;
+            --btn-red: #FA4B4B;
+            --btn-red-shadow: #BD2828;
+            --card-border: #9DC3EE;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(180deg, #BFE2FD 0%, #D8ECFD 50%, #BFE2FD 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 16px 20px;
+        }
+
+        .screen-container {
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Barra de Título */
+        .top-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .btn-circle-back {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            background: var(--purple-banner);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-size: 1.4rem; font-weight: 900;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .header-pill {
+            background: var(--purple-banner);
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            padding: 6px 24px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(120, 100, 184, 0.3);
+        }
+
+        .star-score {
+            background: white;
+            color: #4A5568;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: flex; align-items: center; gap: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Consigna */
+        .instruction-bar {
+            background: white;
+            border: 2px solid #A2D0FA;
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #2D3748;
+            margin-bottom: 14px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.08);
+        }
+
+        .instruction-bar span {
+            color: #4A90E2;
+            text-decoration: underline;
+        }
+
+        /* Área de juego (3 columnas) */
+        .game-layout {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .side-card {
+            background: white;
+            border: 2px solid var(--card-border);
+            border-radius: 20px;
+            padding: 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+            height: 100%;
+        }
+
+        .side-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #718096;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .fonema-bubble {
+            background: #6857A6;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            padding: 8px 16px;
+            border-radius: 14px;
+            margin-bottom: 14px;
+        }
+
+        .stat-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #2E7D32;
+        }
+
+        /* Tarjeta Central */
+        .main-card {
+            background: white;
+            border: 3px dashed #B8D5FA;
+            border-radius: 24px;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.12);
+        }
+
+        .illustration {
+            font-size: 5rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            margin-bottom: 6px;
+        }
+
+        .word-label {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #5C54A4;
+        }
+
+        /* Semáforo de Respuestas */
+        .controls-row {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .traffic-btn-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-circle {
+            width: 76px; height: 76px;
+            border-radius: 50%;
+            border: 6px solid #2D3748;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 2.2rem;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .btn-circle:active { transform: scale(0.92); }
+
+        .btn-yes {
+            background-color: var(--btn-green);
+            box-shadow: 0 8px 0 var(--btn-green-shadow);
+        }
+
+        .btn-no {
+            background-color: var(--btn-red);
+            box-shadow: 0 8px 0 var(--btn-red-shadow);
+        }
+
+        .traffic-pill {
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .pill-yes { background-color: var(--btn-green); }
+        .pill-no  { background-color: var(--btn-red); }
+
+        /* Lógica CSS puro con inputs ocultos */
+        input[type="radio"] { display: none; }
+
+        .feedback-banner {
+            display: none;
+            margin-top: 14px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 20px;
+        }
+
+        #check-correct:checked ~ .feedback-banner-ok {
+            display: block;
+            background: #34C759;
+            color: white;
+        }
+
+        #check-wrong:checked ~ .feedback-banner-err {
+            display: block;
+            background: #FF3B30;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <!-- Radios invisibles de control -->
+        <input type="radio" name="traffic-eval" id="check-correct">
+        <input type="radio" name="traffic-eval" id="check-wrong">
+
+        <header class="top-header">
+            <a href="../juegos.html" class="btn-circle-back">←</a>
+            <div class="header-pill">Semáforo de palabras</div>
+            <div class="star-score">⭐ 120</div>
+        </header>
+
+        <div class="instruction-bar">
+            ¿La palabra tiene el fonema <span>/S/</span>?
+        </div>
+
+        <main class="game-layout">
+            <div class="side-card">
+                <span class="side-title">Fonema a practicar</span>
+                <div class="fonema-bubble">/S/</div>
+                <span class="side-title">Nivel 1</span>
+                <div>⭐ ⭐ ⭐</div>
+            </div>
+
+            <div class="main-card">
+                <div class="illustration">☀️</div>
+                <div class="word-label">sol</div>
+            </div>
+
+            <div class="side-card">
+                <span class="side-title">Palabras correctas</span>
+                <span class="stat-value">3</span>
+                <span class="side-title" style="margin-top:10px;">Racha</span>
+                <span class="stat-value" style="color:#E65100;">2</span>
+            </div>
+        </main>
+
+        <div class="controls-row">
+            <div class="traffic-btn-wrapper">
+                <label for="check-correct" class="btn-circle btn-yes">✓</label>
+                <span class="traffic-pill pill-yes">SÍ, TIENE /S/</span>
+            </div>
+
+            <div class="traffic-btn-wrapper">
+                <label for="check-wrong" class="btn-circle btn-no">✕</label>
+                <span class="traffic-pill pill-no">NO TIENE /S/</span>
+            </div>
+        </div>
+
+        <div class="feedback-banner feedback-banner-ok">🎉 ¡Correcto! "Sol" empieza con S ⭐</div>
+        <div class="feedback-banner feedback-banner-err">❌ ¡Casi! La palabra "Sol" sí contiene el sonido /S/.</div>
+    </div>
+</body>
+</html>
