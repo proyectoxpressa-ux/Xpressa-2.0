@@ -6,228 +6,182 @@
     <title>Xpressa+ | Memotest</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box; /*Para que los bordes no deformen las cartas*/
-            font-family: 'Nunito', sans-serif;
-        }
+<style>
+        body { font-family: 'Comic Sans MS', sans-serif; text-align: center; background-color: #e8f5e9; }
         
-        body {
-            background-color: #F0F8FF; 
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh; /* Para que ocupe toda la altura de la ventana */
-        }
-
-        .top-bar {
-            width : 100%;
-            max-width: 480px; /* Maximo ancho para que no se deforme en ninguna pantalla */
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .btn-volver {
-            text-decoration: none; /*Elimina el subrayado*/
-            color: #4A90E2; /* Color azul de la marca */
-            font-weight: 800;
-            font-size: 15px; 
-            display: inline-flex; /* Para que el icono y el texto estén en línea */
-            align-items: center;
-            gap: 6px; /* Espacio entre el icono y el texto */
-            background: #FFFFFF;
-            padding: 6px 14px;
-            border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(75, 145, 225, 0.1); /* Sombra */
-        }
-
-        .header-juego {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .titulo-juego {
-            color: #2C3E50;
-            font-size: 28px;
-            font-weight: 900;
-            margin-bottom: 4px;
-        }
-
-        .subtitulo-juego {
-            font-size: 15px;
-            font-weight: 700;
-            color:#64748B
-        }
-        
-        /* 6 cartas, 3columnas x 2 filas */
-        .contmemo {
+        #tablero {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
-            gap: 15px; /* Espacio entre cada carta */
-            max-width: 480px; /* Tamaño máximo para que no se deforme */
-            width: 100%;
+            grid-template-columns: repeat(4, 120px); /* 4 columnas de 120px cada una */
+            gap: 15px;
+            justify-content: center;
+            margin: 20px auto;
         }
 
         .carta {
-            width: 100%;
-            height: 150px; /* Altura fija para todas las cartas */
-            perspective: 900px; /* Para el efecto 3D */
-            cursor: pointer; /* Cambia el cursor al pasar sobre la carta */
-            user-select: none; /* Evita seleccionar texto sin querer */
-        }
-
-        .carta-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            transform-style: preserve-3d; /* Necesario para el efecto 3D */
-            transition: transform 0.4s; /* Suaviza la animación de giro */
-            box-shadow: 0 6px 14px rgba(74, 144, 226, 0.15); /* Sombra para dar profundidad */
-        }
-
-        .carta:hover {
-            transform: scale(0.96); /* Efecto de zoom al pasar el mouse */
-        }
-
-        .trasera, .delantera {
-            position: absolute;
-            inset: 0; /* Ocupa todo el espacio del contenedor */
-            border-radius: 20px;
-            backface-visibility: hidden; /* Oculta la cara trasera cuando se gira */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .trasera {
-            background-color: #5c9ce6;
-            border: 3px solid #ffffff;
-        }
-
-        .trasera p {
-            font-size: 40px;
-            font-weight: 900;
-            color: #ffffff; /* Color blanco para el signo de interrogación */
-        }
-
-        .delantera {
-            background-color: #ffffff;
-            border: 3px solid #99C5F7;
-            transform: rotateY(180deg); /* Gira la cara delantera para que esté oculta inicialmente */
-            padding: 8px 6px;
-            justify-content: space-between; /* Distribuye el contenido de la carta */
-        }
-
-        .delantera img {
-            width: 90px;
-            height: 90px;
-            object-fit: contain; /* Para que la imagen no se deforme */
-            margin-bottom: 5px; 
-        }
-
-        .delantera p {
-            font-size: 20px;
-            font-weight: 800;
-            color: #2C3E50;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
         
+            /* Tamaño fijo para que la grilla sea perfecta */
+            width: 110px;  
+            height: 110px; 
+            /* ... el resto de tus estilos (colores, bordes) ... */
+            display: flex; /* Importante para centrar la imagen dentro */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #2196f3;
+            border-radius: 12px;
+            cursor: pointer;
+            user-select: none; /* Evita que el texto se seleccione al hacer clic */
 
+        }
+
+        .carta:hover { transform: scale(1.05); }
+
+        .carta.revelada, .carta.emparejada {
+            background-color: #ffffff;
+            border: 3px solid #4caf50;
+            cursor: default;
+        }
+
+        /* Esto asegura que la imagen se adapte al tamaño de la carta */
+        .carta img {
+            width: 65%;            /* Ocupa el 65% del ancho de la carta */
+            height: 65%;           /* Ocupa el 65% del alto */
+            object-fit: contain;   /* Mantiene la proporción sin estirarse */
+            pointer-events: none;  /* Evita que la imagen reciba clics */
+
+        }
+
+        .carta span {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 4px;
+            text-transform: capitalize; /* Asegura que la primera letra sea mayúscula */
+        }
     </style>
 </head>
 <body>
 
-    <!-- Botón Volver a la pestaña principal de Juegos -->
-    <div class="top-bar">
-        <a href="../juegos.html" class="btn-volver">← Volver</a> <!-- ../ PARA SALIR DE LA CARPETA DE ARCHIVOS -->
-    </div>
+   <h1 id="titulo-juego">Memotest</h1>
+    <div id="tablero"></div>
 
-    <!-- Titulo y subtitulo-->
-    <header class="header-juego">
-        <h1 class="titulo-juego">¡Encontrá las parejas!</h1>
-        <p class="subtitulo-juego">Descubrí las parejas con <b>RR</b></p>
-    </header>
+    <script>
+        // 1. BANCO DE DATOS
+       const bancoDeImagenes = {
+        'R': [
+            { id: 'perro', contenido: '../imagenes/perrito.png' },
+            { id: 'gorra', contenido: '../imagenes/gorra.png' },
+            { id: 'raton', contenido: '../imagenes/raton.png' },
+            { id: 'robot', contenido: '../imagenes/robot.png' }
+        
+        ],
+         'TR': [
+            { id: 'tren',  contenido: '../imagenes/tren.png' },
+            { id: 'tractor',  contenido: '../imagenes/tractor.png' },
+            { id: 'trofeo',  contenido: '../imagenes/trofeo.png' },
+            { id: 'trueno',  contenido: '../imagenes/trueno.png' }
 
-    <!-- Contenedor de las cartas-->
-    <main class="contmemo">
+        ],
+        'PR': [
+            { id: 'primavera', contenido: '../imagenes/primavera.png' },
+            { id: 'princesa', contenido: '../imagenes/princesa.png' },
+            { id: 'prenda',  contenido: '../imagenes/prenda.png' },
+            { id: 'compra',  contenido: '../imagenes/compra.png' }
+        ],
+        'DR': [
+            { id: 'dragon', contenido: '../imagenes/dragon.png' },
+            { id: 'ajedrez',  contenido: '../imagenes/ajedrez.png' },
+            { id: 'almendra', contenido: '../imagenes/almendra.png' },
+            { id: 'piedra', contenido: '../imagenes/piedra.png' }
+        ],
+        'PL': [
+            { id: 'planta', contenido: '../imagenes/planta.png' },
+            { id: 'plato',  contenido: '../imagenes/plato.png' },
+            { id: 'playa',  contenido: '../imagenes/playa.png' },
+            { id: 'planeta',  contenido: '../imagenes/planeta.png' }
+        ],
+        'C': [
+            { id: 'cuchara', contenido: '../imagenes/cuchara.png' },
+            { id: 'casa',    contenido: '../imagenes/casa.png' },
+            { id: 'caballo',   contenido: '../imagenes/caballo.png' },
+            { id: 'conejo',   contenido: '../imagenes/conejo.png' }
+        ]
+    
+        };
+        // 2. LEER LOCALSTORAGE
+        let sonido = localStorage.getItem("letraMemotest") || "R";
+        document.getElementById("titulo-juego").innerText = `Entrenando el Sonido "${sonido}"`;
 
-    <!--PERRO 1-->
-        <div class="carta">
-            <div class="trasera">
-                <p>?</p>
-            </div>
-            <div class="delantera">
-                <img src="imagenes/perrito.png" alt="Perro">
-                <p>Perro</p>
-            </div>
-        </div>
+        // 3. ARMAR EL MAZO (Fijo: 3 parejas = 6 cartas)
+        let cartasElegidas = bancoDeImagenes[sonido];
+        let mazo = [...cartasElegidas, ...cartasElegidas]; // Duplicamos para los pares
+        mazo.sort(() => Math.random() - 0.5); // Mezclamos aleatoriamente
 
-    <!-- BURRO 1 -->
-        <div class="carta">
-            <div class="trasera">
-                <p>?</p>
-            </div>
-            <div class="delantera">
-                <img src="imagenes/burro.png" alt="Burro">
-                <p>Burro</p>
-            </div>
-        </div>
+        // 4. DIBUJAR TABLERO
+        const tablero = document.getElementById("tablero");
 
-    <!-- GORRA 1 -->
-        <div class="carta">
-            <div class="trasera">
-                <p>?</p>
-            </div>
-            <div class="delantera">
-                <img src="imagenes/gorra.png" alt="Gorra">
-                <p>Gorra</p>
-            </div>
-        </div>
+        mazo.forEach((item, indice) => {
+            let cartaHTML = document.createElement("div");
+            cartaHTML.classList.add("carta");
+            cartaHTML.dataset.id = item.id;
+            cartaHTML.dataset.contenido = item.contenido;
+            cartaHTML.innerText = "❓";
+            
+            cartaHTML.addEventListener("click", voltearCarta);
+            tablero.appendChild(cartaHTML);
+        });
 
-    <!-- PERRO 2-->
-    <div class="carta">
-        <div class="trasera">
-            <p>?</p>
-        </div>
-        <div class="delantera">
-            <img src="imagenes/perrito.png" alt="Perro">
-            <p>Perro</p>
-        </div>
-    </div>
+        // 5. LÓGICA DE JUEGO
+        let cartasVolteadas = [];
+        let bloqueado = false;
 
-    <!-- BURRO 2 -->
-    <div class="carta">
-        <div class="trasera">
-            <p>?</p>
-        </div>
-        <div class="delantera">
-            <img src="imagenes/burro.png" alt="Burro">
-            <p>Burro</p>
-        </div>
-    </div>
+        function voltearCarta() {
+            if (bloqueado) return;
+            if (this.classList.contains("revelada") || this.classList.contains("emparejada")) return;
 
-    <!-- GORRA 2 -->
-    <div class="carta">
-        <div class="trasera">
-            <p>?</p>
-        </div>
-        <div class="delantera">
-            <img src="imagenes/gorra.png" alt="Gorra">
-            <p>Gorra</p>
-        </div>
-    </div>
-    </div>
+            // AHORA INYECTAMOS UN TAG <img>
+            this.innerHTML = `<img src="${this.dataset.contenido}" alt="${this.dataset.id}">
+            <span>${this.dataset.id}</span>`;
+            this.classList.add("revelada");
+            cartasVolteadas.push(this);
 
+            if (cartasVolteadas.length === 2) {
+                compararPareja();
+            }
+        }
+
+        function compararPareja() {
+            bloqueado = true;
+            let [carta1, carta2] = cartasVolteadas;
+
+            if (carta1.dataset.id === carta2.dataset.id) {
+                carta1.classList.add("emparejada");
+                carta2.classList.add("emparejada");
+                cartasVolteadas = [];
+                bloqueado = false;
+                verificarVictoria();
+            } else {
+                setTimeout(() => {
+                    // VOLVEMOS A PONER EL SIGNO O EL DORSO EN INNERHTML
+                    carta1.innerHTML = "❓";
+                    carta2.innerHTML = "❓";
+                    carta1.classList.remove("revelada");
+                    carta2.classList.remove("revelada");
+                    cartasVolteadas = [];
+                    bloqueado = false;
+                }, 1000);
+            }
+        }
+
+        function verificarVictoria() {
+            let totalEmparejadas = document.querySelectorAll(".emparejada").length;
+            if (totalEmparejadas === mazo.length) {
+                setTimeout(() => {
+                    alert("¡¡GANASTE!! 🏆 ¡Muy bien hecho!");
+                    window.location.href = "lobby-memotest.html"; // Vuelve a la selección
+                }, 400);
+            }
+        }
+    </script>
 </body>
 </html>
