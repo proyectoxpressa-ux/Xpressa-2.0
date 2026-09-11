@@ -19,9 +19,33 @@
         body {
             background-color: #F0F8FF;
             /* Usamos flexbox para centrar toda la tarjeta en la pantalla fácilmente */
+            flex-direction: column;
             display: flex; 
-            justify-content: center; /* Esto la centra de izquierda a derecha */
+            align-items: center;
             padding: 30px 15px 100px;
+        }
+
+        .top-bar {
+            width : 100%;
+            max-width: 480px; /* Maximo ancho para que no se deforme en ninguna pantalla */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .btn-volver {
+            text-decoration: none; /*Elimina el subrayado*/
+            color: #4A90E2; /* Color azul de la marca */
+            font-weight: 800;
+            font-size: 15px; 
+            display: inline-flex; /* Para que el icono y el texto estén en línea */
+            align-items: center;
+            gap: 6px; /* Espacio entre el icono y el texto */
+            background: #FFFFFF;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(75, 145, 225, 0.1); /* Sombra */
         }
 
         .tarjeta-perfil {
@@ -143,6 +167,11 @@
 </head>
 <body>
 
+    <!-- Botón Volver a la pestaña principal de Juegos -->
+    <div class="top-bar">
+        <a href="perfil.html" class="btn-volver">← Volver</a> 
+    </div>
+    
     <div class="tarjeta-perfil">
         <h1 class="titulo-perfil">Tus Datos</h1>
 
@@ -158,17 +187,17 @@
 
         <div class="grupo-input">
             <label>Apellido</label>
-            <input type="text" placeholder="Tu apellido" id="input-apellido">
+            <input type="text" placeholder="Ej: Pérez" id="input-apellido">
         </div>
 
          <div class="grupo-input">
             <label>DNI</label>
-            <input type="text" placeholder="Tu DNI" id="input-dni">
+            <input type="text" placeholder="Ej: 12.345.678" id="input-dni">
         </div>
 
         <div class="grupo-input">
             <label>Edad</label>
-            <input type="text" placeholder="¿Cuántos años tenés?" id="input-edad">
+            <input type="text" placeholder="Ej: 8" id="input-edad">
         </div>
 
          <div class="grupo-input">
@@ -178,6 +207,7 @@
 
         <button class="btn-guardar" id="btn-guardar-perfil">¡Guardar mis datos!</button>
     </div>
+
 
 </body>
 </html>
