@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Semáforo R-RR</title>
+    
+    <!-- Fuentes oficiales de Xpressa+ -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. AJUSTES GENERALES
+           ========================================= */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Nunito', sans-serif; 
+        }
+        
+        body {
+            background-color: #F0F8FF; /* Celeste pastel */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;    
+            padding: 30px 15px 100px;
+        }
+
+        .top-bar {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .btn-volver {
+            text-decoration: none;
+            color: #4A90E2;
+            font-weight: 800;
+            font-size: 15px; 
+            background: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.15);
+        }
+
+        /* =========================================
+           2. LA TARJETA DEL JUEGO
+           ========================================= */
+        .tarjeta-juego {
+            background-color: #FFFFFF;
+            width: 100%; 
+            max-width: 450px;
+            border-radius: 25px; 
+            padding: 30px 20px;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15);
+            text-align: center;
+        }
+
+        .titulo-juego {
+            font-family: 'Fredoka', sans-serif; 
+            color: #4A90E2;
+            font-size: 26px; 
+            margin-bottom: 5px;
+        }
+
+        .instruccion {
+            color: #64748B; 
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        /* =========================================
+           3. EL ESTÍMULO (Caja de Imagen)
+           ========================================= */
+        .caja-estimulo {
+            width: 180px;
+            height: 180px;
+            background-color: #FFFFFF; 
+            border: 4px solid #93C5FD; 
+            border-radius: 30px; 
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.1);
+        }
+
+        /* Ajuste para las imágenes reales */
+        .caja-estimulo img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .nombre-imagen {
+            font-size: 18px;
+            font-weight: 800;
+            color: #334155;
+            margin-top: 5px;
+            text-transform: capitalize;
+        }
+
+        /* =========================================
+           4. LOS BOTONES DEL SEMÁFORO (SÍ / NO)
+           ========================================= */
+        .contenedor-semaforo {
+            display: flex;
+            justify-content: space-between; 
+            gap: 15px; 
+        }
+
+        .btn-semaforo {
+            flex: 1; 
+            border: none;
+            border-radius: 20px;
+            padding: 15px 5px;
+            font-size: 35px; 
+            cursor: pointer;
+            transition: all 0.1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .texto-btn {
+            font-size: 16px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .btn-semaforo:active {
+            transform: translateY(6px);
+        }
+
+        .rojo {
+            background-color: #FF8FA3; 
+            box-shadow: 0 6px 0 #E57388;
+        }
+        .rojo:active { box-shadow: 0 0 0 #E57388; }
+
+        .verde {
+            background-color: #58CC93; 
+            box-shadow: 0 6px 0 #4EA87A;
+        }
+        .verde:active { box-shadow: 0 0 0 #4EA87A; }
+
+        /* =========================================
+           5. CAJA DE FEEDBACK Y NAVEGACIÓN
+           ========================================= */
+        .contenedor-feedback {
+            display: none; /* Se activa con JavaScript */
+            margin-top: 10px;
+        }
+
+        .mensaje-feedback {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .mensaje-exito { color: #22C55E; }
+        .mensaje-error { color: #EF4444; }
+
+        .btn-accion {
+            width: 100%;
+            border: none;
+            border-radius: 20px;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .btn-accion:active {
+            transform: translateY(4px);
+        }
+
+        .btn-siguiente {
+            background-color: #4A90E2;
+            box-shadow: 0 6px 0 #357ABD;
+        }
+        .btn-siguiente:active { box-shadow: 0 0 0 #357ABD; }
+
+        .btn-reiniciar {
+            background-color: #FFB703;
+            box-shadow: 0 6px 0 #D99B00;
+        }
+        .btn-reiniciar:active { box-shadow: 0 0 0 #D99B00; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Botón Volver -->
+    <div class="top-bar">
+        <a href="lobby-semaforo.html" class="btn-volver">← Volver</a> 
+    </div>
+    
+    <!-- Tarjeta Principal del Juego -->
+    <div class="tarjeta-juego" id="tarjeta">
+        <h1 class="titulo-juego">Semáforo</h1>
+        <p class="instruccion">¿Esta imagen tiene el sonido <b>R-RR</b>?</p>
+
+        <!-- Se carga dinámicamente desde JS -->
+        <div class="caja-estimulo" id="dibujo-palabra"></div>
+
+        <!-- Botones SÍ / NO -->
+        <div class="contenedor-semaforo" id="contenedor-opciones">
+            <button class="btn-semaforo rojo" id="btn-no" onclick="responder(false)">
+                <span>❌</span>
+                <span class="texto-btn">NO</span>
+            </button>
+
+            <button class="btn-semaforo verde" id="btn-si" onclick="responder(true)">
+                <span>✅</span>
+                <span class="texto-btn">SÍ</span>
+            </button>
+        </div>
+
+        <!-- Botón de Siguiente / Reiniciar tras responder -->
+        <div class="contenedor-feedback" id="contenedor-feedback">
+            <p class="mensaje-feedback" id="mensaje-feedback"></p>
+            <button class="btn-accion" id="btn-accion"></button>
+        </div>
+    </div>
+
+    <script>
+        // =========================================
+        // 1. BANCO DE IMÁGENES (Poner rutas reales a tus .png)
+        // =========================================
+        const bancoImagenes = [
+            { nombre: 'Perro', archivo: '../imagenes/perrito.png', tieneSonido: true },
+            { nombre: 'Planta', archivo: '../imagenes/planta.png', tieneSonido: false },
+            { nombre: 'Gorra', archivo: '../imagenes/gorra.png', tieneSonido: true },
+            { nombre: 'Conejo', archivo: '../imagenes/conejo.png', tieneSonido: false },
+            { nombre: 'Burro', archivo: '../imagenes/burro.png', tieneSonido: true }
+        ];
+
+        let indiceActual = 0;
+
+        // Referencias del HTML
+        const dibujoPalabra = document.getElementById('dibujo-palabra');
+        const contenedorOpciones = document.getElementById('contenedor-opciones');
+        const contenedorFeedback = document.getElementById('contenedor-feedback');
+        const mensajeFeedback = document.getElementById('mensaje-feedback');
+        const btnAccion = document.getElementById('btn-accion');
+
+        // =========================================
+        // 2. MOSTRAR LA IMAGEN ACTUAL
+        // =========================================
+        function cargarImagenActual() {
+            const item = bancoImagenes[indiceActual];
+
+            // Renderizar la imagen y su nombre
+            dibujoPalabra.innerHTML = `
+                <img src="${item.archivo}" alt="${item.nombre}" onerror="this.style.display='none'">
+                <span class="nombre-imagen">${item.nombre}</span>
+            `;
+
+            // Ocultar pantalla de feedback y mostrar los botones SÍ/NO
+            contenedorFeedback.style.display = 'none';
+            contenedorOpciones.style.display = 'flex';
+        }
+
+        // =========================================
+        // 3. EVALUAR LA RESPUESTA
+        // =========================================
+        function responder(eleccionUsuario) {
+            const item = bancoImagenes[indiceActual];
+            const esCorrecto = (eleccionUsuario === item.tieneSonido);
+
+            // Ocultar botones SÍ/NO y activar la zona de feedback
+            contenedorOpciones.style.display = 'none';
+            contenedorFeedback.style.display = 'block';
+
+            if (esCorrecto) {
+                mensajeFeedback.innerText = "¡Adivinaste!";
+                mensajeFeedback.className = "mensaje-feedback mensaje-exito";
+                
+                btnAccion.innerText = "Siguiente imagen";
+                btnAccion.className = "btn-accion btn-siguiente";
+                btnAccion.onclick = avanzarSiguiente;
+            } else {
+                mensajeFeedback.innerText = " Intentémoslo de nuevo ";
+                mensajeFeedback.className = "mensaje-feedback mensaje-error";
+
+                btnAccion.innerText = "Reintentar";
+                btnAccion.className = "btn-accion btn-reiniciar";
+                btnAccion.onclick = reiniciarImagen;
+            }
+        }
+
+        // =========================================
+        // 4. ACCIONES DE NAVEGACIÓN
+        // =========================================
+        function avanzarSiguiente() {
+            indiceActual++;
+
+            // Si quedan más imágenes en la lista, mostramos la siguiente
+            if (indiceActual < bancoImagenes.length) {
+                cargarImagenActual();
+            } else {
+                // Si completó todas las imágenes, mostramos la victoria final
+                mostrarVictoriaFinal();
+            }
+        }
+
+        function reiniciarImagen() {
+            // Mantiene el mismo indiceActual y vuelve a cargar
+            cargarImagenActual();
+        }
+
+        function mostrarVictoriaFinal() {
+            document.getElementById('tarjeta').innerHTML = `
+                <h1 class="titulo-juego">¡Felicidades!</h1>
+                <p class="instruccion">Completaste todas las palabras del Semáforo.</p>
+                <a href="lobby-semaforo.html" class="btn-accion btn-siguiente" style="display:inline-block; text-decoration:none;">
+                    Volver a Jugar
+                </a>
+            `;
+        }
+
+        // Cargar la primera imagen al iniciar la página
+        cargarImagenActual();
+    </script>
+</body>
+</html>
