@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Lobby Trencito</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+        
+        body {
+            background-color: #F0F8FF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 15px;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            width : 100%;
+            max-width: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .btn-volver {
+            text-decoration: none;
+            color: #4A90E2;
+            font-weight: 800;
+            font-size: 15px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #FFFFFF;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(75, 145, 225, 0.1);
+        }
+
+        .contenedor-lobby {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .titulo-lobby {
+            font-family: 'Fredoka', sans-serif;
+            color: #4A90E2;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitulo {
+            color: #64748B;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .grilla-sonidos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn-sonido {
+            background-color: #F1F5F9;
+            border: 3px solid #CBD5E1;
+            border-radius: 18px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-sonido.seleccionado {
+            background-color: #E0F2FE;
+            border-color: #38BDF8;
+            color: #0284C7;
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-jugar {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 16px;
+            font-size: 22px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #388E3C;
+            transition: all 0.1s;
+        }
+
+        .btn-jugar:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="../juegos.html" class="btn-volver">← Volver</a>
+    </div>
+
+    <div class="contenedor-lobby">
+        <h1 class="titulo-lobby">🚂 Viaje de Letras</h1>
+        <p class="subtitulo">¿Qué sonido vamos a entrenar en el tren?</p>
+
+        <div class="grilla-sonidos">
+            <button class="btn-sonido" onclick="seleccionar('R-RR', this)">Sonido "R-RR" 🐭</button>
+            <button class="btn-sonido" onclick="seleccionar('C', this)">Sonido "C" 🏠</button>
+            <button class="btn-sonido" onclick="seleccionar('PL', this)">Sílaba "PL" 🌳</button>
+            <button class="btn-sonido" onclick="seleccionar('TR', this)">Sílaba "TR" 🚜</button>
+            <button class="btn-sonido" onclick="seleccionar('DR', this)">Sílaba "DR" 🐉</button>
+            <button class="btn-sonido" onclick="seleccionar('PR', this)">Sílaba "PR" 👑</button>
+        </div>
+
+        <button class="btn-jugar" onclick="iniciarJuego()">¡SUBIR AL TREN! 🚀</button>
+    </div>
+
+    <script>
+        let sonidoSeleccionado = "";
+
+        function seleccionar(sonido, elemento) {
+            sonidoSeleccionado = sonido;
+            document.querySelectorAll('.btn-sonido').forEach(btn => btn.classList.remove('seleccionado'));
+            elemento.classList.add('seleccionado');
+        }
+
+        function iniciarJuego() {
+            if (!sonidoSeleccionado) {
+                alert("¡Por favor elegí un sonido para practicar!");
+                return;
+            }
+            localStorage.setItem("sonidoTrencito", sonidoSeleccionado);
+            window.location.href = "trencito.html";
+        }
+    </script>
+</body>
+</html>

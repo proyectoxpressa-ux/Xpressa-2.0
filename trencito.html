@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Viaje de Letras</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+
+        body {
+            background-color: #EAF4FC;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px 40px;
+            min-height: 100vh;
+        }
+
+        /* Barra Superior */
+        .top-bar {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .btn-volver {
+            text-decoration: none;
+            color: #4A90E2;
+            font-weight: 800;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.15);
+        }
+
+        .marca-app {
+            font-family: 'Fredoka', sans-serif;
+            color: #3B82F6;
+            font-size: 22px;
+        }
+
+        /* Cartel de Instrucción */
+        .cartel-instruccion {
+            background: white;
+            border: 3px solid #93C5FD;
+            border-radius: 20px;
+            padding: 15px 20px;
+            text-align: center;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .cartel-instruccion h2 {
+            font-family: 'Fredoka', sans-serif;
+            color: #2563EB;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .cartel-instruccion p {
+            color: #475569;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* =========================================
+           ESTRUCTURA DEL TREN VISUAL
+           ========================================= */
+        .contenedor-tren {
+            width: 100%;
+            max-width: 620px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+        }
+
+        /* Vías del tren */
+        .vias {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 12px;
+            background: #78350F;
+            border-radius: 6px;
+        }
+
+        .vias::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #9CA3AF;
+        }
+
+        /* Locomotora */
+        .locomotora {
+            width: 85px;
+            height: 95px;
+            background-color: #EF4444;
+            border: 3px solid #B91C1C;
+            border-radius: 15px 30px 10px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            position: relative;
+            margin-right: 6px;
+            z-index: 2;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Vagones Clickeables */
+        .vagon {
+            flex: 1;
+            height: 135px;
+            border-radius: 18px;
+            border: 3px dashed #94A3B8;
+            margin: 0 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.85);
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.15s, background-color 0.15s;
+        }
+
+        .vagon:hover {
+            transform: translateY(-4px);
+            background: #FFFFFF;
+        }
+
+        .etiqueta-vagon {
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .vagon-inicio .etiqueta-vagon { background-color: #3B82F6; }
+        .vagon-medio .etiqueta-vagon  { background-color: #22C55E; }
+        .vagon-final .etiqueta-vagon  { background-color: #EF4444; }
+
+        .ranura-vagon {
+            width: 100%;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ruedas {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            position: absolute;
+            bottom: -10px;
+        }
+
+        .rueda {
+            width: 18px;
+            height: 18px;
+            background: #334155;
+            border: 3px solid #94A3B8;
+            border-radius: 50%;
+        }
+
+        /* =========================================
+           BANDEJA CON 1 SOLA CARTA
+           ========================================= */
+        .contenedor-cartas {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 10px;
+            min-height: 140px;
+        }
+
+        .carta {
+            width: 110px;
+            height: 130px;
+            background: white;
+            border: 3px solid #3B82F6;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2);
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .carta img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .carta span {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1E293B;
+            margin-top: 6px;
+            text-transform: capitalize;
+        }
+
+        /* =========================================
+           ADAPTACIÓN DE LA CARTA DENTRO DEL VAGÓN
+           ========================================= */
+        .vagon .carta {
+            width: 82px;
+            height: 82px;
+            border-width: 2px;
+            border-radius: 12px;
+            padding: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .vagon .carta img {
+            width: 42px;
+            height: 42px;
+        }
+
+        .vagon .carta span {
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        /* =========================================
+           CONTROLES Y MENSAJES
+           ========================================= */
+        .panel-control {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .mensaje-resultado {
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            min-height: 28px;
+        }
+
+        .btn-accion {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+            transition: all 0.1s ease;
+        }
+
+        .btn-accion:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .btn-siguiente { background-color: #22C55E; box-shadow: 0 6px 0 #15803D; }
+        .btn-reintentar { background-color: #FFB703; box-shadow: 0 6px 0 #D99B00; }
+    </style>
+</head>
+<body>
+
+    <!-- Barra Superior -->
+    <div class="top-bar">
+        <a href="lobby-trencito.html" class="btn-volver">← Volver</a>
+        <span class="marca-app">Xpressa+</span>
+    </div>
+
+    <!-- Indicador de consigna -->
+    <div class="cartel-instruccion">
+        <h2>Viaje de Letras</h2>
+        <p id="instruccion-texto">Cargando...</p>
+    </div>
+
+    <!-- EL TREN Y SUS 3 VAGONES -->
+    <div class="contenedor-tren" id="zona-tren">
+        <div class="vias"></div>
+
+        <div class="locomotora">
+            🚂
+        </div>
+
+        <div class="vagon vagon-inicio" onclick="evaluarVagon('INICIO')">
+            <span class="etiqueta-vagon">INICIO</span>
+            <div class="ranura-vagon" id="vagon-INICIO"></div>
+            <div class="ruedas"><div class="rueda"></div><div class="rueda"></div></div>
+        </div>
+
+        <div class="vagon vagon-medio" onclick="evaluarVagon('MEDIO')">
+            <span class="etiqueta-vagon">MEDIO</span>
+            <div class="ranura-vagon" id="vagon-MEDIO"></div>
+            <div class="ruedas"><div class="rueda"></div><div class="rueda"></div></div>
+        </div>
+
+        <div class="vagon vagon-final" onclick="evaluarVagon('FINAL')">
+            <span class="etiqueta-vagon">FINAL</span>
+            <div class="ranura-vagon" id="vagon-FINAL"></div>
+            <div class="ruedas"><div class="rueda"></div><div class="rueda"></div></div>
+        </div>
+    </div>
+
+    <!-- BANDEJA DONDE APARECE LA CARTA ÚNICA -->
+    <div class="contenedor-cartas" id="bandeja-cartas"></div>
+
+    <!-- PANEL DE FEEDBACK Y NAVEGACIÓN -->
+    <div class="panel-control">
+        <p class="mensaje-resultado" id="mensaje-resultado"></p>
+        <button class="btn-accion btn-siguiente" id="btn-siguiente" onclick="siguienteNivel()">¡Siguiente! ➡️</button>
+        <button class="btn-accion btn-reintentar" id="btn-reintentar" onclick="reintentarNivel()">Volver a intentar 🔄</button>
+    </div>
+
+    <script>
+        // =========================================
+        // 1. BANCO DE DATOS
+        // =========================================
+        const bancoEjercicios = {
+            'R-RR': [
+                { nombre: 'Ratón', posicion: 'INICIO', archivo: '../imagenes/raton.png' },
+                { nombre: 'Jirafa', posicion: 'MEDIO',  archivo: '../imagenes/jirafa.png' },
+                { nombre: 'Flor',   posicion: 'FINAL',  archivo: '../imagenes/flor.png' },
+                { nombre: 'Perro',  posicion: 'MEDIO',  archivo: '../imagenes/perrito.png' }
+            ],
+            'C': [
+                { nombre: 'Casa',   posicion: 'INICIO', archivo: '../imagenes/casa.png' },
+                { nombre: 'Cuchara',   posicion: 'INICIO',  archivo: '../imagenes/cuchara.png' },
+                { nombre: 'Conejo',   posicion: 'INICIO',  archivo: '../imagenes/conejo.png' },
+                { nombre: 'Caballo',   posicion: 'INICIO',  archivo: '../imagenes/caballo.png' }
+
+            ],
+            'PL': [
+                { nombre: 'Plato',  posicion: 'INICIO', archivo: '../imagenes/plato.png' },
+                { nombre: 'Playa',  posicion: 'INICIO', archivo: '../imagenes/playa.png' },
+                { nombre: 'Planeta',  posicion: 'INICIO', archivo: '../imagenes/planeta.png' },
+                { nombre: 'Planta',  posicion: 'INICIO', archivo: '../imagenes/planta.png' }
+            ],
+            'TR': [
+                { nombre: 'Tren',   posicion: 'INICIO', archivo: '../imagenes/tren.png' },
+                { nombre: 'Tractor',  posicion: 'INICIO', archivo: '../imagenes/tractor.png' },
+                { nombre: 'Trofeo',  posicion: 'INICIO', archivo: '../imagenes/trofeo.png' },
+                { nombre: 'Trueno',  posicion: 'INICIO', archivo: '../imagenes/trueno.png' }
+
+            ],
+            'DR': [
+                { nombre: 'Dragón', posicion: 'INICIO', archivo: '../imagenes/dragon.png' },
+                { nombre: 'Piedra', posicion: 'MEDIO',  archivo: '../imagenes/piedra.png' },
+                { nombre: 'Almendra',  posicion: 'MEDIO', archivo: '../imagenes/almendra.png' },
+                { nombre: 'Ajedrez',  posicion: 'MEDIO', archivo: '../imagenes/ajedrez.png' }
+            ],
+            'PR': [
+                { nombre: 'Princesa', posicion: 'INICIO', archivo: '../imagenes/princesa.png' },
+                { nombre: 'Prenda',  posicion: 'INICIO', archivo: '../imagenes/prenda.png' },
+                { nombre: 'Primavera',  posicion: 'INICIO', archivo: '../imagenes/primavera.png' },
+                { nombre: 'Compra',  posicion: 'MEDIO', archivo: '../imagenes/compra.png' }
+            ]
+        };
+
+        const sonidoElegido = localStorage.getItem("sonidoTrencito") || "R-RR";
+        const listaImagenes = bancoEjercicios[sonidoElegido] || bancoEjercicios['R-RR'];
+
+        let indiceActual = 0;
+        let respondido = false;
+
+        // Mostrar texto de consigna
+        document.getElementById('instruccion-texto').innerHTML = 
+            `¿Dónde suena la <b>"${sonidoElegido}"</b> en este dibujo?<br>¡Toca el vagón correcto!`;
+
+        // =========================================
+        // 2. CARGAR CARTA / NIVEL ACTUAL
+        // =========================================
+        function cargarNivel() {
+            respondido = false;
+            ocultarFeedback();
+
+            // Vaciar todos los vagones
+            ['INICIO', 'MEDIO', 'FINAL'].forEach(v => {
+                document.getElementById(`vagon-${v}`).innerHTML = '';
+            });
+
+            const itemActual = listaImagenes[indiceActual];
+            const bandeja = document.getElementById('bandeja-cartas');
+
+            // Insertar la única carta activa
+            bandeja.innerHTML = `
+                <div class="carta" id="carta-activa">
+                    <img src="${itemActual.archivo}" alt="${itemActual.nombre}" onerror="this.src='https://via.placeholder.com/65'">
+                    <span>${itemActual.nombre}</span>
+                </div>
+            `;
+        }
+
+        // =========================================
+        // 3. RESPONDER Y EVALUAR
+        // =========================================
+        function evaluarVagon(vagonElegido) {
+            if (respondido) return; // Evita doble clic
+
+            const itemActual = listaImagenes[indiceActual];
+            const carta = document.getElementById('carta-activa');
+            const ranuraVagon = document.getElementById(`vagon-${vagonElegido}`);
+
+            if (!carta) return;
+
+            // Mover visualmente la carta adentro del vagón presionado
+            ranuraVagon.appendChild(carta);
+            respondido = true;
+
+            const esCorrecto = (vagonElegido === itemActual.posicion);
+            const mensaje = document.getElementById('mensaje-resultado');
+
+            if (esCorrecto) {
+                mensaje.innerText = "¡Excelente! 🏆 ¡Ese es el vagón correcto!";
+                mensaje.style.color = "#22C55E";
+                document.getElementById('btn-siguiente').style.display = 'block';
+            } else {
+                mensaje.innerText = "¡Uy! Ese no es su vagón 💡 ¡Probemos de nuevo!";
+                mensaje.style.color = "#EF4444";
+                document.getElementById('btn-reintentar').style.display = 'block';
+            }
+        }
+
+        // =========================================
+        // 4. FLUJO DE NAVEGACIÓN
+        // =========================================
+        function siguienteNivel() {
+            indiceActual++;
+
+            if (indiceActual < listaImagenes.length) {
+                cargarNivel();
+            } else {
+                mostrarFinJuego();
+            }
+        }
+
+        function reintentarNivel() {
+            cargarNivel();
+        }
+
+        function ocultarFeedback() {
+            document.getElementById('mensaje-resultado').innerText = '';
+            document.getElementById('btn-siguiente').style.display = 'none';
+            document.getElementById('btn-reintentar').style.display = 'none';
+        }
+
+        function mostrarFinJuego() {
+            document.querySelector('.cartel-instruccion').innerHTML = `
+                <h2>¡Felicitaciones! 🎉</h2>
+                <p>¡Completaste todo el recorrido del tren!</p>
+            `;
+            document.getElementById('zona-tren').style.display = 'none';
+            document.getElementById('bandeja-cartas').style.display = 'none';
+            
+            const panel = document.querySelector('.panel-control');
+            panel.innerHTML = `
+                <a href="lobby-trencito.html" class="btn-accion btn-siguiente" style="display:inline-block; text-decoration:none;">
+                    Elegir otro sonido 🚂
+                </a>
+            `;
+        }
+
+        // Iniciar el primer nivel
+        cargarNivel();
+    </script>
+</body>
+</html>
