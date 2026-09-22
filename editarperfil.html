@@ -208,6 +208,80 @@
         <button class="btn-guardar" id="btn-guardar-perfil">¡Guardar mis datos!</button>
     </div>
 
+    <script>
+        // 1. Cargar los datos apenas se abre la pantalla
+        document.addEventListener("DOMContentLoaded", async () => {
+            const usuario_id = localStorage.getItem('usuario_id');
+            const nombreGuardado = localStorage.getItem('nombre_usuario'); // Recuperamos el nombre de la memoria
+            
+            // Si no hay sesión, lo mandamos al login
+            if (!usuario_id) {
+                window.location.href = 'sesion.html';
+                return;
+            }
 
+            try {
+                // Le pedimos al servidor los datos de este usuario
+                const respuesta = await fetch(`http://localhost:3000/api/perfil/${usuario_id}`);
+                
+                if (respuesta.ok) {
+                    const datos = await respuesta.json();
+                    
+                    // Rellenamos las cajas. Si no hay nombre en la base de datos, usa el de la memoria
+                    document.getElementById('input-nombre').value = datos.nombre || nombreGuardado || '';
+                    document.getElementById('input-apellido').value = datos.apellido || '';
+                    document.getElementById('input-dni').value = datos.dni || '';
+                    document.getElementById('input-edad').value = datos.edad || '';
+                    document.getElementById('input-sexo').value = datos.sexo || '';
+                } else {
+                    // Si el perfil aún no existe en la BD, igual ponemos el nombre
+                    document.getElementById('input-nombre').value = nombreGuardado || '';
+                }
+            } catch (error) {
+                console.error('Error cargando los datos:', error);
+                // Si el servidor falla, igual aseguramos que el nombre aparezca
+                document.getElementById('input-nombre').value = nombreGuardado || '';
+            }
+        });
+
+        // 2. Guardar los datos al hacer clic en el botón
+        document.getElementById('btn-guardar-perfil').addEventListener('click', async function() {
+            const usuario_id = localStorage.getItem('usuario_id');
+            
+            if (!usuario_id) {
+                alert('Debes iniciar sesión primero.');
+                window.location.href = 'sesion.html';
+                return;
+            }
+
+            // Capturamos lo que el usuario escribió
+            const nombre = document.getElementById('input-nombre').value;
+            const apellido = document.getElementById('input-apellido').value;
+            const dni = document.getElementById('input-dni').value;
+            const edad = document.getElementById('input-edad').value;
+            const sexo = document.getElementById('input-sexo').value;
+
+            try {
+                // Enviamos los datos al servidor para guardarlos
+                const response = await fetch('http://localhost:3000/api/perfil', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario_id, nombre, apellido, dni, edad, sexo })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('¡Datos guardados con éxito!');
+                    window.location.href = 'perfil.html'; // Volvemos al menú del perfil
+                } else {
+                    alert('Error: ' + data.mensaje);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('No se pudo guardar el perfil.');
+            }
+        });
+    </script>
 </body>
 </html>

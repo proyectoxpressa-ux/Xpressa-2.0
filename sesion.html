@@ -174,7 +174,7 @@
 
         <h1>Iniciar Sesión</h1>
         
-        <form action="elegirletraoficial.html" method="GET">
+        <form id="form-login">
             <div class="form-group">
                 <label class="form-label" for="username">Nombre de usuario</label>
                 <input class="input-texto" type="text" id="username" name="username" placeholder="Ingrese su nombre" required>
@@ -191,5 +191,42 @@
         </form>
     </div>
 
+
+    <script>
+        document.getElementById('form-login').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Evita que la página cambie de golpe
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const respuesta = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await respuesta.json();
+
+                if (respuesta.ok) {
+                    // Guardamos los datos del niño en el navegador para usarlos luego
+                    localStorage.setItem('usuario_id', data.id);
+                    localStorage.setItem('nombre_usuario', data.username);
+
+                    // Redirección inteligente
+                    if (data.es_primer_ingreso) {
+                        window.location.href = 'elegirletraoficial.html'; // Primera vez
+                    } else {
+                        window.location.href = 'home.html'; // Siguientes veces
+                    }
+                } else {
+                    alert('Error: ' + data.mensaje);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('No se pudo conectar con el servidor.');
+            }
+        });
+    </script>
 </body>
 </html>

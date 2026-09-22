@@ -101,63 +101,6 @@ body {
     gap: 2rem; /* Separación mágica sin usar margins */
 }
 
-/* EL BOTÓN GIGANTE */
-.btn-play {
-    display: inline-flex;
-    align-items: center;
-    background-color: var(--primary-blue);
-    color: white;
-    border: none;
-    padding: 6px 30px 6px 6px; /* Deja espacio a la izquierda para el círculo */
-    font-size: 1.4rem;
-    font-weight: 800;
-    border-radius: 50px;
-    box-shadow: 0 6px 0 #3A78C4, var(--shadow); 
-    cursor: pointer;
-    transition: all 0.1s ease;
-    
-    /* Mantenemos tu animación de latido */
-    animation: heartbeat 2s infinite;
-}
-
-/* El círculo blanco de la izquierda */
-.btn-play .btn-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background-color: #ffffff;
-    color: #17b99c; /* Color de la flecha */
-    border-radius: 50%;
-    margin: 5px 18px 5px 7px;
-
-    font-size: 1.5rem;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Texto del botón */
-.btn-play .btn-text {
-    letter-spacing: 0.5px;
-}
-
-/* Efecto al hacer click (se hunde) */
-.btn-play:active {
-    transform: translateY(6px);
-    box-shadow: 0 0 0 #108a73;
-}
-
-/* La magia del CSS: El latido */
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    15% { transform: scale(1.05); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.05); }
-    60% { transform: scale(1); }
-    100% { transform: scale(1); }
-}
-
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -216,18 +159,10 @@ body {
             <!-- Espacio reservado para la fotito del niño -->
             <div class="avatar-placeholder" >
                 <a href="perfil.html" style="text-decoration: none;">🧒🏽</a></div> 
-            <span class="user-greeting">¡Hola, Ian!</span>
+            <span class="user-greeting" id="saludo-usuario">¡Hola, Ian!</span>
         </div>
     </header>
 
-    <!-- ZONA CENTRAL DE JUEGO -->
-    <main class="main-content">    
-        <!-- El gran botón animado -->
-        <button class="btn-play" onclick="location.href='juegos.html'">
-            <span class="btn-icon">→</span>
-            <span class="btn-text">¡A JUGAR AHORA!</span>
-        </button>
-    </main>
     
     <!-- NAVEGACIÓN INFERIOR -->
     <nav class="bottom-nav">
@@ -243,5 +178,25 @@ body {
             <span class="nav-icon">🔩</span> Mi Perfil
         </a>
     </nav>
+
+    <script>
+    // Esto hace que el código se ejecute apenas cargue la página
+    document.addEventListener("DOMContentLoaded", () => {
+        // Buscamos el nombre que guardamos en el login
+        const nombreUsuario = localStorage.getItem('nombre_usuario');
+        
+        if (nombreUsuario) {
+            // Si hay un nombre guardado, cambiamos el texto
+            const saludoElement = document.getElementById('saludo-usuario');
+            // Ponemos la primera letra en mayúscula por si la escribieron en minúscula
+            const nombreFormateado = nombreUsuario.charAt(0).toUpperCase() + nombreUsuario.slice(1);
+            
+            saludoElement.textContent = `¡Hola, ${nombreFormateado}!`;
+        } else {
+            // Si alguien intenta entrar al home sin iniciar sesión, lo pateamos a la pantalla de login
+            window.location.href = 'sesion.html';
+        }
+    });
+</script>
 </body>
 </html>

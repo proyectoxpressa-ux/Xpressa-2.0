@@ -182,7 +182,7 @@
     <div class="grilla-animales">
       
       <label class="envoltorio-tarjeta">
-        <input type="checkbox" class="checkbox-letra">
+        <input type="checkbox" class="checkbox-letra" value="R-RR">
         <div class="tarjeta-animal">
           <div class="tilde-ok">✓</div>
           <div class="emoji-animal">🐭</div>
@@ -191,7 +191,7 @@
       </label>
 
       <label class="envoltorio-tarjeta">
-        <input type="checkbox" class="checkbox-letra">
+        <input type="checkbox" class="checkbox-letra" value="TR">
         <div class="tarjeta-animal">
           <div class="tilde-ok">✓</div>
           <div class="emoji-animal">🚂</div>
@@ -200,7 +200,7 @@
       </label>
 
       <label class="envoltorio-tarjeta">
-        <input type="checkbox" class="checkbox-letra">
+        <input type="checkbox" class="checkbox-letra" value="PR">
         <div class="tarjeta-animal">
           <div class="tilde-ok">✓</div>
           <div class="emoji-animal">🤴🏻</div>
@@ -209,7 +209,7 @@
       </label>
 
       <label class="envoltorio-tarjeta">
-        <input type="checkbox" class="checkbox-letra">
+        <input type="checkbox" class="checkbox-letra" value="DR">
         <div class="tarjeta-animal">
           <div class="tilde-ok">✓</div>
           <div class="emoji-animal">🐲</div>
@@ -218,7 +218,7 @@
       </label>
 
       <label class="envoltorio-tarjeta">
-        <input type="checkbox" class="checkbox-letra">
+        <input type="checkbox" class="checkbox-letra" value="PL">
         <div class="tarjeta-animal">
           <div class="tilde-ok">✓</div>
           <div class="emoji-animal">🪶</div>
@@ -227,7 +227,7 @@
       </label>
 
       <label class="envoltorio-tarjeta">
-        <input type="checkbox" class="checkbox-letra">
+        <input type="checkbox" class="checkbox-letra" value="C">
         <div class="tarjeta-animal">
           <div class="tilde-ok">✓</div>
           <div class="emoji-animal">🐌</div>
@@ -244,7 +244,7 @@
           <span style="font-size: 24px;">🎒</span>
           <span class="info-mochila"><span id="cantidad-mochila" class="numero-destacado">0</span> sonidos en tu mochila </span>
       </div>
-      <a href="home.html" id="boton-avanzar" class="btn-jugar">¡Listo!</a>
+      <button id="boton-avanzar" class="btn-jugar">¡Listo!</button>
     </div>
   </div>
 
@@ -283,5 +283,49 @@
     });
   </script>
 
+
+<script>
+    botonAvanzar.addEventListener('click', async function() {
+    // Si el botón está gris (apagado), no hacemos nada
+    if (!this.classList.contains('activado')) return;
+
+    // Recuperamos el ID del usuario que guardamos en el login
+    const usuario_id = localStorage.getItem('usuario_id');
+    if (!usuario_id) {
+        alert("Error: No se encontró la sesión del usuario.");
+        return;
+    }
+
+    // Armamos una lista con las letras que el niño marcó
+    let letrasSeleccionadas = [];
+    checkboxesDeLetras.forEach(checkbox => {
+        if (checkbox.checked) {
+            letrasSeleccionadas.push(checkbox.value);
+        }
+    });
+
+    try {
+        // Enviamos los datos al servidor
+        const respuesta = await fetch('http://localhost:3000/api/guardar-letras', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                usuario_id: usuario_id, 
+                letras: letrasSeleccionadas 
+            })
+        });
+
+        if (respuesta.ok) {
+            // ¡Todo salió bien! Nos vamos al Home
+            window.location.href = 'home.html';
+        } else {
+            alert('Error al guardar las letras.');
+        }
+    } catch (error) {
+        console.error('Error de conexión:', error);
+        alert('No se pudo conectar con el servidor.');
+    }
+});
+</script>
 </body>
 </html>

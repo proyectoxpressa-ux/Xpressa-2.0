@@ -137,7 +137,7 @@
 <body>
     <div class="caja-crearcuenta">
         <h1>Crear Cuenta</h1>
-        <form action="sesion.html" method="GET">
+        <form id="form-registro">
             <div class="form-group">
                 <label class="form-label" for="username">Nombre</label>
                 <input class="input-texto" type="text" id="username" name="username" placeholder="Ingrese su nombre" required>
@@ -158,5 +158,38 @@
             <h3>¿Ya tienes cuenta? <a href="sesion.html">Iniciar Sesión</a></h3>
         </form>
     </div>
+
+    <script>
+    document.getElementById('form-registro').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Evita que la página cambie de golpe
+
+        // Capturar los valores de las cajas de texto
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            // Enviar los datos al servidor Node.js
+            const respuesta = await fetch('http://localhost:3000/api/registro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
+
+            const data = await respuesta.json();
+
+            if (respuesta.ok) {
+                alert('¡Cuenta creada con éxito!');
+                window.location.href = 'sesion.html'; // Ahora sí, lo mandamos a iniciar sesión
+            } else {
+                // Si el usuario ya existe, mostramos el error
+                alert('Error: ' + data.mensaje);
+            }
+        } catch (error) {
+            console.error('Error de red:', error);
+            alert('No se pudo conectar con el servidor.');
+        }
+    });
+</script>
 </body>
 </html>

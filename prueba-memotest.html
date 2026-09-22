@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Memotest</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 15px;
+            min-height: 100vh;
+            color: #334155;
+        }
+
+        .top-bar {
+            width : 100%;
+            max-width: 600px; 
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .btn-volver {
+            text-decoration: none;
+            color: #4A90E2; 
+            font-weight: 800;
+            font-size: 15px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px; 
+            background: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(75, 145, 225, 0.2); 
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .contenedor-juego {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(74, 144, 226, 0.15);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #titulo-juego {
+            font-family: 'Fredoka', sans-serif;
+            color: #4A90E2;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        #subtitulo-juego {
+            color: #64748B;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        #tablero {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 18px;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .carta {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+            border: 3px solid transparent;
+        }
+
+        .carta:hover { 
+            transform: scale(1.03) translateY(-3px); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .carta.volteada {
+            transform: rotateY(180deg) scale(1.05);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
+            cursor: default;
+        }
+
+        .carta.emparejada {
+            transform: rotateY(180deg) scale(1.05);
+            box-shadow: 0 10px 35px rgba(74, 222, 128, 0.4); 
+            cursor: default;
+            border-color: #4ADE80;
+            animation: matchEffect 0.5s ease-out;
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* Cara oculta (reverso) */
+        .cara-oculta {
+            background-color: #e1f5fe;
+            background-size: 40px 40px;
+            color: #01579b;
+            font-size: 50px;
+            font-weight: 800;
+            text-shadow: 1px 1px 3px rgba(1, 87, 155, 0.2);
+            border: 3px solid #b3e5fc;
+            box-shadow: inset 0 2px 8px rgba(1, 87, 155, 0.1);
+        }
+        
+        .carta.volteada .cara-oculta, .carta.emparejada .cara-oculta {
+            display: none;
+        }
+
+        /* Cara revelada (frente) */
+        .cara-frente {
+            background-color: #FFFFFF;
+            transform: rotateY(180deg);
+            border: 3px solid #38BDF8;
+            box-shadow: inset 0 2px 10px rgba(56, 189, 248, 0.1);
+        }
+
+        .carta.emparejada .cara-frente {
+            background-color: #ffffff;
+            border-color: #4ADE80;
+            box-shadow: inset 0 2px 10px rgba(74, 222, 128, 0.1);
+        }
+
+        .cara-frente img {
+            width: 65%;            
+            height: 65%;           
+            object-fit: contain;   
+            pointer-events: none;  
+        }
+
+        .cara-frente span {
+            font-size: 15px;
+            font-weight: 800;
+            color: #334155;
+            margin-top: 10px;
+            text-transform: capitalize; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Efectos visuales */
+        @keyframes matchEffect {
+            0% { transform: rotateY(180deg) scale(1.05); box-shadow: 0 10px 35px rgba(74, 222, 128, 0.4); }
+            50% { transform: rotateY(180deg) scale(1.15); box-shadow: 0 15px 50px rgba(74, 222, 128, 0.6); }
+            100% { transform: rotateY(180deg) scale(1.05); box-shadow: 0 10px 35px rgba(74, 222, 128, 0.4); }
+        }
+
+        /* Confeti de victoria */
+        #confeti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Responsive para pantallas muy pequeñas */
+        @media (max-width: 400px) {
+            #titulo-juego { font-size: 28px; }
+            #tablero { gap: 12px; grid-template-columns: repeat(3, 1fr); }
+            .face { padding: 8px; }
+            .cara-oculta { font-size: 35px; }
+            .cara-frente img { width: 75%; height: 75%; }
+            .cara-frente span { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="lobby-memotest.html" class="btn-volver">
+            Volver al Lobby
+        </a>
+    </div>
+
+    <div class="contenedor-juego">
+        <h1 id="titulo-juego">Memotest</h1>
+        <p id="subtitulo-juego">¿Podrás encontrar todas las parejas de sonidos?</p>
+        <div id="tablero"></div>
+    </div>
+    
+    <canvas id="confeti-canvas"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // 1. BANCO DE DATOS
+       const bancoDeImagenes = {
+        'R': [
+            { id: 'perro', contenido: 'imagenes/perrito.png' },
+            { id: 'gorra', contenido: 'imagenes/gorra.png' },
+            { id: 'raton', contenido: 'imagenes/raton.png' },
+            { id: 'robot', contenido: 'imagenes/robot.png' }
+        
+        ],
+         'TR': [
+            { id: 'tren',  contenido: 'imagenes/tren.png' },
+            { id: 'tractor',  contenido: 'imagenes/tractor.png' },
+            { id: 'trofeo',  contenido: 'imagenes/trofeo.png' },
+            { id: 'trueno',  contenido: 'imagenes/trueno.png' }
+
+        ],
+        'PR': [
+            { id: 'primavera', contenido: 'imagenes/primavera.png' },
+            { id: 'princesa', contenido: 'imagenes/princesa.png' },
+            { id: 'prenda',  contenido: 'imagenes/prenda.png' },
+            { id: 'compra',  contenido: 'imagenes/compra.png' }
+        ],
+        'DR': [
+            { id: 'dragon', contenido: 'imagenes/dragon.png' },
+            { id: 'ajedrez',  contenido: 'imagenes/ajedrez.png' },
+            { id: 'almendra', contenido: 'imagenes/almendra.png' },
+            { id: 'piedra', contenido: 'imagenes/piedra.png' }
+        ],
+        'PL': [
+            { id: 'planta', contenido: 'imagenes/planta.png' },
+            { id: 'plato',  contenido: 'imagenes/plato.png' },
+            { id: 'playa',  contenido: 'imagenes/playa.png' },
+            { id: 'planeta',  contenido: 'imagenes/planeta.png' }
+        ],
+        'C': [
+            { id: 'cuchara', contenido: 'imagenes/cuchara.png' },
+            { id: 'casa',    contenido: 'imagenes/casa.png' },
+            { id: 'caballo',   contenido: 'imagenes/caballo.png' },
+            { id: 'conejo',   contenido: 'imagenes/conejo.png' }
+        ]
+    
+        };
+
+        // 2. LEER LOCALSTORAGE
+        let sonido = localStorage.getItem("sonidoMemotest") || "R";
+        document.getElementById("titulo-juego").innerText = `Entrenando el Sonido "${sonido}"`;
+
+        // 3. ARMAR EL MAZO (Fijo: 3 parejas = 6 cartas, o 4 parejas si se usa todo el arreglo)
+        let cartasElegidas = bancoDeImagenes[sonido];
+        // Aseguramos que solo usamos hasta 4 parejas para una grilla de 4x2 o 3x3 pequeña.
+        // Si queremos más, hay que ajustar la grilla CSS. Usemos 4 parejas = 8 cartas.
+        if(cartasElegidas.length > 4) cartasElegidas = cartasElegidas.slice(0, 4);
+        
+        let mazo = [...cartasElegidas, ...cartasElegidas]; // Duplicamos para los pares
+        mazo.sort(() => Math.random() - 0.5); // Mezclamos aleatoriamente
+
+        // 4. DIBUJAR TABLERO
+        const tablero = document.getElementById("tablero");
+
+        mazo.forEach((item, indice) => {
+            let cartaHTML = document.createElement("div");
+            cartaHTML.classList.add("carta");
+            cartaHTML.dataset.id = item.id;
+            cartaHTML.dataset.contenido = item.contenido;
+            
+            // Cara oculta con signo de interrogación estilizado
+            let caraOculta = document.createElement("div");
+            caraOculta.classList.add("face", "cara-oculta");
+            caraOculta.innerHTML = "?"; // No un emoji rojo
+            
+            // Cara frente con imagen y texto
+            let caraFrente = document.createElement("div");
+            caraFrente.classList.add("face", "cara-frente");
+            caraFrente.innerHTML = `<img src="${item.contenido}" alt="${item.id}">
+            <span>${item.id}</span>`;
+            
+            cartaHTML.appendChild(caraOculta);
+            cartaHTML.appendChild(caraFrente);
+            
+            cartaHTML.addEventListener("click", voltearCarta);
+            tablero.appendChild(cartaHTML);
+        });
+
+        // 5. LÓGICA DE JUEGO
+        let cartasVolteadas = [];
+        let bloqueado = false;
+
+        function voltearCarta() {
+            if (bloqueado) return;
+            if (this.classList.contains("volteada") || this.classList.contains("emparejada")) return;
+
+            // EL JS AHORA SOLO GESTIONA CLASES, EL CSS MANEJA EL VOLTEO
+            this.classList.add("volteada");
+            cartasVolteadas.push(this);
+
+            if (cartasVolteadas.length === 2) {
+                compararPareja();
+            }
+        }
+
+        function compararPareja() {
+            bloqueado = true;
+            let [carta1, carta2] = cartasVolteadas;
+
+            if (carta1.dataset.id === carta2.dataset.id) {
+                // Efecto de emparejamiento con retraso sutil
+                setTimeout(() => {
+                    carta1.classList.remove("volteada");
+                    carta2.classList.remove("volteada");
+                    carta1.classList.add("emparejada");
+                    carta2.classList.add("emparejada");
+                    bloqueado = false;
+                    cartasVolteadas = [];
+                    verificarVictoria();
+                }, 300);
+            } else {
+                setTimeout(() => {
+                    // VOLVEMOS A OCULTAR LAS CARTAS
+                    carta1.classList.remove("volteada");
+                    carta2.classList.remove("volteada");
+                    bloqueado = false;
+                    cartasVolteadas = [];
+                }, 1000);
+            }
+        }
+
+        function verificarVictoria() {
+            let totalEmparejadas = document.querySelectorAll(".emparejada").length;
+            if (totalEmparejadas === mazo.length) {
+                
+                // Efecto de confeti
+                const duration = 2 * 1000;
+                const end = Date.now() + duration;
+
+                (function frame() {
+                    // Lanza confeti
+                    confetti({
+                        particleCount: 7,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#4A90E2', '#38BDF8', '#4ADE80']
+                    });
+                    confetti({
+                        particleCount: 7,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#4A90E2', '#38BDF8', '#4ADE80']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+
+                setTimeout(() => {
+                    alert("¡¡GANASTE!! 🏆 ¡Muy bien hecho!");
+                    window.location.href = "lobby-memotest.html"; // Vuelve a la selección
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
