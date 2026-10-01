@@ -5,250 +5,483 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xpressa+ | Viaje de Letras</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; -webkit-tap-highlight-color: transparent;}
 
         body {
-            background-color: #EAF4FC;
+            background: linear-gradient(180deg, #7DD3FC 0%, #E0F2FE 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 10px 40px;
+            padding: 15px 10px 40px;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* Barra Superior */
+        /* --- NUBES DE FONDO --- */
+        .nube {
+            position: absolute;
+            font-size: 5rem;
+            opacity: 0.6;
+            z-index: -1;
+            animation: flotar-nube linear infinite;
+        }
+        .nube-1 { top: 5%; left: -20%; animation-duration: 40s; font-size: 6rem; }
+        .nube-2 { top: 25%; left: -20%; animation-duration: 30s; animation-delay: 15s; font-size: 4rem; }
+        .nube-3 { top: 12%; left: -20%; animation-duration: 50s; animation-delay: 5s; font-size: 7rem; opacity: 0.4;}
+
+        @keyframes flotar-nube {
+            0% { transform: translateX(-10vw); }
+            100% { transform: translateX(110vw); }
+        }
+
+        /* --- BARRA SUPERIOR --- */
         .top-bar {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            z-index: 5;
         }
 
         .btn-volver {
             text-decoration: none;
-            color: #4A90E2;
-            font-weight: 800;
-            background: white;
-            padding: 8px 16px;
+            color: #1E3A8A;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 18px;
             border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 2px solid #FFF;
         }
 
         .marca-app {
             font-family: 'Fredoka', sans-serif;
-            color: #3B82F6;
-            font-size: 22px;
+            color: #1E3A8A;
+            font-size: 24px;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        /* Cartel de Instrucción */
+        /* --- CARTEL DE INSTRUCCIÓN --- */
         .cartel-instruccion {
-            background: white;
-            border: 3px solid #93C5FD;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #FFFFFF;
+            border-radius: 30px;
             padding: 15px 20px;
             text-align: center;
-            max-width: 550px;
+            max-width: 600px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
+            margin-bottom: 50px; 
+            z-index: 5;
         }
 
         .cartel-instruccion h2 {
             font-family: 'Fredoka', sans-serif;
-            color: #2563EB;
-            font-size: 24px;
-            margin-bottom: 4px;
+            color: #0284C7;
+            font-size: 1.8rem;
+            margin-bottom: 2px;
         }
 
         .cartel-instruccion p {
-            color: #475569;
-            font-weight: 700;
-            font-size: 16px;
+            color: #334155;
+            font-weight: 800;
+            font-size: 1.1rem;
         }
 
         /* =========================================
-           ESTRUCTURA DEL TREN VISUAL
+           DISEÑO DEL TREN 
            ========================================= */
         .contenedor-tren {
             width: 100%;
-            max-width: 620px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
             position: relative;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 60px; /* Aumentado para que los carteles no choquen abajo */
+            padding-bottom: 25px; 
+            z-index: 5;
+            gap: 20px; 
         }
 
-        /* Vías del tren */
         .vias {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 12px;
-            background: #78350F;
-            border-radius: 6px;
+            max-width: 800px;
+            height: 14px;
+            background: #94A3B8;
+            border-top: 3px solid #CBD5E1;
+            border-bottom: 3px solid #64748B;
+            border-radius: 4px;
         }
-
         .vias::before {
             content: '';
             position: absolute;
-            top: -4px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #9CA3AF;
+            top: -2px; left: 0; right: 0; bottom: -2px;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 30px, #78350F 30px, #78350F 42px);
+            z-index: -1;
         }
 
-        /* Locomotora */
-        .locomotora {
-            width: 85px;
-            height: 95px;
-            background-color: #EF4444;
-            border: 3px solid #B91C1C;
-            border-radius: 15px 30px 10px 10px;
+        /* --- LOCOMOTORA --- */
+        .locomotora-wrapper {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            flex-shrink: 0; 
+        }
+
+        .locomotora-cuerpo {
+            width: 140px;
+            height: 130px;
+            background: #E52E2D; 
+            border: 3px solid #1E293B;
+            border-radius: 40px 10px 10px 10px;
+            position: absolute;
+            bottom: 10px;
+            box-shadow: inset -5px -5px 0 rgba(0,0,0,0.15);
+            z-index: 3;
+        }
+
+        .locomotora-cuerpo::before {
+            content: '';
+            position: absolute;
+            top: -20px; right: -5px;
+            width: 85px; height: 30px;
+            background: #93A6D8;
+            border: 3px solid #1E293B;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .locomotora-ventana {
+            position: absolute;
+            top: 10px; right: 5px;
+            width: 65px; height: 60px;
+            background: #49C5F6;
+            border: 3px solid #1E293B;
+            border-radius: 25px 5px 5px 5px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            overflow: hidden;
+            box-shadow: inset 4px 4px 0 rgba(255,255,255,0.4);
+        }
+
+        .maquinista {
+            width: 50px;
+            height: 50px;
+            background: #FBBF24; 
+            border: 2px solid #1E293B;
+            border-radius: 50%;
+            margin-bottom: -15px;
+            position: relative;
+            display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 32px;
-            position: relative;
-            margin-right: 6px;
-            z-index: 2;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            font-size: 24px; 
+            padding-top: 5px;
+        }
+        
+        .maquinista::before {
+            content: '';
+            position: absolute;
+            top: -12px; left: 2px;
+            width: 42px; height: 18px;
+            background: #1D4ED8; 
+            border: 2px solid #1E293B;
+            border-radius: 10px 10px 0 0;
         }
 
-        /* Vagones Clickeables */
+        .maquinista::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: -4px;
+            width: 54px; height: 4px;
+            background: #1E293B;
+            border-radius: 2px;
+        }
+
+        .chimenea-base {
+            position: absolute;
+            top: 15px; left: 10px;
+            width: 35px; height: 35px;
+            background: #94A3B8;
+            border: 3px solid #1E293B;
+            border-radius: 5px;
+        }
+        .chimenea-tope {
+            position: absolute;
+            top: -30px; left: -5px;
+            width: 50px; height: 35px;
+            background: #E52E2D;
+            border: 3px solid #1E293B;
+            border-radius: 10px 10px 30px 30px;
+            border-top: 10px solid #FBBF24; 
+        }
+
+        .detalles-frontales {
+            position: absolute;
+            top: 60px; left: -15px;
+            width: 25px; height: 40px;
+            background: #94A3B8;
+            border: 3px solid #1E293B;
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .farol-naranja {
+            position: absolute;
+            top: 75px; left: -5px;
+            width: 15px; height: 25px;
+            background: #F59E0B;
+            border: 3px solid #1E293B;
+            border-radius: 10px;
+        }
+
+        .atrapavacas-img {
+            position: absolute;
+            bottom: -5px; left: -35px;
+            width: 45px; height: 30px;
+            background: #CBD5E1;
+            border: 3px solid #1E293B;
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+
+        .ruedas-locomotora {
+            position: absolute;
+            bottom: -20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .rueda-locomotora {
+            width: 55px; height: 55px;
+            background: #475569;
+            border: 6px solid #CBD5E1;
+            border-radius: 50%;
+            outline: 3px solid #1E293B;
+            position: relative;
+        }
+        
+        .ruedas-locomotora::before {
+            content: '';
+            position: absolute;
+            top: 25px; left: 20px;
+            width: 70px; height: 6px;
+            background: #FBBF24;
+            border: 2px solid #1E293B;
+            z-index: 5;
+        }
+
+        .humo-comic {
+            position: absolute;
+            top: -70px; left: 20px;
+            font-size: 3rem;
+            color: #CBD5E1;
+            text-shadow: 2px 2px 0 #94A3B8;
+            animation: flotar-humo 2s ease-in-out infinite;
+        }
+        @keyframes flotar-humo {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.8;}
+            50% { transform: translateY(-10px) scale(1.1); opacity: 1;}
+        }
+
+        /* --- VAGONES --- */
+        .vagon-wrapper {
+            position: relative;
+            width: 130px;
+            height: 120px;
+            flex-shrink: 0; 
+            display: flex;
+            justify-content: center;
+        }
+
+        .enganche-img {
+            position: absolute;
+            left: -28px;
+            bottom: 30px;
+            width: 28px;
+            height: 8px;
+            background: #94A3B8;
+            border: 2px solid #1E293B;
+            z-index: 1;
+        }
+
+        .vagon-borde {
+            position: absolute;
+            bottom: 20px;
+            width: 130px;
+            height: 95px;
+            background: #1E293B;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .vagon-borde:hover { transform: translateY(-5px); }
+        .vagon-borde:active { transform: translateY(0); }
+
         .vagon {
-            flex: 1;
-            height: 135px;
-            border-radius: 18px;
-            border: 3px dashed #94A3B8;
-            margin: 0 4px;
+            width: 130px;
+            height: 95px;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 6px;
+            justify-content: flex-start;
             position: relative;
-            background: rgba(255, 255, 255, 0.85);
-            z-index: 2;
-            cursor: pointer;
-            transition: transform 0.15s, background-color 0.15s;
+            /* Efecto interior */
+            box-shadow: inset 0 20px 25px rgba(0,0,0,0.15);
         }
 
-        .vagon:hover {
-            transform: translateY(-4px);
-            background: #FFFFFF;
+        .v-inicio-color { background: #0EA5E9; } 
+        .v-medio-color  { background: #22C55E; } 
+        .v-final-color  { background: #FACC15; } 
+        
+        .vagon::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 10px;
+            background: rgba(255,255,255,0.4);
         }
 
+        /* RANURA: Dónde entra la carta */
+        .ranura-vagon {
+            position: absolute;
+            top: 18px; /* Metemos la carta bien al centro del vagón */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1; 
+        }
+
+        .ruedas-vagon {
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 15px;
+            z-index: 3;
+        }
+        
+        .rueda-vagon {
+            width: 35px; height: 35px;
+            background: #475569;
+            border: 4px solid #CBD5E1;
+            border-radius: 50%;
+            outline: 2px solid #1E293B;
+        }
+
+        /* --- CARTELES ESTÉTICOS NUEVOS --- */
         .etiqueta-vagon {
-            padding: 4px 10px;
-            border-radius: 12px;
-            color: white;
+            position: absolute;
+            bottom: -50px; /* Separado de las ruedas */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: #FFFFFF;
+            font-family: 'Fredoka', sans-serif;
             font-weight: 800;
             font-size: 13px;
             text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10;
         }
 
-        .vagon-inicio .etiqueta-vagon { background-color: #3B82F6; }
-        .vagon-medio .etiqueta-vagon  { background-color: #22C55E; }
-        .vagon-final .etiqueta-vagon  { background-color: #EF4444; }
-
-        .ranura-vagon {
-            width: 100%;
-            height: 90px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ruedas {
-            display: flex;
-            justify-content: space-around;
-            width: 80%;
-            position: absolute;
-            bottom: -10px;
-        }
-
-        .rueda {
-            width: 18px;
-            height: 18px;
-            background: #334155;
-            border: 3px solid #94A3B8;
-            border-radius: 50%;
-        }
+        /* Colores combinados para cada cartel */
+        .etiqueta-inicio { color: #0284C7; border: 3px solid #38BDF8; }
+        .etiqueta-medio { color: #16A34A; border: 3px solid #4ADE80; }
+        .etiqueta-no-esta { color: #D97706; border: 3px solid #FBBF24; }
 
         /* =========================================
-           BANDEJA CON 1 SOLA CARTA
+           BANDEJA Y CARTA
            ========================================= */
         .contenedor-cartas {
             display: flex;
             justify-content: center;
+            align-items: center;
             width: 100%;
             max-width: 600px;
+            min-height: 150px;
+            background: rgba(255,255,255,0.5);
+            border: 3px dashed #BAE6FD;
+            border-radius: 30px;
             margin-top: 10px;
-            min-height: 140px;
+            z-index: 5;
         }
 
         .carta {
-            width: 110px;
+            width: 120px;
             height: 130px;
-            background: white;
-            border: 3px solid #3B82F6;
-            border-radius: 18px;
+            background: #FFFFFF;
+            border: 4px solid #3B82F6;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 8px;
-            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 0 #2563EB, 0 15px 20px rgba(59, 130, 246, 0.3);
             user-select: none;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pop-in 0.4s ease-out;
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .carta img {
-            width: 65px;
-            height: 65px;
+            width: 70px;
+            height: 70px;
             object-fit: contain;
             pointer-events: none;
         }
 
         .carta span {
-            font-size: 16px;
-            font-weight: 800;
-            color: #1E293B;
-            margin-top: 6px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            color: #1E3A8A;
+            margin-top: 5px;
             text-transform: capitalize;
         }
 
-        /* =========================================
-           ADAPTACIÓN DE LA CARTA DENTRO DEL VAGÓN
-           ========================================= */
-        .vagon .carta {
-            width: 82px;
-            height: 82px;
+        /* --- ADAPTACIÓN DE LA CARTA DENTRO DEL VAGÓN --- */
+        .ranura-vagon .carta {
+            width: 60px; /* Tamaño mucho más pequeño para que entre bien */
+            height: 60px;
             border-width: 2px;
-            border-radius: 12px;
+            border-radius: 10px;
             padding: 4px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            background: #F8FAFC; /* Fondo un poco más gris simulando que está adentro */
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); /* Quitamos la sombra gruesa externa */
         }
+        .ranura-vagon .carta img { width: 38px; height: 38px; }
+        .ranura-vagon .carta span { display: none; /* Escondemos la letra adentro del vagón */ }
 
-        .vagon .carta img {
-            width: 42px;
-            height: 42px;
-        }
-
-        .vagon .carta span {
-            font-size: 11px;
-            margin-top: 2px;
+        .carta.correcta {
+            border-color: #22C55E;
+            box-shadow: 0 0 20px #4ADE80;
+            background-color: #DCFCE7;
         }
 
         /* =========================================
@@ -257,85 +490,135 @@
         .panel-control {
             margin-top: 20px;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             text-align: center;
+            z-index: 5;
         }
 
         .mensaje-resultado {
-            font-size: 19px;
-            font-weight: 800;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
             margin-bottom: 15px;
-            min-height: 28px;
+            min-height: 35px;
+            text-shadow: 0 2px 5px rgba(255,255,255,0.8);
         }
 
         .btn-accion {
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 20px;
-            font-size: 20px;
-            font-weight: 800;
+            border-radius: 25px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
             color: white;
             cursor: pointer;
             display: none;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.15);
             transition: all 0.1s ease;
         }
 
         .btn-accion:active {
-            transform: translateY(4px);
-            box-shadow: none;
+            transform: translateY(8px);
+            box-shadow: 0 0 0 transparent !important;
         }
 
-        .btn-siguiente { background-color: #22C55E; box-shadow: 0 6px 0 #15803D; }
-        .btn-reintentar { background-color: #FFB703; box-shadow: 0 6px 0 #D99B00; }
+        .btn-siguiente { background-color: #10B981; box-shadow: 0 8px 0 #059669; }
+        .btn-reintentar { background-color: #F59E0B; box-shadow: 0 8px 0 #D97706; }
+
+        /* RESPONSIVIDAD */
+        @media (max-width: 750px) {
+            .contenedor-tren { transform: scale(0.85); transform-origin: center bottom; margin-bottom: 25px; }
+            .cartel-instruccion { margin-bottom: 20px; }
+        }
+        @media (max-width: 600px) {
+            .contenedor-tren { transform: scale(0.70); transform-origin: center bottom; }
+        }
+        @media (max-width: 480px) {
+            .contenedor-tren { transform: scale(0.55); transform-origin: center bottom; }
+            .cartel-instruccion h2 { font-size: 1.5rem; }
+            .cartel-instruccion p { font-size: 1rem; }
+            .mensaje-resultado { font-size: 1.3rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Barra Superior -->
+    <div class="nube nube-1">☁️</div>
+    <div class="nube nube-2">☁️</div>
+    <div class="nube nube-3">☁️</div>
+
     <div class="top-bar">
         <a href="lobby-trencito.html" class="btn-volver">← Volver</a>
         <span class="marca-app">Xpressa+</span>
     </div>
 
-    <!-- Indicador de consigna -->
     <div class="cartel-instruccion">
-        <h2>Viaje de Letras</h2>
+        <h2>Viaje de Letras 🚂</h2>
         <p id="instruccion-texto">Cargando...</p>
     </div>
 
-    <!-- EL TREN Y SUS 3 VAGONES -->
+    <!-- TREN CON NUEVOS CARTELES Y AJUSTES -->
     <div class="contenedor-tren" id="zona-tren">
+        
         <div class="vias"></div>
 
-        <div class="locomotora">
-            🚂
+        <div class="locomotora-wrapper">
+            <div class="humo-comic">💨</div>
+            <div class="locomotora-cuerpo">
+                <div class="locomotora-ventana">
+                    <div class="maquinista">😊</div>
+                </div>
+                <div class="chimenea-base"><div class="chimenea-tope"></div></div>
+                <div class="detalles-frontales"></div>
+                <div class="farol-naranja"></div>
+                <div class="atrapavacas-img"></div>
+                <div class="ruedas-locomotora">
+                    <div class="rueda-locomotora"></div><div class="rueda-locomotora"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="vagon vagon-inicio" onclick="evaluarVagon('INICIO')">
-            <span class="etiqueta-vagon">INICIO</span>
-            <div class="ranura-vagon" id="vagon-INICIO"></div>
-            <div class="ruedas"><div class="rueda"></div><div class="rueda"></div></div>
+        <!-- Vagón 1: INICIO -->
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('INICIO')">
+                <div class="vagon v-inicio-color">
+                    <div class="ranura-vagon" id="vagon-INICIO"></div>
+                </div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-inicio">INICIO</div>
         </div>
 
-        <div class="vagon vagon-medio" onclick="evaluarVagon('MEDIO')">
-            <span class="etiqueta-vagon">MEDIO</span>
-            <div class="ranura-vagon" id="vagon-MEDIO"></div>
-            <div class="ruedas"><div class="rueda"></div><div class="rueda"></div></div>
+        <!-- Vagón 2: MEDIO -->
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('MEDIO')">
+                <div class="vagon v-medio-color">
+                    <div class="ranura-vagon" id="vagon-MEDIO"></div>
+                </div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-medio">MEDIO</div>
         </div>
 
-        <div class="vagon vagon-final" onclick="evaluarVagon('FINAL')">
-            <span class="etiqueta-vagon">FINAL</span>
-            <div class="ranura-vagon" id="vagon-FINAL"></div>
-            <div class="ruedas"><div class="rueda"></div><div class="rueda"></div></div>
+        <!-- Vagón 3: NO ESTÁ -->
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('NO_ESTA')">
+                <div class="vagon v-final-color">
+                    <div class="ranura-vagon" id="vagon-NO_ESTA"></div>
+                </div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-no-esta">NO ESTÁ</div>
         </div>
+
     </div>
 
-    <!-- BANDEJA DONDE APARECE LA CARTA ÚNICA -->
+    <!-- BANDEJA -->
     <div class="contenedor-cartas" id="bandeja-cartas"></div>
 
-    <!-- PANEL DE FEEDBACK Y NAVEGACIÓN -->
+    <!-- PANEL DE RESULTADOS -->
     <div class="panel-control">
         <p class="mensaje-resultado" id="mensaje-resultado"></p>
         <button class="btn-accion btn-siguiente" id="btn-siguiente" onclick="siguienteNivel()">¡Siguiente! ➡️</button>
@@ -343,47 +626,46 @@
     </div>
 
     <script>
-        // =========================================
-        // 1. BANCO DE DATOS
-        // =========================================
+        // 1. BANCO DE DATOS ACTUALIZADO
+        // Se cambiaron las palabras "Finales" por palabras "Sin el sonido" (NO_ESTA)
         const bancoEjercicios = {
             'R-RR': [
-                { nombre: 'Ratón', posicion: 'INICIO', archivo: '../imagenes/raton.png' },
-                { nombre: 'Jirafa', posicion: 'MEDIO',  archivo: '../imagenes/jirafa.png' },
-                { nombre: 'Flor',   posicion: 'FINAL',  archivo: '../imagenes/flor.png' },
-                { nombre: 'Perro',  posicion: 'MEDIO',  archivo: '../imagenes/perrito.png' }
+                { nombre: 'Ratón', posicion: 'INICIO', archivo: 'imagenes/raton.png' },
+                { nombre: 'Ropa', posicion: 'INICIO',  archivo: 'imagenes/ropa.png' },
+                { nombre: 'Playa',   posicion: 'NO_ESTA', archivo: 'imagenes/playa.png' }, // No tiene R
+                { nombre: 'Perro',  posicion: 'MEDIO',  archivo: 'imagenes/perrito.png' },
+                { nombre: 'Pato',  posicion: 'NO_ESTA',  archivo: 'imagenes/pato.png' }, // no tiene R
+                { nombre: 'Burro',  posicion: 'MEDIO',  archivo: 'imagenes/pera.png' },
             ],
             'C': [
-                { nombre: 'Casa',   posicion: 'INICIO', archivo: '../imagenes/casa.png' },
-                { nombre: 'Cuchara',   posicion: 'INICIO',  archivo: '../imagenes/cuchara.png' },
-                { nombre: 'Conejo',   posicion: 'INICIO',  archivo: '../imagenes/conejo.png' },
-                { nombre: 'Caballo',   posicion: 'INICIO',  archivo: '../imagenes/caballo.png' }
-
+                { nombre: 'Casa',   posicion: 'INICIO', archivo: 'imagenes/casa.png' },
+                { nombre: 'Piedra', posicion: 'NO_ESTA', archivo: 'imagenes/piedra.png' }, // No tiene C
+                { nombre: 'Conejo', posicion: 'INICIO', archivo: 'imagenes/conejo.png' },
+                { nombre: 'Caballo',posicion: 'INICIO', archivo: 'imagenes/caballo.png' }
             ],
             'PL': [
-                { nombre: 'Plato',  posicion: 'INICIO', archivo: '../imagenes/plato.png' },
-                { nombre: 'Playa',  posicion: 'INICIO', archivo: '../imagenes/playa.png' },
-                { nombre: 'Planeta',  posicion: 'INICIO', archivo: '../imagenes/planeta.png' },
-                { nombre: 'Planta',  posicion: 'INICIO', archivo: '../imagenes/planta.png' }
+                { nombre: 'Plato',  posicion: 'INICIO', archivo: 'imagenes/plato.png' },
+                { nombre: 'Tractor',  posicion: 'NO_ESTA', archivo: 'imagenes/tractor.png' }, // No tiene PL
+                { nombre: 'Aplauso',posicion: 'MEDIO', archivo: 'imagenes/aplauso.png' },
+                { nombre: 'Cumpleaños', posicion: 'MEDIO', archivo: 'imagenes/cumpleanos.png' }
             ],
             'TR': [
-                { nombre: 'Tren',   posicion: 'INICIO', archivo: '../imagenes/tren.png' },
-                { nombre: 'Tractor',  posicion: 'INICIO', archivo: '../imagenes/tractor.png' },
-                { nombre: 'Trofeo',  posicion: 'INICIO', archivo: '../imagenes/trofeo.png' },
-                { nombre: 'Trueno',  posicion: 'INICIO', archivo: '../imagenes/trueno.png' }
-
+                { nombre: 'Tren',   posicion: 'INICIO', archivo: 'imagenes/tren.png' },
+                { nombre: 'Conejo',   posicion: 'NO_ESTA', archivo: 'imagenes/conejo.png' }, // No tiene TR
+                { nombre: 'Trofeo', posicion: 'INICIO', archivo: 'imagenes/trofeo.png' },
+                { nombre: 'Entrenar', posicion: 'MEDIO', archivo: 'imagenes/entrenar.png' }
             ],
             'DR': [
-                { nombre: 'Dragón', posicion: 'INICIO', archivo: '../imagenes/dragon.png' },
-                { nombre: 'Piedra', posicion: 'MEDIO',  archivo: '../imagenes/piedra.png' },
-                { nombre: 'Almendra',  posicion: 'MEDIO', archivo: '../imagenes/almendra.png' },
-                { nombre: 'Ajedrez',  posicion: 'MEDIO', archivo: '../imagenes/ajedrez.png' }
+                { nombre: 'Dragón', posicion: 'INICIO', archivo: 'imagenes/dragon.png' },
+                { nombre: 'Piedra', posicion: 'MEDIO',  archivo: 'imagenes/piedra.png' },
+                { nombre: 'Robot',    posicion: 'NO_ESTA', archivo: 'imagenes/robot.png' }, // No tiene DR
+                { nombre: 'Ajedrez',posicion: 'MEDIO',  archivo: 'imagenes/ajedrez.png' }
             ],
             'PR': [
-                { nombre: 'Princesa', posicion: 'INICIO', archivo: '../imagenes/princesa.png' },
-                { nombre: 'Prenda',  posicion: 'INICIO', archivo: '../imagenes/prenda.png' },
-                { nombre: 'Primavera',  posicion: 'INICIO', archivo: '../imagenes/primavera.png' },
-                { nombre: 'Compra',  posicion: 'MEDIO', archivo: '../imagenes/compra.png' }
+                { nombre: 'Princesa',posicion: 'INICIO', archivo: 'imagenes/princesa.png' },
+                { nombre: 'Trofeo',    posicion: 'NO_ESTA', archivo: 'imagenes/trofeo.png' }, // No tiene PR
+                { nombre: 'Primavera',posicion: 'INICIO', archivo: 'imagenes/primavera.png' },
+                { nombre: 'Compra',  posicion: 'MEDIO',  archivo: 'imagenes/compra.png' }
             ]
         };
 
@@ -393,39 +675,30 @@
         let indiceActual = 0;
         let respondido = false;
 
-        // Mostrar texto de consigna
         document.getElementById('instruccion-texto').innerHTML = 
             `¿Dónde suena la <b>"${sonidoElegido}"</b> en este dibujo?<br>¡Toca el vagón correcto!`;
 
-        // =========================================
-        // 2. CARGAR CARTA / NIVEL ACTUAL
-        // =========================================
         function cargarNivel() {
             respondido = false;
             ocultarFeedback();
 
-            // Vaciar todos los vagones
-            ['INICIO', 'MEDIO', 'FINAL'].forEach(v => {
+            ['INICIO', 'MEDIO', 'NO_ESTA'].forEach(v => {
                 document.getElementById(`vagon-${v}`).innerHTML = '';
             });
 
             const itemActual = listaImagenes[indiceActual];
             const bandeja = document.getElementById('bandeja-cartas');
 
-            // Insertar la única carta activa
             bandeja.innerHTML = `
                 <div class="carta" id="carta-activa">
-                    <img src="${itemActual.archivo}" alt="${itemActual.nombre}" onerror="this.src='https://via.placeholder.com/65'">
+                    <img src="${itemActual.archivo}" alt="${itemActual.nombre}" onerror="this.src='https://via.placeholder.com/70/3B82F6/FFF?text=?'">
                     <span>${itemActual.nombre}</span>
                 </div>
             `;
         }
 
-        // =========================================
-        // 3. RESPONDER Y EVALUAR
-        // =========================================
         function evaluarVagon(vagonElegido) {
-            if (respondido) return; // Evita doble clic
+            if (respondido) return; 
 
             const itemActual = listaImagenes[indiceActual];
             const carta = document.getElementById('carta-activa');
@@ -433,7 +706,7 @@
 
             if (!carta) return;
 
-            // Mover visualmente la carta adentro del vagón presionado
+            // Mete la carta al vagón
             ranuraVagon.appendChild(carta);
             respondido = true;
 
@@ -441,22 +714,19 @@
             const mensaje = document.getElementById('mensaje-resultado');
 
             if (esCorrecto) {
-                mensaje.innerText = "¡Excelente! 🏆 ¡Ese es el vagón correcto!";
-                mensaje.style.color = "#22C55E";
+                carta.classList.add('correcta');
+                mensaje.innerText = "¡Excelente! 🏆";
+                mensaje.style.color = "#059669";
                 document.getElementById('btn-siguiente').style.display = 'block';
             } else {
-                mensaje.innerText = "¡Uy! Ese no es su vagón 💡 ¡Probemos de nuevo!";
-                mensaje.style.color = "#EF4444";
+                mensaje.innerText = "¡Uy! Ese no es su vagón 💡";
+                mensaje.style.color = "#D97706";
                 document.getElementById('btn-reintentar').style.display = 'block';
             }
         }
 
-        // =========================================
-        // 4. FLUJO DE NAVEGACIÓN
-        // =========================================
         function siguienteNivel() {
             indiceActual++;
-
             if (indiceActual < listaImagenes.length) {
                 cargarNivel();
             } else {
@@ -464,9 +734,7 @@
             }
         }
 
-        function reintentarNivel() {
-            cargarNivel();
-        }
+        function reintentarNivel() { cargarNivel(); }
 
         function ocultarFeedback() {
             document.getElementById('mensaje-resultado').innerText = '';
@@ -477,7 +745,7 @@
         function mostrarFinJuego() {
             document.querySelector('.cartel-instruccion').innerHTML = `
                 <h2>¡Felicitaciones! 🎉</h2>
-                <p>¡Completaste todo el recorrido del tren!</p>
+                <p>¡Completaste todo el recorrido!</p>
             `;
             document.getElementById('zona-tren').style.display = 'none';
             document.getElementById('bandeja-cartas').style.display = 'none';
@@ -490,7 +758,6 @@
             `;
         }
 
-        // Iniciar el primer nivel
         cargarNivel();
     </script>
 </body>

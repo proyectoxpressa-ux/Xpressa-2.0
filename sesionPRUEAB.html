@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión — Xpressa+</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            /* Fondo mágico animado */
+            background: linear-gradient(135deg, #a3ceef, #e0f2fe, #bfdbfe);
+            background-size: 400% 400%;
+            animation: fondoMagico 10s ease infinite;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 100vh; padding: 20px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        @keyframes fondoMagico {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .caja-iniciodesesion {
+            background-color: #ffffff;
+            width: 100%; max-width: 420px;
+            padding: 45px 35px;
+            border-radius: 35px;
+            border: 4px solid #ffffff;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2), 0 0 0 8px rgba(255,255,255,0.4);
+            text-align: center; display: flex; flex-direction: column; align-items: center;
+        }
+
+        .brand-box {
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; margin-bottom: 20px;
+        }
+
+        .brand-logo {
+            width: 70px; height: 70px; border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .brand-title {
+            color: #3B82F6; font-family: 'Fredoka', sans-serif;
+            font-size: 2.8rem; font-weight: 700; text-shadow: 2px 2px 0px #BFDBFE;
+        }
+
+        .caja-iniciodesesion h1 {
+            color: #1E293B; font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem; margin-bottom: 25px;
+        }
+
+        form { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+
+        .form-group { text-align: left; }
+
+        .form-label {
+            font-size: 1rem; font-weight: 800; color: #64748B;
+            margin-bottom: 8px; display: inline-block; margin-left: 5px;
+        }
+
+        .input-texto {
+            width: 100%; padding: 16px 20px;
+            background-color: #F8FAFC;
+            border-radius: 20px; border: 3px solid #E2E8F0;
+            font-size: 1.1rem; font-family: 'Nunito', sans-serif;
+            font-weight: 700; color: #334155; transition: all 0.3s ease;
+        }
+
+        .input-texto::placeholder { color: #CBD5E1; font-weight: 600; }
+        .input-texto:focus {
+            outline: none; border-color: #3B82F6; background-color: #ffffff;
+            box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.15); transform: scale(1.02);
+        }
+
+        .btn-iniciar {
+            background-color: #3B82F6; /* Azul divertido */
+            color: #ffffff; width: 100%; padding: 18px;
+            margin-top: 10px; border: none; border-radius: 22px;
+            font-family: 'Fredoka', sans-serif; font-size: 1.4rem;
+            cursor: pointer; transition: all 0.1s;
+            box-shadow: 0 8px 0 #1D4ED8, 0 15px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-iniciar:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #1D4ED8, 0 5px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .caja-iniciodesesion h3 {
+            font-size: 1rem; font-weight: 700; color: #94A3B8; margin-top: 10px;
+        }
+
+        .caja-iniciodesesion h3 a {
+            color: #3B82F6; text-decoration: none; font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+    <div class="caja-iniciodesesion"> 
+        <div class="brand-box">
+            <img src="imagenes/logo.png" alt="Logo Xpressa+" class="brand-logo" onerror="this.src='https://via.placeholder.com/70/3B82F6/fff?text=X'">
+            <span class="brand-title">Xpressa+</span>
+        </div>
+        <h1>¡Hola! 👋 Entremos a jugar</h1>
+        <form id="form-login">
+            <div class="form-group">
+                <label class="form-label" for="username">¿Cómo te llamas?</label>
+                <input class="input-texto" type="text" id="username" name="username" placeholder="Ej: Lihuel" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">Tu contraseña secreta</label>
+                <input class="input-texto" type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-iniciar">¡A Jugar!</button>
+            <h3>¿No tienes cuenta? <a href="crearcuenta.html">Crear cuenta</a></h3>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('form-login').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            try {
+                const respuesta = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await respuesta.json();
+                if (respuesta.ok) {
+                    localStorage.setItem('usuario_id', data.id);
+                    localStorage.setItem('nombre_usuario', data.username);
+                    if (data.es_primer_ingreso) { window.location.href = 'elegirletraoficial.html'; } 
+                    else { window.location.href = 'home.html'; }
+                } else { alert('Error: ' + data.mensaje); }
+            } catch (error) {
+                console.error('Error:', error); alert('No se pudo conectar con el servidor.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta — Xpressa+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #a3ceef, #e0f2fe, #bfdbfe);
+            background-size: 400% 400%; animation: fondoMagico 10s ease infinite;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 100vh; padding: 20px;
+            font-family: 'Nunito', sans-serif;
+        }
+        @keyframes fondoMagico { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .caja-crearcuenta {
+            background-color: #ffffff; width: 100%; max-width: 420px;
+            padding: 40px 35px; border-radius: 35px; border: 4px solid #ffffff;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2), 0 0 0 8px rgba(255,255,255,0.4);
+            text-align: center; display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .emoji-header { font-size: 3.5rem; margin-bottom: -10px; }
+
+        .caja-crearcuenta h1 {
+            color: #3B82F6; font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem; font-weight: 700;
+        }
+
+        form { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+
+        .form-group { text-align: left; }
+        .form-label {
+            font-size: 1rem; font-weight: 800; color: #64748B;
+            margin-bottom: 6px; display: inline-block; margin-left: 5px;
+        }
+
+        .input-texto {
+            width: 100%; padding: 14px 18px; background-color: #F8FAFC;
+            border-radius: 20px; border: 3px solid #E2E8F0;
+            font-size: 1.1rem; font-weight: 700; color: #334155; transition: all 0.3s;
+        }
+        .input-texto::placeholder { color: #CBD5E1; }
+        .input-texto:focus {
+            outline: none; border-color: #10B981; background-color: #ffffff;
+            box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.15); transform: scale(1.02);
+        }
+
+        .btn-crearcuenta {
+            background-color: #3B82F6; /* Azul divertido */
+            color: #ffffff; width: 100%; padding: 16px;
+            margin-top: 10px; border: none; border-radius: 22px;
+            font-family: 'Fredoka', sans-serif; font-size: 1.3rem;
+            cursor: pointer; transition: all 0.1s;
+            box-shadow: 0 8px 0 #1D4ED8, 0 15px 20px rgba(59, 130, 246, 0.3);
+        }
+        .btn-crearcuenta:active {
+            transform: translateY(8px); box-shadow: 0 0 0 #3B82F6;
+        }
+
+        .caja-crearcuenta h3 { font-size: 1rem; font-weight: 700; color: #94A3B8; }
+        .caja-crearcuenta h3 a { color: #3B82F6; text-decoration: none; font-weight: 800; }
+    </style>
+</head>
+<body>
+    <div class="caja-crearcuenta">
+        <div class="emoji-header">🚀</div>
+        <h1>¡Sumate!</h1>
+        <form id="form-registro">
+            <div class="form-group">
+                <label class="form-label" for="username">Nombre de Héroe</label>
+                <input class="input-texto" type="text" id="username" name="username" placeholder="Ej: Lihuel" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="email">Correo de un adulto</label>
+                <input class="input-texto" type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">Contraseña secreta</label>
+                <input class="input-texto" type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-crearcuenta">Crear Cuenta</button>
+            <h3>¿Ya tienes cuenta? <a href="sesion.html">Inicia Sesión</a></h3>
+        </form>
+    </div>
+
+    <script>
+    document.getElementById('form-registro').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        try {
+            const respuesta = await fetch('http://localhost:3000/api/registro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
+            const data = await respuesta.json();
+            if (respuesta.ok) {
+                alert('¡Cuenta creada con éxito!'); window.location.href = 'sesion.html';
+            } else { alert('Error: ' + data.mensaje); }
+        } catch (error) { console.error('Error:', error); alert('No se pudo conectar.'); }
+    });
+    </script>
+</body>
+</html>
