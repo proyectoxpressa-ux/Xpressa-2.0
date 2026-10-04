@@ -17,8 +17,8 @@
         }
         
         body {
-            /* Fondo celestial y mágico */
-            background: radial-gradient(circle at 50% 30%, #e0f2fe 0%, #a3ceef 100%);
+            /* Fondo con degradado azul cielo divertido */
+            background: linear-gradient(135deg, #a3ceef 0%, #e0f2fe 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -30,25 +30,7 @@
             font-family: 'Nunito', sans-serif;
         }
 
-        /* Estrellitas mágicas de fondo */
-        .estrella {
-            position: absolute;
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.6);
-            animation: flotar 3s ease-in-out infinite alternate;
-            z-index: -1;
-        }
-        .estrella-1 { top: 10%; left: 15%; animation-delay: 0s; font-size: 2.2rem; }
-        .estrella-2 { top: 15%; right: 10%; animation-delay: 1s; }
-        .estrella-3 { bottom: 10%; left: 10%; animation-delay: 0.5s; font-size: 2.8rem;}
-        .estrella-4 { bottom: 20%; right: 15%; animation-delay: 1.5s; font-size: 1.8rem;}
-
-        @keyframes flotar {
-            0% { transform: translateY(0) scale(1); opacity: 0.4; }
-            100% { transform: translateY(-15px) scale(1.1); opacity: 0.8; }
-        }
-
-        /* Burbujas de fondo */
+        /* --- BURBUJAS DE FONDO (Para llenar los vacíos) --- */
         .burbuja {
             position: absolute;
             border-radius: 50%;
@@ -56,16 +38,45 @@
             filter: blur(2px);
             z-index: -1;
         }
-        .burbuja-1 { width: 160px; height: 160px; top: 5%; right: -40px; }
-        .burbuja-2 { width: 250px; height: 250px; top: 50%; left: -80px; }
-        .burbuja-3 { width: 130px; height: 130px; bottom: 8%; right: 30px; }
+        .burbuja-1 { width: 150px; height: 150px; top: -20px; right: -30px; }
+        .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
+        .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
 
-        .top-bar {
-            width: 100%;
-            max-width: 680px;
-            margin-bottom: 15px;
-            z-index: 2;
+        .btn-volver {
+            text-decoration: none; 
+            color: #3B82F6; 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1.1rem;
+            background: #FFFFFF; 
+            padding: 10px 22px; 
+            border-radius: 20px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 6px 0 #E2E8F0, 0 10px 15px rgba(0,0,0,0.05); 
+            transition: all 0.1s;
         }
+        
+        .btn-volver:active { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #E2E8F0; 
+        }
+
+
+        /* --- ENCABEZADO SUPERIOR --- */
+        .header-top {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 25px; background: transparent;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-img { 
+            width: 45px; height: 45px; border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            background: white; padding: 2px;
+        }
+        .logo-text { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700; color: #1E3A8A; }
+        
 
         .btn-volver {
             text-decoration: none; 
@@ -206,9 +217,9 @@
 
         /* ESTADO: CARTA EMPAREJADA (Verde neón pastel con baile) */
         .carta.emparejada {
-            background-color: #DCFCE7;
+            background-color: #ffffff;
             border-color: #22C55E;
-            box-shadow: 0 6px 0 #16A34A, 0 0 20px rgba(34, 197, 94, 0.5);
+            box-shadow: 0 6px 0 #ffffff, 0 0 20px rgba(34, 197, 94, 0.5);
             animation: baile-victoria 0.8s ease-in-out forwards;
             cursor: default;
             z-index: 10;
@@ -252,17 +263,16 @@
     <!-- CARTELITO FLOTANTE (Oculto por defecto) -->
     <div id="cartel-palabra" class="cartel-palabra">¡Palabra! ✨</div>
 
-    <!-- Estrellas y Burbujas -->
-    <div class="estrella estrella-1">✨</div>
-    <div class="estrella estrella-2">⭐</div>
-    <div class="estrella estrella-3">✨</div>
-    <div class="estrella estrella-4">⭐</div>
-
+    <!-- Burbujas decorativas de fondo -->
     <div class="burbuja burbuja-1"></div>
     <div class="burbuja burbuja-2"></div>
     <div class="burbuja burbuja-3"></div>
 
-    <div class="top-bar">
+    <div class="header-top">
+        <div class="logo-container">
+            <img src="imagenes/logo.png" alt="Logo" class="logo-img">
+            <span class="logo-text">Memotest</span>
+        </div>
         <a href="lobby-memotest.html" class="btn-volver"><span>←</span> Volver</a>
     </div>
 

@@ -350,6 +350,7 @@
         .v-inicio-color { background: #0EA5E9; } 
         .v-medio-color  { background: #22C55E; } 
         .v-final-color  { background: #FACC15; } 
+        .v-no-esta-color  { background: #F87171; }
         
         .vagon::before {
             content: '';
@@ -408,7 +409,8 @@
         /* Colores combinados para cada cartel */
         .etiqueta-inicio { color: #0284C7; border: 3px solid #38BDF8; }
         .etiqueta-medio { color: #16A34A; border: 3px solid #4ADE80; }
-        .etiqueta-no-esta { color: #D97706; border: 3px solid #FBBF24; }
+        .etiqueta-final { color: #FACC15; border: 3px solid #FACC15; }
+        .etiqueta-no-esta { color: #F87171; border: 3px solid #F87171; }
 
         /* =========================================
            BANDEJA Y CARTA
@@ -481,7 +483,7 @@
         .carta.correcta {
             border-color: #22C55E;
             box-shadow: 0 0 20px #4ADE80;
-            background-color: #DCFCE7;
+            background-color: #ffffff;
         }
 
         /* =========================================
@@ -601,11 +603,23 @@
             <div class="etiqueta-vagon etiqueta-medio">MEDIO</div>
         </div>
 
-        <!-- Vagón 3: NO ESTÁ -->
+        <!-- Vagón 3: FINAL -->
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('FINAL')">
+                <div class="vagon v-final-color">
+                    <div class="ranura-vagon" id="vagon-FINAL"></div>
+                </div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-final">FINAL</div>
+        </div>
+
+        <!-- Vagón 4: NO ESTÁ -->
         <div class="vagon-wrapper">
             <div class="enganche-img"></div>
             <div class="vagon-borde" onclick="evaluarVagon('NO_ESTA')">
-                <div class="vagon v-final-color">
+                <div class="vagon v-no-esta-color">
                     <div class="ranura-vagon" id="vagon-NO_ESTA"></div>
                 </div>
             </div>
@@ -682,7 +696,7 @@
             respondido = false;
             ocultarFeedback();
 
-            ['INICIO', 'MEDIO', 'NO_ESTA'].forEach(v => {
+            ['INICIO', 'MEDIO', 'NO_ESTA', 'FINAL'].forEach(v => {
                 document.getElementById(`vagon-${v}`).innerHTML = '';
             });
 
