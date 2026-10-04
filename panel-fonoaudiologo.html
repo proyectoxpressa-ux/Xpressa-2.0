@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Portal Profesional</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Nunito', sans-serif; 
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #1E293B;
+        }
+
+        /* --- ENCABEZADO SUPERIOR --- */
+        .header-top {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+            background-color: #FFFFFF;
+            padding: 15px 25px; 
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+            margin-bottom: 25px;
+            border: 2px solid #E2E8F0;
+        }
+
+        .logo-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .logo-img { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+        }
+
+        .logo-text { 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1.5rem; 
+            color: #3B82F6; 
+        }
+
+        .perfil-profesional {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: #64748B;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .contenedor-dashboard {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .titulo-seccion {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: #1E3A8A;
+        }
+
+        /* --- LISTA DE PACIENTES --- */
+        .lista-pacientes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tarjeta-paciente {
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.08);
+            border: 2px solid #E2E8F0;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .tarjeta-paciente:hover {
+            transform: translateY(-2px);
+            border-color: #93C5FD;
+        }
+
+        .info-paciente {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-paciente {
+            width: 55px;
+            height: 55px;
+            background-color: #EFF6FF;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 2px solid #BFDBFE;
+        }
+
+        .datos-personales {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nombre-paciente {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            color: #0F172A;
+        }
+
+        .edad-paciente {
+            font-size: 0.9rem;
+            color: #64748B;
+            font-weight: 700;
+        }
+
+        .tareas-actuales {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .etiqueta-fonema {
+            background-color: #FEF3C7;
+            color: #B45309;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            border: 1px solid #FDE68A;
+        }
+
+        .acciones-paciente {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-accion {
+            padding: 10px 18px;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.1s;
+        }
+
+        .btn-progreso {
+            background-color: #E0F2FE;
+            color: #0369A1;
+            box-shadow: 0 4px 0 #BAE6FD;
+        }
+        .btn-progreso:active { transform: translateY(4px); box-shadow: 0 0 0 #BAE6FD; }
+
+        .btn-tareas {
+            background-color: #10B981;
+            color: white;
+            box-shadow: 0 4px 0 #059669;
+        }
+        .btn-tareas:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
+
+
+        /* --- VENTANA MODAL (Asignar Tareas) --- */
+        .modal-overlay {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-contenido {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .cerrar-modal {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: #F1F5F9;
+            border: none;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            font-weight: bold;
+            color: #64748B;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .cerrar-modal:hover { background: #E2E8F0; }
+
+        .modal-titulo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
+            color: #1E3A8A;
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitulo {
+            color: #64748B;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .grilla-fonemas {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .label-fonema {
+            display: block;
+            cursor: pointer;
+        }
+        
+        .label-fonema input[type="checkbox"] { display: none; }
+
+        .caja-fonema {
+            background-color: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 15px;
+            padding: 12px;
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            color: #64748B;
+            transition: all 0.2s;
+        }
+
+        .label-fonema input[type="checkbox"]:checked + .caja-fonema {
+            background-color: #EFF6FF;
+            border-color: #3B82F6;
+            color: #1D4ED8;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-guardar-tareas {
+            width: 100%;
+            background-color: #3B82F6;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 18px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #2563EB;
+            transition: all 0.1s;
+        }
+        .btn-guardar-tareas:active { transform: translateY(5px); box-shadow: 0 0 0 #2563EB; }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .tarjeta-paciente { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .acciones-paciente { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabecera -->
+    <header class="header-top">
+        <div class="logo-container">
+            <img src="imagenes/logo.png" alt="Xpressa+" class="logo-img" onerror="this.src='https://via.placeholder.com/40/3B82F6/FFF?text=X'">
+            <h1 class="logo-text">Xpressa+</h1>
+        </div>
+        <div class="perfil-profesional">
+            <span>Lic. Martínez</span>
+            <div style="font-size: 1.5rem;">👩🏽‍⚕️</div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="contenedor-dashboard">
+        <h2 class="titulo-seccion">Mis Pacientes</h2>
+
+        <div class="lista-pacientes" id="contenedor-lista-pacientes">
+            <!-- Las tarjetas se generan dinámicamente con JS, pero aquí dejo 2 de ejemplo estático para probar el diseño -->
+            
+            <div class="tarjeta-paciente">
+                <div class="info-paciente">
+                    <div class="avatar-paciente">👦🏻</div>
+                    <div class="datos-personales">
+                        <span class="nombre-paciente">Ian Pérez</span>
+                        <span class="edad-paciente">8 años</span>
+                        <div class="tareas-actuales">
+                            <span class="etiqueta-fonema">R-RR</span>
+                            <span class="etiqueta-fonema">TR</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="acciones-paciente">
+                    <button class="btn-accion btn-progreso">📊 Progreso</button>
+                    <button class="btn-accion btn-tareas" onclick="abrirModal('Ian Pérez')">📝 Tareas</button>
+                </div>
+            </div>
+
+            <div class="tarjeta-paciente">
+                <div class="info-paciente">
+                    <div class="avatar-paciente">👧🏽</div>
+                    <div class="datos-personales">
+                        <span class="nombre-paciente">Sofía Gómez</span>
+                        <span class="edad-paciente">6 años</span>
+                        <div class="tareas-actuales">
+                            <span class="etiqueta-fonema">C</span>
+                            <span class="etiqueta-fonema">PL</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="acciones-paciente">
+                    <button class="btn-accion btn-progreso">📊 Progreso</button>
+                    <button class="btn-accion btn-tareas" onclick="abrirModal('Sofía Gómez')">📝 Tareas</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal para Asignar Tareas -->
+    <div class="modal-overlay" id="modal-tareas">
+        <div class="modal-contenido">
+            <button class="cerrar-modal" onclick="cerrarModal()">×</button>
+            <h3 class="modal-titulo">Asignar Tareas</h3>
+            <p class="modal-subtitulo">Selecciona los fonemas a practicar para <span id="nombre-paciente-modal" style="color:#3B82F6;">Paciente</span></p>
+
+            <form id="form-asignar-tareas">
+                <div class="grilla-fonemas">
+                    <label class="label-fonema"><input type="checkbox" value="R-RR"><div class="caja-fonema">R-RR</div></label>
+                    <label class="label-fonema"><input type="checkbox" value="C"><div class="caja-fonema">C</div></label>
+                    <label class="label-fonema"><input type="checkbox" value="PL"><div class="caja-fonema">PL</div></label>
+                    <label class="label-fonema"><input type="checkbox" value="TR"><div class="caja-fonema">TR</div></label>
+                    <label class="label-fonema"><input type="checkbox" value="DR"><div class="caja-fonema">DR</div></label>
+                    <label class="label-fonema"><input type="checkbox" value="PR"><div class="caja-fonema">PR</div></label>
+                </div>
+                <button type="button" class="btn-guardar-tareas" onclick="guardarTareas()">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Lógica de la ventana modal
+        const modal = document.getElementById('modal-tareas');
+        const nombrePacienteModal = document.getElementById('nombre-paciente-modal');
+
+        function abrirModal(nombrePaciente) {
+            nombrePacienteModal.textContent = nombrePaciente;
+            
+            // Aquí en un futuro puedes hacer un fetch() para marcar los checkboxes que el paciente ya tiene asignados
+            document.querySelectorAll('.label-fonema input').forEach(chk => chk.checked = false); 
+            
+            modal.style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            modal.style.display = 'none';
+        }
+
+        function guardarTareas() {
+            // Recopilar tareas seleccionadas
+            let tareasElegidas = [];
+            document.querySelectorAll('.label-fonema input:checked').forEach(chk => {
+                tareasElegidas.push(chk.value);
+            });
+
+            if(tareasElegidas.length === 0) {
+                alert("Debes seleccionar al menos un fonema para asignar.");
+                return;
+            }
+
+            // Aquí se enviaría el fetch(POST) a tu servidor (ej: /api/asignar-tareas)
+            console.log("Tareas guardadas para", nombrePacienteModal.textContent, ":", tareasElegidas);
+            
+            alert("¡Tareas asignadas con éxito!");
+            cerrarModal();
+        }
+
+        // Cierra el modal si se hace clic fuera de la caja blanca
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                cerrarModal();
+            }
+        }
+    </script>
+</body>
+</html>
