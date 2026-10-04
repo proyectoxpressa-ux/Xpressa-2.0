@@ -44,9 +44,10 @@
 
         .top-bar {
             width: 100%;
-            max-width: 880px; /* Agrandado para coincidir con la caja principal */
-            margin-bottom: 15px;
-            z-index: 2;
+            max-width: 700px; /* Agrandado para coincidir con la caja principal */
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: flex-start;
         }
 
         .btn-volver {
@@ -73,13 +74,13 @@
         .contenedor-lobby {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 35px 45px 40px; /* Mucho más aire interno */
+            padding: 30px 40px; /* Mucho más aire interno */
             border-radius: 40px;
             box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15), inset 0 0 0 5px #FFFFFF;
             width: 100%;
-            max-width: 880px; /* Caja considerablemente más grande */
+            max-width: 700px; /* Caja considerablemente más grande */
             height: auto; 
-            max-height: 92vh; 
+            max-height: 90vh; 
             display: flex;
             flex-direction: column;
             text-align: center;
@@ -147,12 +148,12 @@
         }
 
         /* PALETA DE COLORES PASTEL (Estilo malvavisco) */
-        .ficha-1 { background-color: #FFE4E6; box-shadow: 0 6px 0 #FDA4AF; color: #881337; }
-        .ficha-2 { background-color: #FFEDD5; box-shadow: 0 6px 0 #FDBA74; color: #7C2D12; }
-        .ficha-3 { background-color: #FEF9C3; box-shadow: 0 6px 0 #FDE047; color: #713F12; }
-        .ficha-4 { background-color: #DCFCE7; box-shadow: 0 6px 0 #86EFAC; color: #14532D; }
+        .ficha-1 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-2 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-3 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-4 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
         .ficha-5 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
-        .ficha-6 { background-color: #F3E8FF; box-shadow: 0 6px 0 #D8B4FE; color: #581C87; }
+        .ficha-6 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
 
         .btn-sonido:active {
             transform: translateY(6px);
@@ -203,14 +204,18 @@
         /* ESTADO SELECCIONADO */
         .btn-sonido.seleccionado {
             transform: scale(1.05) translateY(-4px);
-        }
+            background-color: #E0F2FE !important; /* Mismo color de fondo para cualquier tarjeta elegida */
+            border-color: #93C5FD !important;     /* Mismo color de borde */
+            box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4) !important; /* Misma sombra */
+}
         
-        .ficha-1.seleccionado { box-shadow: 0 10px 0 #FDA4AF, 0 15px 25px rgba(253, 164, 175, 0.4); }
-        .ficha-2.seleccionado { box-shadow: 0 10px 0 #FDBA74, 0 15px 25px rgba(253, 186, 116, 0.4); }
-        .ficha-3.seleccionado { box-shadow: 0 10px 0 #FDE047, 0 15px 25px rgba(253, 224, 71, 0.4); }
-        .ficha-4.seleccionado { box-shadow: 0 10px 0 #86EFAC, 0 15px 25px rgba(134, 239, 172, 0.4); }
+        .ficha-1.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-2.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-3.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-4.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
         .ficha-5.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
-        .ficha-6.seleccionado { box-shadow: 0 10px 0 #D8B4FE, 0 15px 25px rgba(216, 180, 254, 0.4); }
+        .ficha-6.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+                
 
         .btn-sonido.seleccionado .caja-emoji { background-color: #FFFFFF; }
         .btn-sonido.seleccionado .check-ok { opacity: 1; transform: scale(1); right: 8px; top: 8px; }
@@ -219,7 +224,7 @@
         /* Botón Jugar Inferior (Más espacioso) */
         .btn-jugar {
             width: 100%;
-            background-color: #10B981; 
+            background-color: #3B82F6; 
             color: white;
             border: none;
             border-radius: 28px;
@@ -227,7 +232,7 @@
             font-family: 'Fredoka', sans-serif;
             font-size: 1.6rem;
             cursor: pointer;
-            box-shadow: 0 8px 0 #059669, 0 15px 20px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 8px 0 #1D4ED8, 0 15px 20px rgba(59, 130, 246, 0.3);
             transition: all 0.1s;
             flex-shrink: 0; 
         }
@@ -262,7 +267,7 @@
     <div class="burbuja burbuja-4"></div>
 
     <div class="top-bar">
-        <a href="juegos.html" class="btn-volver"><span>←</span> Volver</a>
+        <a href="juegos.html" class="btn-volver"><span>←</span> Volver al lobby</a>
     </div>
 
     <div class="contenedor-lobby">
@@ -331,7 +336,7 @@
                 return;
             }
             localStorage.setItem("sonidoMemotest", sonidoElegido);
-            window.location.href = "prueba-memotest.html"; 
+            window.location.href = "memotest.html"; 
         }
     </script>
 

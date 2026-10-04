@@ -5,132 +5,317 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lobby del Semáforo</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Nunito', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
         
         body {
-            background-color: #F0F8FF;
+            /* Fondo de cielo relajante */
+            background: linear-gradient(135deg, #a3ceef 0%, #e0f2fe 100%);
+            height: 100vh; 
+            overflow: hidden; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 15px;
-            min-height: 100vh;
+            padding: 20px;
+            position: relative;
         }
 
+        /* Burbujas de fondo restauradas */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 160px; height: 160px; top: 5%; right: -40px; }
+        .burbuja-2 { width: 250px; height: 250px; top: 45%; left: -80px; }
+        .burbuja-3 { width: 130px; height: 130px; bottom: 8%; right: 30px; }
+        .burbuja-4 { width: 80px; height: 80px; top: 15%; left: 15%; opacity: 0.6; }
+
         .top-bar {
-            width : 100%;
-            max-width: 600px;
+            width: 100%;
+            max-width: 700px; /* Agrandado para coincidir con la caja principal */
+            margin: 0 auto 15px auto;
             display: flex;
-            align-items: center;
             justify-content: flex-start;
-            margin-bottom: 15px;
         }
 
         .btn-volver {
-            text-decoration: none;
-            color: #4A90E2;
-            font-weight: 800;
-            font-size: 18px; 
+            text-decoration: none; 
+            color: #3B82F6; 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1.1rem;
+            background: #FFFFFF; 
+            padding: 10px 22px; 
+            border-radius: 20px; 
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: #FFFFFF;
-            padding: 8px 20px;
-            border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(75, 145, 225, 0.1);
+            gap: 6px;
+            box-shadow: 0 6px 0 #E2E8F0, 0 10px 15px rgba(0,0,0,0.05); 
+            transition: all 0.1s;
+        }
+        
+        .btn-volver:active { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #E2E8F0; 
         }
 
+        /* EL TABLERO CENTRAL (Más ancho y espacioso) */
         .contenedor-lobby {
-            background: white;
-            padding: 30px 35px;
-            border-radius: 25px;
-            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15);
-            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px 40px; /* Mucho más aire interno */
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15), inset 0 0 0 5px #FFFFFF;
             width: 100%;
+            max-width: 700px; /* Caja considerablemente más grande */
+            height: auto; 
+            max-height: 90vh; 
+            display: flex;
+            flex-direction: column;
             text-align: center;
+            z-index: 2;
+        }
+
+        .cabecera-textos {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mascota-titulo {
+            font-size: 3.2rem;
+            margin-bottom: -12px;
+            animation: saltito 2.5s infinite;
+        }
+
+        @keyframes saltito {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px) rotate(5deg); }
         }
 
         .titulo-lobby {
             font-family: 'Fredoka', sans-serif;
-            color: #4A90E2;
-            font-size: 34px;
-            margin-bottom: 8px;
+            color: #1E3A8A;
+            font-size: 2.5rem;
+            letter-spacing: 0.5px;
         }
 
         .subtitulo {
             color: #64748B;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 25px;
+            font-size: 1.2rem;
+            font-weight: 800;
         }
 
+        /* CUADRÍCULA: 3 Columnas x 2 Filas (Con mayor separación) */
         .grilla-sonidos {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 25px; /* Más espacio entre las cartas */
+            margin: 25px 0 35px; /* Más espacio arriba y abajo de la grilla */
+            flex-grow: 1; 
         }
 
+        /* CARTAS (Estilos base, más grandes y espaciadas) */
         .btn-sonido {
-            background-color: #F1F5F9;
-            border: 3px solid #CBD5E1;
-            border-radius: 18px;
-            padding: 18px;
-            font-size: 22px;
-            font-weight: 800;
-            color: #334155;
+            border-radius: 28px;
+            padding: 12px 20px; /* Más aire dentro de la carta */
             cursor: pointer;
-            transition: all 0.2s;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px; /* Más espacio entre el emoji y el texto */
+            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            height: 100%;
+            min-height: 90px; /* Cartas más altas */
+            position: relative;
+            overflow: hidden;
+            border: none;
         }
 
+        /* PALETA DE COLORES PASTEL (Estilo malvavisco) */
+        .ficha-1 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-2 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-3 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-4 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-5 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+        .ficha-6 { background-color: #DBEAFE; box-shadow: 0 6px 0 #93C5FD; color: #1E3A8A; }
+
+        .btn-sonido:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 transparent;
+        }
+
+        /* Círculo blanco que resalta el emoji */
+        .caja-emoji {
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+
+        .texto-carta {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Tilde de selección escondida por defecto */
+        .check-ok {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            background-color: #10B981;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border: 4px solid #FFF;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* ESTADO SELECCIONADO */
         .btn-sonido.seleccionado {
-            background-color: #E0F2FE;
-            border-color: #38BDF8;
-            color: #0284C7;
-            transform: scale(1.03);
-            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
-        }
+            transform: scale(1.05) translateY(-4px);
+            background-color: #E0F2FE !important; /* Mismo color de fondo para cualquier tarjeta elegida */
+            border-color: #93C5FD !important;     /* Mismo color de borde */
+            box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4) !important; /* Misma sombra */
+}
+        
+        .ficha-1.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-2.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-3.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-4.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-5.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+        .ficha-6.seleccionado { box-shadow: 0 10px 0 #93C5FD, 0 15px 25px rgba(147, 197, 253, 0.4); }
+                
 
+        .btn-sonido.seleccionado .caja-emoji { background-color: #FFFFFF; }
+        .btn-sonido.seleccionado .check-ok { opacity: 1; transform: scale(1); right: 8px; top: 8px; }
+        .btn-sonido.seleccionado:active { transform: translateY(6px) scale(1.05); box-shadow: 0 0 0 transparent; }
+
+        /* Botón Jugar Inferior (Más espacioso) */
         .btn-jugar {
             width: 100%;
-            background-color: #4CAF50;
+            background-color: #3B82F6; 
             color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 28px;
             padding: 20px;
-            font-size: 26px;
-            font-weight: 800;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
             cursor: pointer;
-            box-shadow: 0 6px 0 #388E3C;
+            box-shadow: 0 8px 0 #1D4ED8, 0 15px 20px rgba(59, 130, 246, 0.3);
             transition: all 0.1s;
+            flex-shrink: 0; 
         }
 
         .btn-jugar:active {
-            transform: translateY(6px);
-            box-shadow: none;
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #059669;
+        }
+
+        /* Prevención de desbordamiento en pantallas muy pequeñas/bajas */
+        @media (max-height: 700px) {
+            .contenedor-lobby { padding: 20px 30px 25px; }
+            .grilla-sonidos { gap: 15px; margin: 15px 0 20px; }
+            .btn-sonido { min-height: 75px; padding: 10px 15px; }
+            .mascota-titulo { font-size: 2.5rem; }
+            .titulo-lobby { font-size: 2rem; }
+            .btn-jugar { padding: 15px; font-size: 1.4rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .grilla-sonidos { grid-template-columns: repeat(2, 1fr); }
+            .contenedor-lobby { max-width: 600px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Burbujas decorativas de fondo -->
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+    <div class="burbuja burbuja-4"></div>
+
     <div class="top-bar">
-        <a href="juegos.html" class="btn-volver">← Volver</a>
+        <a href="juegos.html" class="btn-volver"><span>←</span> Volver al lobby</a>
     </div>
 
     <div class="contenedor-lobby">
-        <h1 class="titulo-lobby">🚦 ¡El Semáforo! 🃏</h1>
-        <p class="subtitulo">¿Qué sonido practicamos hoy?</p>
+        <div class="cabecera-textos">
+            <div class="mascota-titulo">🚦</div>
+            <h1 class="titulo-lobby">¡El Semáforo!</h1>
+            <p class="subtitulo">¿Qué sonido practicamos hoy?</p>
+        </div>
 
+        <!-- Fichas de Juego Coloridas en 3x2 -->
         <div class="grilla-sonidos">
-            <button class="btn-sonido" onclick="seleccionarSonido('R', this)">R-RR 🐶</button>
-            <button class="btn-sonido" onclick="seleccionarSonido('C', this)">C 🐌</button>
-            <button class="btn-sonido" onclick="seleccionarSonido('PL', this)">PL 🪶</button>
-            <button class="btn-sonido" onclick="seleccionarSonido('TR', this)">TR 🚂</button>
-            <button class="btn-sonido" onclick="seleccionarSonido('DR', this)">DR 🐲</button>
-            <button class="btn-sonido" onclick="seleccionarSonido('PR', this)">PR 🤴🏻</button>
+            
+            <button class="btn-sonido ficha-1" onclick="seleccionarSonido('R', this)">
+                <div class="check-ok">✓</div>
+                <div class="caja-emoji">🐶</div>
+                <span class="texto-carta">R-RR</span>
+            </button>
+            
+            <button class="btn-sonido ficha-2" onclick="seleccionarSonido('C', this)">
+                <div class="check-ok">✓</div>
+                <div class="caja-emoji">🐌</div>
+                <span class="texto-carta">C</span>
+            </button>
+            
+            <button class="btn-sonido ficha-3" onclick="seleccionarSonido('PL', this)">
+                <div class="check-ok">✓</div>
+                <div class="caja-emoji">🪶</div>
+                <span class="texto-carta">PL</span>
+            </button>
+            
+            <button class="btn-sonido ficha-4" onclick="seleccionarSonido('TR', this)">
+                <div class="check-ok">✓</div>
+                <div class="caja-emoji">🚂</div>
+                <span class="texto-carta">TR</span>
+            </button>
+            
+            <button class="btn-sonido ficha-5" onclick="seleccionarSonido('DR', this)">
+                <div class="check-ok">✓</div>
+                <div class="caja-emoji">🐲</div>
+                <span class="texto-carta">DR</span>
+            </button>
+            
+            <button class="btn-sonido ficha-6" onclick="seleccionarSonido('PR', this)">
+                <div class="check-ok">✓</div>
+                <div class="caja-emoji">🤴🏻</div>
+                <span class="texto-carta">PR</span>
+            </button>
+            
         </div>
 
         <button class="btn-jugar" onclick="irAlJuego()">¡A JUGAR! 🚀</button>
@@ -151,18 +336,12 @@
                 return;
             }
 
-            localStorage.setItem("sonidoSemaforo", sonidoElegido);
-
-            const rutasArchivos = {
-                'R': 'semaforo-R-RR.html',
-                'TR': 'semaforo-TR.html',
-                'PR': 'semaforo-PR.html',
-                'DR': 'semaforo-DR.html',
-                'PL': 'semaforo-PL.html',
-                'C': 'semaforo-C.html'
-            };
-
-            window.location.href = rutasArchivos[sonidoElegido];
+            // Dependiendo del sonido elegido, redirigimos al archivo correspondiente
+            if (sonidoElegido === "R") {
+                window.location.href = "semaforo-R-RR.html";
+            } else {
+                window.location.href = `semaforo-${sonidoElegido}.html`;
+            }
         }
     </script>
 </body>

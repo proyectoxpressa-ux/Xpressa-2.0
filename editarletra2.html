@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Ajustes de Sonidos y Fonemas</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Nunito', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            /* Fondo de cielo relajante idéntico al lobby */
+            background: linear-gradient(135deg, #a3ceef 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 20px 120px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- BURBUJAS DE FONDO DECORATIVAS --- */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 160px; height: 160px; top: 4%; right: -30px; }
+        .burbuja-2 { width: 250px; height: 250px; top: 40%; left: -80px; }
+        .burbuja-3 { width: 130px; height: 130px; bottom: 8%; right: 30px; }
+        .burbuja-4 { width: 90px; height: 90px; top: 12%; left: 12%; opacity: 0.6; }
+
+        /* Contenedor principal estilo tablero */
+        .contenedor-panel {
+            width: 100%;
+            max-width: 850px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px 35px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15), inset 0 0 0 5px #FFFFFF;
+            border: 4px solid #E0F2FE;
+            z-index: 2;
+        }
+
+        /* --- ENCABEZADO Y NAVEGACIÓN --- */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn-volver {
+            text-decoration: none; 
+            color: #3B82F6; 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1.1rem;
+            background: #FFFFFF; 
+            padding: 10px 22px; 
+            border-radius: 20px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 0 #E2E8F0, 0 10px 15px rgba(0,0,0,0.05); 
+            transition: all 0.1s;
+        }
+
+        .btn-volver:active { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #E2E8F0; 
+        }
+
+        .badge-estado {
+            background: #FFFFFF;
+            color: #3B82F6;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 2px solid #DBEAFE;
+        }
+
+        /* --- TARJETA RESUMEN SUPERIOR --- */
+        .tarjeta-resumen {
+            background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+            border-radius: 28px;
+            padding: 22px 28px;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.25);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            color: #FFFFFF;
+        }
+
+        .tarjeta-resumen::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            width: 130px;
+            height: 130px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+        }
+
+        .resumen-info h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 2px;
+            color: #FFFFFF;
+        }
+
+        .resumen-info p {
+            font-size: 1rem;
+            color: #DBEAFE;
+            font-weight: 700;
+        }
+
+        .contador-circulo {
+            width: 75px;
+            height: 75px;
+            background: #FFFFFF;
+            border-radius: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .contador-numero {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: #1E3A8A;
+            line-height: 1;
+        }
+
+        .contador-etiqueta {
+            font-size: 0.65rem;
+            color: #64748B;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* --- TÍTULO DE SECCIÓN --- */
+        .seccion-titulo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            color: #1E3A8A;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-accion-rapida {
+            background: #E0F2FE;
+            border: none;
+            color: #2563EB;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-accion-rapida:hover {
+            background: #BAE6FD;
+        }
+
+        /* --- GRILLA HORIZONTAL (2 COLUMNAS) --- */
+        .lista-sonidos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        /* Tarjetas de fonemas */
+        .tarjeta-sonido {
+            background-color: #F8FAFC;
+            border: 3px solid #E2E8F0;
+            border-radius: 24px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .tarjeta-sonido:hover {
+            border-color: #93C5FD;
+            transform: translateY(-2px);
+        }
+
+        .sonido-izq {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .icono-avatar {
+            width: 52px;
+            height: 52px;
+            background-color: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            flex-shrink: 0;
+        }
+
+        .sonido-detalles h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.35rem;
+            color: #1E3A8A;
+            line-height: 1.1;
+        }
+
+        .sonido-categoria {
+            font-size: 0.82rem;
+            color: #64748B;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* Ondas de sonido animadas */
+        .ondas-audio {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 16px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .onda {
+            width: 3px;
+            background-color: #3B82F6;
+            border-radius: 3px;
+            animation: ecualizador 1s infinite alternate ease-in-out;
+        }
+
+        .onda:nth-child(1) { height: 60%; animation-delay: 0.1s; }
+        .onda:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+        .onda:nth-child(3) { height: 40%; animation-delay: 0.2s; }
+
+        @keyframes ecualizador {
+            0% { height: 20%; }
+            100% { height: 100%; }
+        }
+
+        /* Switch Custom Toggle */
+        .switch-container {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .switch-container input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-toggle {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #CBD5E1;
+            transition: .3s;
+            border-radius: 30px;
+        }
+
+        .slider-toggle:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #FFFFFF;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        /* ESTADO ACTIVO / SELECCIONADO */
+        .tarjeta-sonido.activa {
+            background-color: #E0F2FE;
+            border-color: #93C5FD;
+            box-shadow: 0 6px 0 #93C5FD, 0 10px 20px rgba(147, 197, 253, 0.3);
+        }
+
+        .tarjeta-sonido.activa .icono-avatar {
+            background-color: #FFFFFF;
+        }
+
+        .tarjeta-sonido.activa .ondas-audio {
+            opacity: 1;
+        }
+
+        .switch-container input:checked + .slider-toggle {
+            background-color: #10B981;
+        }
+
+        .switch-container input:checked + .slider-toggle:before {
+            transform: translateX(24px);
+        }
+
+        /* --- BARRA FLOTANTE EN LA PARTE INFERIOR --- */
+        .barra-guardar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 3px solid #FFFFFF;
+            border-radius: 30px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
+            z-index: 100;
+        }
+
+        .btn-guardar-principal {
+            background-color: #3B82F6;
+            color: #FFFFFF;
+            border: none;
+            padding: 16px 28px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            border-radius: 22px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 6px 0 #1D4ED8, 0 10px 20px rgba(59, 130, 246, 0.3);
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-guardar-principal:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #1D4ED8;
+        }
+
+        /* Responsive para celulares */
+        @media (max-width: 680px) {
+            .lista-sonidos {
+                grid-template-columns: 1fr;
+            }
+            .contenedor-panel {
+                padding: 22px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <!-- Burbujas decorativas de fondo -->
+  <div class="burbuja burbuja-1"></div>
+  <div class="burbuja burbuja-2"></div>
+  <div class="burbuja burbuja-3"></div>
+  <div class="burbuja burbuja-4"></div>
+
+  <div class="contenedor-panel">
+
+    <!-- BARRA SUPERIOR CON REGRESO -->
+    <div class="top-bar">
+      <a href="perfil.html" id="enlace-volver" class="btn-volver">
+        <span>←</span> Volver
+      </a>
+      <span class="badge-estado">⚙️ Edición de Sonidos</span>
+    </div>
+
+    <!-- TARJETA RESUMEN HERO -->
+    <div class="tarjeta-resumen">
+      <div class="resumen-info">
+        <h2>Mis Sonidos</h2>
+        <p id="texto-estado-mochila">Fonemas activos en tus juegos</p>
+      </div>
+      <div class="contador-circulo">
+        <span id="cantidad-mochila" class="contador-numero">0</span>
+        <span class="contador-etiqueta">Activos</span>
+      </div>
+    </div>
+
+    <!-- LISTA DE SELECCIÓN DE FONEMAS -->
+    <div class="seccion-titulo">
+      <span>Elige los fonemas a trabajar</span>
+      <button type="button" id="btn-toggle-todos" class="btn-accion-rapida">Seleccionar todos</button>
+    </div>
+
+    <div class="lista-sonidos">
+
+      <!-- TARJETA 1 -->
+      <label class="tarjeta-sonido">
+        <div class="sonido-izq">
+          <div class="icono-avatar">🐶</div>
+          <div class="sonido-detalles">
+            <h3>R · RR</h3>
+            <div class="sonido-categoria">Sonido Simple y Doble</div>
+          </div>
+        </div>
+        <div class="sonido-der" style="display: flex; align-items: center; gap: 15px;">
+          <div class="ondas-audio">
+            <div class="onda"></div><div class="onda"></div><div class="onda"></div>
+          </div>
+          <div class="switch-container">
+            <input type="checkbox" class="checkbox-letra" value="R-RR">
+            <span class="slider-toggle"></span>
+          </div>
+        </div>
+      </label>
+
+      <!-- TARJETA 2 -->
+      <label class="tarjeta-sonido">
+        <div class="sonido-izq">
+          <div class="icono-avatar">🚂</div>
+          <div class="sonido-detalles">
+            <h3>TR</h3>
+            <div class="sonido-categoria">Sílaba Trabada</div>
+          </div>
+        </div>
+        <div class="sonido-der" style="display: flex; align-items: center; gap: 15px;">
+          <div class="ondas-audio">
+            <div class="onda"></div><div class="onda"></div><div class="onda"></div>
+          </div>
+          <div class="switch-container">
+            <input type="checkbox" class="checkbox-letra" value="TR">
+            <span class="slider-toggle"></span>
+          </div>
+        </div>
+      </label>
+
+      <!-- TARJETA 3 -->
+      <label class="tarjeta-sonido">
+        <div class="sonido-izq">
+          <div class="icono-avatar">🤴🏻</div>
+          <div class="sonido-detalles">
+            <h3>PR</h3>
+            <div class="sonido-categoria">Sílaba Trabada</div>
+          </div>
+        </div>
+        <div class="sonido-der" style="display: flex; align-items: center; gap: 15px;">
+          <div class="ondas-audio">
+            <div class="onda"></div><div class="onda"></div><div class="onda"></div>
+          </div>
+          <div class="switch-container">
+            <input type="checkbox" class="checkbox-letra" value="PR">
+            <span class="slider-toggle"></span>
+          </div>
+        </div>
+      </label>
+
+      <!-- TARJETA 4 -->
+      <label class="tarjeta-sonido">
+        <div class="sonido-izq">
+          <div class="icono-avatar">🐲</div>
+          <div class="sonido-detalles">
+            <h3>DR</h3>
+            <div class="sonido-categoria">Sílaba Trabada</div>
+          </div>
+        </div>
+        <div class="sonido-der" style="display: flex; align-items: center; gap: 15px;">
+          <div class="ondas-audio">
+            <div class="onda"></div><div class="onda"></div><div class="onda"></div>
+          </div>
+          <div class="switch-container">
+            <input type="checkbox" class="checkbox-letra" value="DR">
+            <span class="slider-toggle"></span>
+          </div>
+        </div>
+      </label>
+
+      <!-- TARJETA 5 -->
+      <label class="tarjeta-sonido">
+        <div class="sonido-izq">
+          <div class="icono-avatar">🪶</div>
+          <div class="sonido-detalles">
+            <h3>PL</h3>
+            <div class="sonido-categoria">Sílaba Trabada con L</div>
+          </div>
+        </div>
+        <div class="sonido-der" style="display: flex; align-items: center; gap: 15px;">
+          <div class="ondas-audio">
+            <div class="onda"></div><div class="onda"></div><div class="onda"></div>
+          </div>
+          <div class="switch-container">
+            <input type="checkbox" class="checkbox-letra" value="PL">
+            <span class="slider-toggle"></span>
+          </div>
+        </div>
+      </label>
+
+      <!-- TARJETA 6 -->
+      <label class="tarjeta-sonido">
+        <div class="sonido-izq">
+          <div class="icono-avatar">🐌</div>
+          <div class="sonido-detalles">
+            <h3>C</h3>
+            <div class="sonido-categoria">Sonido Oclusivo</div>
+          </div>
+        </div>
+        <div class="sonido-der" style="display: flex; align-items: center; gap: 15px;">
+          <div class="ondas-audio">
+            <div class="onda"></div><div class="onda"></div><div class="onda"></div>
+          </div>
+          <div class="switch-container">
+            <input type="checkbox" class="checkbox-letra" value="C">
+            <span class="slider-toggle"></span>
+          </div>
+        </div>
+      </label>
+
+    </div>
+  </div>
+
+  <!-- BARRA FLOTANTE DE GUARDADO -->
+  <div class="barra-guardar">
+    <button id="boton-avanzar" class="btn-guardar-principal">
+      <span>💾</span> Guardar Cambios
+    </button>
+  </div>
+
+  <script>
+    const checkboxesDeLetras = document.querySelectorAll('.checkbox-letra');
+    const textoCantidadMochila = document.getElementById('cantidad-mochila');
+    const botonAvanzar = document.getElementById('boton-avanzar');
+    const enlaceVolver = document.getElementById('enlace-volver');
+    const btnToggleTodos = document.getElementById('btn-toggle-todos');
+
+    // Detectar si el usuario viene desde el Perfil
+    const urlParams = new URLSearchParams(window.location.search);
+    const esEdicionDesdePerfil = urlParams.get('origen') === 'perfil';
+
+    if (esEdicionDesdePerfil) {
+        enlaceVolver.href = 'perfil.html';
+    } else {
+        enlaceVolver.href = 'home.html';
+        botonAvanzar.innerHTML = '<span>🚀</span> ¡Comenzar a jugar!';
+    }
+
+    // Actualizar interfaz e indicador de fonemas activos
+    function actualizarInterfaz() {
+        let seleccionados = 0;
+
+        checkboxesDeLetras.forEach(checkbox => {
+            const tarjeta = checkbox.closest('.tarjeta-sonido');
+            if (checkbox.checked) {
+                tarjeta.classList.add('activa');
+                seleccionados++;
+            } else {
+                tarjeta.classList.remove('activa');
+            }
+        });
+
+        textoCantidadMochila.textContent = seleccionados;
+    }
+
+    checkboxesDeLetras.forEach(checkbox => {
+        checkbox.addEventListener('change', actualizarInterfaz);
+    });
+
+    // Botón para marcar/desmarcar todos
+    btnToggleTodos.addEventListener('click', () => {
+        const algunoDesmarcado = Array.from(checkboxesDeLetras).some(cb => !cb.checked);
+        checkboxesDeLetras.forEach(cb => { cb.checked = algunoDesmarcado; });
+        btnToggleTodos.textContent = algunoDesmarcado ? "Desmarcar todos" : "Seleccionar todos";
+        actualizarInterfaz();
+    });
+
+    // Cargar selecciones previas desde la API
+    async function cargarLetrasPrevias() {
+        const usuario_id = localStorage.getItem('usuario_id');
+        if (!usuario_id) return;
+
+        try {
+            const respuesta = await fetch(`http://localhost:3000/api/obtener-letras?usuario_id=${usuario_id}`);
+            if (respuesta.ok) {
+                const datos = await respuesta.json();
+                if (datos.letras && Array.isArray(datos.letras)) {
+                    checkboxesDeLetras.forEach(checkbox => {
+                        checkbox.checked = datos.letras.includes(checkbox.value);
+                    });
+                    actualizarInterfaz();
+                }
+            }
+        } catch (error) {
+            console.error('Error al obtener las letras:', error);
+        }
+    }
+
+    cargarLetrasPrevias();
+
+    // Guardar cambios en la base de datos
+    botonAvanzar.addEventListener('click', async function() {
+        const usuario_id = localStorage.getItem('usuario_id');
+        if (!usuario_id) {
+            alert("Error: No se encontró la sesión del usuario.");
+            return;
+        }
+
+        let letrasSeleccionadas = [];
+        checkboxesDeLetras.forEach(checkbox => {
+            if (checkbox.checked) letrasSeleccionadas.push(checkbox.value);
+        });
+
+        if (letrasSeleccionadas.length === 0) {
+            alert("Por favor selecciona al menos un sonido o fonema.");
+            return;
+        }
+
+        try {
+            const respuesta = await fetch('http://localhost:3000/api/guardar-letras', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ usuario_id: usuario_id, letras: letrasSeleccionadas })
+            });
+
+            if (respuesta.ok) {
+                if (esEdicionDesdePerfil) {
+                    window.location.href = 'perfil.html';
+                } else {
+                    window.location.href = 'home.html';
+                }
+            } else {
+                alert('Error al guardar los cambios.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('No se pudo conectar con el servidor.');
+        }
+    });
+  </script>
+</body>
+</html>
