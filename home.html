@@ -1,202 +1,122 @@
 <!DOCTYPE html>
-<html lang="es"> <!-- Importante usar 'es' para accesibilidad y lectores de pantalla -->
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xpressa+ | Inicio</title>
-    
-    <!-- Importamos la fuente Nunito (redondeada y amigable) -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background-color: #F4F9FF; color: #1E293B;
+            font-family: 'Nunito', sans-serif;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        .header-top {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem; background-color: #3B82F6; color: white;
+            border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 45px; height: 45px; border-radius: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .logo-text { font-family: 'Fredoka', sans-serif; font-size: 1.6rem; font-weight: 700; }
+
+        .user-container {
+            display: flex; align-items: center; gap: 10px;
+            background-color: rgba(255,255,255,0.2); padding: 8px 18px;
+            border-radius: 25px; backdrop-filter: blur(5px);
+        }
+        .avatar-placeholder a { font-size: 1.8rem; text-decoration: none; display: block; }
+        .user-greeting { font-weight: 800; font-size: 1.1rem; }
+
+        .main-content {
+            padding: 30px 20px; display: flex; flex-direction: column; gap: 20px;
+            align-items: center; flex: 1; padding-bottom: 120px;
+        }
+
+        /* Tarjeta GIGANTE de Bienvenida */
+        .tarjeta-hero {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            width: 100%; max-width: 500px; padding: 30px 20px;
+            border-radius: 35px; color: white; text-align: center;
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3);
+            border: 4px solid #FFF; position: relative; overflow: hidden;
+        }
+        .tarjeta-hero h2 { font-family: 'Fredoka', sans-serif; font-size: 2.5rem; margin-bottom: 10px; }
+        .tarjeta-hero p { font-size: 1.2rem; font-weight: 800; opacity: 0.9; }
+        .tarjeta-hero .emoji-hero { font-size: 5rem; margin-bottom: 10px; animation: flotar 3s ease-in-out infinite; }
+
+        @keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .btn-jugar-grande {
+            display: inline-block; background-color: #10B981; color: white;
+            font-family: 'Fredoka', sans-serif; font-size: 1.5rem; text-decoration: none;
+            padding: 18px 40px; border-radius: 30px; margin-top: 20px;
+            box-shadow: 0 8px 0 #059669; transition: all 0.1s;
+        }
+        .btn-jugar-grande:active { transform: translateY(8px); box-shadow: 0 0 0 #059669; }
+
+        /* NAVEGACIÓN INFERIOR (Gomita) */
+        .bottom-nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; background-color: #ffffff;
+            display: flex; justify-content: space-around; padding: 15px 10px;
+            border-radius: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            z-index: 10; border: 3px solid #E2E8F0;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            text-decoration: none; color: #94A3B8; font-weight: 800; font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .nav-icon { font-size: 1.8rem; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .nav-item.active { color: #3B82F6; }
+        .nav-item.active .nav-icon { transform: scale(1.3) translateY(-5px); }
+    </style>
 </head>
-<style>
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Nunito', sans-serif;
-    -webkit-tap-highlight-color: transparent; /* Quita el recuadro azul molesto al tocar en móviles */
-}
-
-:root {
-    --bg-color: #F0F8FF;        /* Fondo pastel relajante */
-    --primary-blue: #4A90E2;    /* Azul principal vibrante */
-    --light-blue: #5C9CE6;      /* Azul de apoyo */
-    --card-bg: #FFFFFF;         /* Blanco para contraste */
-    --text-dark: #333333;       /* Texto oscuro pero no negro (menos agresivo) */
-    --shadow: 0 8px 16px rgba(74, 144, 226, 0.15); /* Sombra azulada suave */
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-dark);
-    /* Preparamos el body para dispositivos móviles / tablets */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    background-color: var(--primary-blue);
-    color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Separación automática entre logo y texto */
-}
-
-.logo-img {
-    width: 35px;
-    height: auto;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    border-radius: 7px;
-}
-
-.logo-text {
-    font-size: 1.2rem;
-    font-weight: 800;
-}
-
-.user-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 5px 15px;
-    border-radius: 30px; /* Bordes de pastilla */
-}
-
-.avatar-placeholder {
-    font-size: 1.5rem;
-    background: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.user-greeting {
-    font-weight: 700;
-    font-size: 0.9rem;
-}
-
-.main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    margin: 20px;
-    gap: 2rem; /* Separación mágica sin usar margins */
-}
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: var(--primary-blue);
-    display: flex;
-    justify-content: space-around;
-    align-items: center; /* Alinea verticalmente todos los elementos hijos */
-    padding: 1rem 0 1.5rem 0; /* Padding extra abajo para ciertos celulares */
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    z-index: 10;
-}
-
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #A0B4C8;
-    flex: 1; /* Distribuye el espacio equitativamente para que queden centrados */
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.nav-icon {
-    font-size: 1.8rem;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Estado Activo (La sección donde estamos) */
-.nav-item.active {
-    color: #FFFFFF; /* Cambiado a blanco o el color activo deseado para contraste */
-    transform: translateY(-3px); /* Salta un poquito hacia arriba de forma sutil */
-}
-
-.nav-item.active .nav-icon {
-    filter: drop-shadow(0 4px 6px rgba(74, 144, 226, 0.4));
-}
-
-</style>
-
 <body>
-    <!-- CABECERA FIJA -->
     <header class="header-top">
         <div class="logo-container">
-            <img src="imagenes/logo.png" alt="Xpressa+" class="logo-img">
+            <img src="imagenes/logo.png" alt="Xpressa+" class="logo-img" onerror="this.src='https://via.placeholder.com/45/FFF/3B82F6?text=X'">
             <h1 class="logo-text">Xpressa+</h1>
         </div>
-        
         <div class="user-container">
-            <!-- Espacio reservado para la fotito del niño -->
-            <div class="avatar-placeholder" >
-                <a href="perfil.html" style="text-decoration: none;">🧒🏽</a></div> 
-            <span class="user-greeting" id="saludo-usuario">¡Hola, Ian!</span>
+            <div class="avatar-placeholder"><a href="perfil.html">🧒🏽</a></div> 
+            <span class="user-greeting" id="saludo-usuario">¡Hola!</span>
         </div>
     </header>
 
+    <main class="main-content">
+        <div class="tarjeta-hero">
+            <div class="emoji-hero">🚀</div>
+            <h2>¡Es hora de jugar!</h2>
+            <p>¿Qué sonidos practicaremos hoy?</p>
+            <a href="juegos.html" class="btn-jugar-grande">Ir a Juegos</a>
+        </div>
+    </main>
     
-    <!-- NAVEGACIÓN INFERIOR -->
     <nav class="bottom-nav">
-        <a href="home.html" class="nav-item active">
-            <span class="nav-icon">🏠</span> Inicio
-        </a>
-
-        <a href="juegos.html" class="nav-item">
-            <span class="nav-icon">🎮</span> Juegos
-        </a>
-
-        <a href="perfil.html" class="nav-item">
-            <span class="nav-icon">🔩</span> Mi Perfil
-        </a>
+        <a href="home.html" class="nav-item active"><span class="nav-icon">🏠</span>Inicio</a>
+        <a href="juegos.html" class="nav-item"><span class="nav-icon">🎮</span>Juegos</a>
+        <a href="perfil.html" class="nav-item"><span class="nav-icon">⚙️</span>Perfil</a>
     </nav>
 
     <script>
-    // Esto hace que el código se ejecute apenas cargue la página
-    document.addEventListener("DOMContentLoaded", () => {
-        // Buscamos el nombre que guardamos en el login
-        const nombreUsuario = localStorage.getItem('nombre_usuario');
-        
-        if (nombreUsuario) {
-            // Si hay un nombre guardado, cambiamos el texto
-            const saludoElement = document.getElementById('saludo-usuario');
-            // Ponemos la primera letra en mayúscula por si la escribieron en minúscula
-            const nombreFormateado = nombreUsuario.charAt(0).toUpperCase() + nombreUsuario.slice(1);
-            
-            saludoElement.textContent = `¡Hola, ${nombreFormateado}!`;
-        } else {
-            // Si alguien intenta entrar al home sin iniciar sesión, lo pateamos a la pantalla de login
-            window.location.href = 'sesion.html';
-        }
-    });
-</script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const nombreUsuario = localStorage.getItem('nombre_usuario');
+            if (nombreUsuario) {
+                const saludoElement = document.getElementById('saludo-usuario');
+                const nombreFormateado = nombreUsuario.charAt(0).toUpperCase() + nombreUsuario.slice(1);
+                saludoElement.textContent = `¡Hola, ${nombreFormateado}!`;
+            } else {
+                window.location.href = 'sesion.html';
+            }
+        });
+    </script>
 </body>
 </html>
