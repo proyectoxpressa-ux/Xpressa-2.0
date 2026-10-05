@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xpressa+ | Panel Profesional</title>
+    <title>Xpressa+ | Panel Profesional Integrado</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -72,8 +72,9 @@
             background: rgba(255,255,255,0.9); border: 3px solid #FFF; color: #3B82F6;
             padding: 10px 20px; border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem;
             cursor: pointer; display: flex; align-items: center; gap: 8px; align-self: flex-start;
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1); transition: transform 0.1s;
         }
+        .btn-volver:active { transform: translateY(3px); box-shadow: 0 0 0 transparent; }
 
         .perfil-cabecera {
             background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 20px 30px;
@@ -96,7 +97,7 @@
             background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 25px;
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); border: 3px solid #FFF;
         }
-        .tarjeta-modulo h2 { font-family: 'Fredoka', sans-serif; font-size: 1.4rem; color: #1E3A8A; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .tarjeta-modulo h2 { font-family: 'Fredoka', sans-serif; font-size: 1.4rem; color: #1E3A8A; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; justify-content: space-between; }
 
         /* Tareas */
         .zona-upload {
@@ -121,8 +122,15 @@
             cursor: pointer; margin-top: 15px; box-shadow: 0 4px 0 #1D4ED8; transition: transform 0.1s;
         }
         .btn-accion:active { transform: translateY(4px); box-shadow: 0 0 0 #1D4ED8; }
+        
+        .btn-secundario {
+            background: transparent; border: 2px solid #3B82F6; color: #3B82F6; padding: 8px 15px;
+            border-radius: 15px; font-family: 'Fredoka', sans-serif; font-size: 1rem; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-secundario:hover { background: #EFF6FF; }
 
-        /* Estadísticas */
+        /* Estadísticas Resumen */
         .stat-bar-container { margin-bottom: 15px; }
         .stat-header { display: flex; justify-content: space-between; font-weight: 800; color: #475569; font-size: 0.95rem; margin-bottom: 5px; }
         .barra-fondo { background: #E2E8F0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }
@@ -146,6 +154,56 @@
 
         .columna-derecha { display: flex; flex-direction: column; gap: 20px; }
 
+
+        /* --- VISTA 3: REPORTE CLÍNICO (Imprimible) --- */
+        #vista-reporte { display: none; animation: fadeIn 0.4s ease; flex-direction: column; }
+        
+        .barra-acciones-reporte { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .btn-imprimir {
+            background: #10B981; color: white; border: none; padding: 12px 25px;
+            border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem;
+            cursor: pointer; box-shadow: 0 4px 0 #059669; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-imprimir:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
+
+        .hoja-reporte {
+            background: #FFFFFF; border-radius: 30px; padding: 40px;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15); border: 3px solid #FFF;
+        }
+
+        .reporte-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px dashed #E2E8F0; padding-bottom: 25px; margin-bottom: 25px; }
+        .info-texto-rep h1 { font-family: 'Fredoka', sans-serif; font-size: 2.2rem; color: #1E3A8A; line-height: 1.1; }
+        .info-texto-rep p { color: #64748B; font-weight: 800; font-size: 1rem; }
+        .datos-clinicos { text-align: right; }
+        .datos-clinicos p { color: #475569; font-weight: 700; margin-bottom: 5px; font-size: 0.95rem; }
+        .datos-clinicos strong { color: #1E293B; font-family: 'Fredoka', sans-serif; }
+
+        .grid-secciones { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .seccion h2 { font-family: 'Fredoka', sans-serif; font-size: 1.4rem; color: #1E3A8A; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+
+        .caja-metrica { background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 20px; padding: 20px; margin-bottom: 15px; }
+        .bg-verde { background: #10B981; } .bg-amarillo { background: #F59E0B; } .bg-rojo { background: #EF4444; }
+        .detalle-error { font-size: 0.85rem; color: #64748B; margin-top: 8px; font-weight: 700; }
+        .detalle-error span { color: #EF4444; }
+
+        .grid-habitos { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .habito-box { background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 20px; padding: 15px; text-align: center; }
+        .habito-box h4 { font-size: 0.85rem; color: #64748B; text-transform: uppercase; margin-bottom: 5px; }
+        .habito-box p { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; color: #1E293B; }
+        .habito-box p span { font-size: 1.2rem; }
+
+        .lista-tareas { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        .item-tarea { display: flex; align-items: center; gap: 15px; background: #F8FAFC; border: 2px solid #E2E8F0; padding: 15px; border-radius: 20px; }
+        .icono-tarea { font-size: 2rem; }
+        .info-tarea { flex: 1; }
+        .info-tarea h4 { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; color: #1E293B; }
+        .info-tarea p { font-size: 0.85rem; color: #64748B; font-weight: 700; }
+        .etiqueta-estado { padding: 4px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; }
+        .estado-ok { background: #D1FAE5; color: #059669; }
+        .estado-dificil { background: #FEF3C7; color: #D97706; }
+        .estado-pendiente { background: #F1F5F9; color: #64748B; }
+
+
         /* --- MODAL VINCULAR --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -158,17 +216,21 @@
             display: flex; flex-direction: column; gap: 15px;
         }
         .modal-content h3 { font-family: 'Fredoka', sans-serif; color: #1E3A8A; font-size: 1.5rem; }
-        .codigo-generado {
-            background: #F8FAFC; border: 3px dashed #CBD5E1; padding: 15px;
-            font-family: 'Fredoka', sans-serif; font-size: 2.5rem; color: #3B82F6;
-            letter-spacing: 3px; border-radius: 20px; margin: 10px 0;
-        }
-        .btn-cerrar-modal {
-            background: #EF4444; color: white; border: none; padding: 12px;
-            border-radius: 15px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem; cursor: pointer;
+        .codigo-generado { background: #F8FAFC; border: 3px dashed #CBD5E1; padding: 15px; font-family: 'Fredoka', sans-serif; font-size: 2.5rem; color: #3B82F6; letter-spacing: 3px; border-radius: 20px; margin: 10px 0; }
+        .btn-cerrar-modal { background: #EF4444; color: white; border: none; padding: 12px; border-radius: 15px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem; cursor: pointer; }
+
+
+        /* --- ESTILOS PARA IMPRESIÓN (PDF) --- */
+        @media print {
+            body { background: white; }
+            .burbuja, .navbar, .barra-acciones-reporte, #vista-dashboard, #vista-expediente, .modal-overlay { display: none !important; }
+            #vista-reporte { display: block !important; }
+            .main-container { margin: 0; padding: 0; max-width: 100%; }
+            .hoja-reporte { box-shadow: none; border: none; padding: 0; }
+            .caja-metrica, .habito-box, .item-tarea { border: 1px solid #CCC; background: #FFF; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
 
-        @media (max-width: 900px) { .layout-modulos { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .layout-modulos, .grid-secciones { grid-template-columns: 1fr; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -188,10 +250,10 @@
 
     <main class="main-container">
 
-        <!-- VISTA DASHBOARD -->
+        <!-- ==========================================
+             VISTA 1: DASHBOARD
+             ========================================== -->
         <div id="vista-dashboard">
-            
-            <!-- Barra de Acción con el Botón Vincular -->
             <div class="action-bar">
                 <div class="bienvenida">
                     <h1>Hola, Especialista 👋</h1>
@@ -202,13 +264,12 @@
                 </button>
             </div>
 
-            <!-- Grilla de Pacientes -->
             <div class="grid-pacientes">
-                <div class="tarjeta-paciente" onclick="abrirExpediente('Lihuel', '🧒🏽', '3', '150')">
+                <div class="tarjeta-paciente" onclick="abrirExpediente('Lihuel Silva', '🧒🏽', '3', '150')">
                     <div class="tp-header">
                         <div class="tp-avatar">🧒🏽</div>
                         <div class="tp-info">
-                            <span class="tp-nombre">Lihuel</span>
+                            <span class="tp-nombre">Lihuel Silva</span>
                             <span class="tp-estado">🟢 Activo hoy</span>
                         </div>
                     </div>
@@ -218,11 +279,11 @@
                     </div>
                 </div>
 
-                <div class="tarjeta-paciente" onclick="abrirExpediente('Sofía', '👧🏻', '0', '80')">
+                <div class="tarjeta-paciente" onclick="abrirExpediente('Sofía Martínez', '👧🏻', '0', '80')">
                     <div class="tp-header">
                         <div class="tp-avatar">👧🏻</div>
                         <div class="tp-info">
-                            <span class="tp-nombre">Sofía</span>
+                            <span class="tp-nombre">Sofía Martínez</span>
                             <span class="tp-estado" style="color: #F59E0B;">🟠 Hace 4 días</span>
                         </div>
                     </div>
@@ -234,7 +295,9 @@
             </div>
         </div>
 
-        <!-- VISTA EXPEDIENTE -->
+        <!-- ==========================================
+             VISTA 2: EXPEDIENTE
+             ========================================== -->
         <div id="vista-expediente">
             <button class="btn-volver" onclick="cerrarExpediente()">🔙 Volver a Mis Pacientes</button>
 
@@ -259,7 +322,7 @@
             </div>
 
             <div class="layout-modulos">
-                <!-- Asignar Tareas -->
+                <!-- Columna Izq: Tareas -->
                 <div class="tarjeta-modulo">
                     <h2>📸 Asignar Actividad</h2>
                     <p style="color: #64748B; margin-bottom: 20px; font-weight: 700; font-size: 0.95rem;">Sube una foto de un ejercicio para que el niño lo vea en su panel de inicio.</p>
@@ -273,10 +336,13 @@
                     <button class="btn-accion" onclick="alert('¡Tarea enviada al paciente!')">Enviar Actividad</button>
                 </div>
 
-                <!-- Estadísticas y Mochila -->
+                <!-- Columna Der: Estadísticas Resumen y Mochila -->
                 <div class="columna-derecha">
                     <div class="tarjeta-modulo">
-                        <h2>📊 Rendimiento</h2>
+                        <h2>
+                            📊 Rendimiento 
+                            <button class="btn-secundario" onclick="abrirReporte()">Ver Reporte Completo</button>
+                        </h2>
                         <div class="stat-bar-container">
                             <div class="stat-header"><span>Precisión Fonema R</span> <span>80%</span></div>
                             <div class="barra-fondo"><div class="barra-progreso" style="width: 80%;"></div></div>
@@ -300,9 +366,107 @@
             </div>
         </div>
 
+        <!-- ==========================================
+             VISTA 3: REPORTE CLÍNICO (Imprimible)
+             ========================================== -->
+        <div id="vista-reporte">
+            <div class="barra-acciones-reporte">
+                <button class="btn-volver" onclick="cerrarReporte()">🔙 Volver al Expediente</button>
+                <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+            </div>
+
+            <div class="hoja-reporte">
+                <header class="reporte-header">
+                    <div class="pc-identidad">
+                        <div class="pc-avatar" id="rep-avatar">🧒🏽</div>
+                        <div class="info-texto-rep">
+                            <h1 id="rep-nombre">Nombre</h1>
+                            <p>ID: XPR-482 | Edad: 6 años</p>
+                        </div>
+                    </div>
+                    <div class="datos-clinicos">
+                        <p>Fecha de Reporte: <strong>24 Octubre 2023</strong></p>
+                        <p>Profesional: <strong>Dr. Martín (Mat. 1234)</strong></p>
+                        <p>Período: <strong>Últimos 14 días</strong></p>
+                    </div>
+                </header>
+
+                <div class="grid-secciones">
+                    <!-- Clínico -->
+                    <div>
+                        <div class="seccion">
+                            <h2>📊 Rendimiento Fonológico</h2>
+                            <div class="caja-metrica">
+                                <div class="stat-header"><span>Sonido R - RR (Aislado)</span> <span>85%</span></div>
+                                <div class="barra-fondo"><div class="barra-progreso bg-verde" style="width: 85%;"></div></div>
+                                <p class="detalle-error">✓ Excelente progreso. Tiempo de respuesta rápido.</p>
+                            </div>
+                            <div class="caja-metrica">
+                                <div class="stat-header"><span>Sinfón TR (Trencito)</span> <span>50%</span></div>
+                                <div class="barra-fondo"><div class="barra-progreso bg-amarillo" style="width: 50%;"></div></div>
+                                <p class="detalle-error">⚠️ Errores frecuentes: Sustituye por <span>"T" (Tactor en vez de Tractor)</span>.</p>
+                            </div>
+                            <div class="caja-metrica">
+                                <div class="stat-header"><span>Sonido S (Serpiente)</span> <span>30%</span></div>
+                                <div class="barra-fondo"><div class="barra-progreso bg-rojo" style="width: 30%;"></div></div>
+                                <p class="detalle-error">❌ Alta dificultad. Abandona el juego a los 2 minutos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hábitos y Tareas -->
+                    <div>
+                        <div class="seccion">
+                            <h2>🎮 Hábitos de Práctica en Casa</h2>
+                            <div class="grid-habitos">
+                                <div class="habito-box">
+                                    <h4>Tiempo Semanal</h4>
+                                    <p>⏱️ 45 <span>min</span></p>
+                                </div>
+                                <div class="habito-box">
+                                    <h4>Días de Racha</h4>
+                                    <p>🔥 <span id="rep-racha">3</span> <span>días</span></p>
+                                </div>
+                                <div class="habito-box">
+                                    <h4>Juego Favorito</h4>
+                                    <p>🚂 <span>Trencito</span></p>
+                                </div>
+                                <div class="habito-box">
+                                    <h4>Puntos</h4>
+                                    <p>⭐ <span id="rep-estrellas">320</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="seccion" style="margin-top: 30px;">
+                            <h2>📸 Seguimiento de Tareas</h2>
+                            <div class="lista-tareas">
+                                <div class="item-tarea">
+                                    <div class="icono-tarea">👅</div>
+                                    <div class="info-tarea">
+                                        <h4>Ejercicio de Vibración</h4>
+                                        <p>Enviado el 20 Oct.</p>
+                                    </div>
+                                    <div class="etiqueta-estado estado-ok">✅ Completada</div>
+                                </div>
+                                <div class="item-tarea">
+                                    <div class="icono-tarea">🪞</div>
+                                    <div class="info-tarea">
+                                        <h4>Frente al espejo (Letra S)</h4>
+                                        <p>Enviado el 22 Oct.</p>
+                                    </div>
+                                    <div class="etiqueta-estado estado-dificil">🥵 Les costó</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Modal para generar código de vinculación -->
+    <!-- Modal Vincular -->
     <div class="modal-overlay" id="modal-vinculacion">
         <div class="modal-content">
             <h3>Código de Vinculación</h3>
@@ -315,16 +479,25 @@
     <script>
         const vistaDashboard = document.getElementById('vista-dashboard');
         const vistaExpediente = document.getElementById('vista-expediente');
+        const vistaReporte = document.getElementById('vista-reporte');
 
-        // Funciones del Expediente
+        // Lógica de Navegación del Panel
         function abrirExpediente(nombre, avatar, racha, estrellas) {
+            // Llenar datos en la vista Expediente
             document.getElementById('exp-nombre').textContent = nombre;
             document.getElementById('exp-avatar').textContent = avatar;
             document.getElementById('exp-racha').textContent = racha;
             document.getElementById('exp-estrellas').textContent = estrellas;
 
+            // Llenar datos en la vista Reporte para que coincidan
+            document.getElementById('rep-nombre').textContent = nombre;
+            document.getElementById('rep-avatar').textContent = avatar;
+            document.getElementById('rep-racha').textContent = racha;
+            document.getElementById('rep-estrellas').textContent = estrellas;
+
             vistaDashboard.style.display = 'none';
             vistaExpediente.style.display = 'flex';
+            window.scrollTo(0, 0);
         }
 
         function cerrarExpediente() {
@@ -332,6 +505,19 @@
             vistaDashboard.style.display = 'block';
         }
 
+        function abrirReporte() {
+            vistaExpediente.style.display = 'none';
+            vistaReporte.style.display = 'flex';
+            window.scrollTo(0, 0);
+        }
+
+        function cerrarReporte() {
+            vistaReporte.style.display = 'none';
+            vistaExpediente.style.display = 'flex';
+            window.scrollTo(0, 0);
+        }
+
+        // Lógica de subida de fotos
         function mostrarNombreFoto() {
             const input = document.getElementById('input-foto');
             const texto = document.getElementById('texto-foto');
@@ -341,9 +527,8 @@
             }
         }
 
-        // Funciones del Modal de Vinculación
+        // Lógica del Modal
         function abrirModal() {
-            // Genera un código aleatorio de 3 números para simular el sistema
             const randomNum = Math.floor(100 + Math.random() * 900);
             document.getElementById('texto-codigo').textContent = `XPR-${randomNum}`;
             document.getElementById('modal-vinculacion').style.display = 'flex';

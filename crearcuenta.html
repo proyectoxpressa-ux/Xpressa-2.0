@@ -15,6 +15,19 @@
             justify-content: center; min-height: 100vh; padding: 20px;
             font-family: 'Nunito', sans-serif;
         }
+
+        /* --- BURBUJAS DE FONDO (Para llenar los vacíos) --- */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 150px; height: 150px; top: -20px; right: -30px; }
+        .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
+        .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
+
         @keyframes fondoMagico { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .caja-crearcuenta {
@@ -46,8 +59,8 @@
         }
         .input-texto::placeholder { color: #CBD5E1; }
         .input-texto:focus {
-            outline: none; border-color: #10B981; background-color: #ffffff;
-            box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.15); transform: scale(1.02);
+           outline: none; border-color: #3B82F6; background-color: #ffffff;
+        box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.15); transform: scale(1.02);  
         }
 
         .btn-crearcuenta {
@@ -67,6 +80,13 @@
     </style>
 </head>
 <body>
+
+    <!-- Burbujas decorativas de fondo -->
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+    <div class="burbuja burbuja-4"></div>
+    
     <div class="caja-crearcuenta">
         <div class="emoji-header">🚀</div>
         <h1>¡Sumate!</h1>
@@ -81,7 +101,19 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="password">Contraseña secreta</label>
-                <input class="input-texto" type="password" id="password" name="password" placeholder="••••••••" required>
+                <div style="position: relative;">
+                    <!-- El input con espacio a la derecha -->
+                    <input class="input-texto" type="password" id="password" name="password" placeholder="••••••••" required style="padding-right: 45px;">
+                    
+                    <!-- Contenedor del ojo -->
+                    <div id="btn-ojo" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #94A3B8; display: flex;">
+                        <!-- Ojo tachado (VISIBLE por defecto porque arranca oculta) -->
+                        <svg id="ojo-cerrado" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                        
+                        <!-- Ojo normal (OCULTO por defecto) -->
+                        <svg id="ojo-abierto" style="display: none;" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn-crearcuenta">Crear Cuenta</button>
             <h3>¿Ya tienes cuenta? <a href="sesion.html">Inicia Sesión</a></h3>
@@ -106,6 +138,23 @@
             } else { alert('Error: ' + data.mensaje); }
         } catch (error) { console.error('Error:', error); alert('No se pudo conectar.'); }
     });
+
+    // Mostrar/Ocultar contraseña corregido
+        document.getElementById('btn-ojo').addEventListener('click', function() {
+            const inputPass = document.getElementById('password');
+            const ojoAbierto = document.getElementById('ojo-abierto');
+            const ojoCerrado = document.getElementById('ojo-cerrado');
+            
+            if (inputPass.type === 'password') {
+                inputPass.type = 'text'; // Contraseña visible
+                ojoCerrado.style.display = 'none'; // Ocultamos el tachado
+                ojoAbierto.style.display = 'block'; // Mostramos el destapado
+            } else {
+                inputPass.type = 'password'; // Contraseña oculta
+                ojoAbierto.style.display = 'none'; // Ocultamos el destapado
+                ojoCerrado.style.display = 'block'; // Mostramos el tachado
+            }
+        });
     </script>
 </body>
 </html>
