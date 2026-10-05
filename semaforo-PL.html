@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xpressa+ | Semáforo PL</title>
+    <title>Semáforo C - Educativo e Interactivo</title>
     
-    <!-- Fuentes oficiales de Xpressa+ -->
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* =========================================
-           1. AJUSTES GENERALES
-           ========================================= */
         * { 
             margin: 0; 
             padding: 0; 
@@ -20,319 +20,253 @@
         }
         
         body {
-            background-color: #F0F8FF; /* Celeste pastel */
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;    
-            padding: 30px 15px 100px;
-        }
-
-        .top-bar {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .btn-volver {
-            text-decoration: none;
-            color: #4A90E2;
-            font-weight: 800;
-            font-size: 15px; 
-            background: #FFFFFF;
-            padding: 8px 16px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.15);
-        }
-
-        /* =========================================
-           2. LA TARJETA DEL JUEGO
-           ========================================= */
-        .tarjeta-juego {
-            background-color: #FFFFFF;
-            width: 100%; 
-            max-width: 450px;
-            border-radius: 25px; 
-            padding: 30px 20px;
-            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15);
-            text-align: center;
-        }
-
-        .titulo-juego {
-            font-family: 'Fredoka', sans-serif; 
-            color: #4A90E2;
-            font-size: 26px; 
-            margin-bottom: 5px;
-        }
-
-        .instruccion {
-            color: #64748B; 
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 25px;
-        }
-
-        /* =========================================
-           3. EL ESTÍMULO (Caja de Imagen)
-           ========================================= */
-        .caja-estimulo {
-            width: 180px;
-            height: 180px;
-            background-color: #E8F2FC; 
-            border: 4px solid #93C5FD; 
-            border-radius: 30px; 
-            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 15px 40px;
+        }
+
+        .font-fredoka {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-pop {
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Botones Circulares con Estilo 3D Grueso original */
+        .btn-semaforo-3d {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.1);
+            transition: all 0.08s ease;
+            outline: none;
         }
 
-        /* Ajuste para las imágenes reales */
-        .caja-estimulo img {
-            width: 70%;
-            height: 70%;
-            object-fit: contain;
-            pointer-events: none;
+        @media (min-width: 640px) {
+            .btn-semaforo-3d {
+                width: 95px;
+                height: 95px;
+            }
         }
 
-        .nombre-imagen {
-            font-size: 18px;
-            font-weight: 800;
-            color: #334155;
-            margin-top: 5px;
-            text-transform: capitalize;
+        .btn-rojo-3d {
+            background-color: #FF6B6B;
+            box-shadow: 0 8px 0 #D93838, 0 12px 20px rgba(255, 107, 107, 0.4);
+        }
+        .btn-rojo-3d:active {
+            box-shadow: 0 0 0 #D93838, 0 4px 10px rgba(255, 107, 107, 0.4);
+            transform: translateY(8px);
         }
 
-        /* =========================================
-           4. LOS BOTONES DEL SEMÁFORO (SÍ / NO)
-           ========================================= */
-        .contenedor-semaforo {
-            display: flex;
-            justify-content: space-between; 
-            gap: 15px; 
-        }
-
-        .btn-semaforo {
-            flex: 1; 
-            border: none;
-            border-radius: 20px;
-            padding: 15px 5px;
-            font-size: 35px; 
-            cursor: pointer;
-            transition: all 0.1s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .texto-btn {
-            font-size: 16px;
-            font-weight: 800;
-            color: #FFFFFF;
-        }
-
-        .btn-semaforo:active {
-            transform: translateY(6px);
-        }
-
-        .rojo {
-            background-color: #FF8FA3; 
-            box-shadow: 0 6px 0 #E57388;
-        }
-        .rojo:active { box-shadow: 0 0 0 #E57388; }
-
-        .verde {
-            background-color: #58CC93; 
-            box-shadow: 0 6px 0 #4EA87A;
-        }
-        .verde:active { box-shadow: 0 0 0 #4EA87A; }
-
-        /* =========================================
-           5. CAJA DE FEEDBACK Y NAVEGACIÓN
-           ========================================= */
-        .contenedor-feedback {
-            display: none; /* Se activa con JavaScript */
-            margin-top: 10px;
-        }
-
-        .mensaje-feedback {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .mensaje-exito { color: #22C55E; }
-        .mensaje-error { color: #EF4444; }
-
-        .btn-accion {
-            width: 100%;
-            border: none;
-            border-radius: 20px;
-            padding: 15px 20px;
-            font-size: 18px;
-            font-weight: 800;
-            color: white;
-            cursor: pointer;
-            transition: all 0.1s ease;
-        }
-
-        .btn-accion:active {
-            transform: translateY(4px);
-        }
-
-        .btn-siguiente {
-            background-color: #4A90E2;
-            box-shadow: 0 6px 0 #357ABD;
-        }
-        .btn-siguiente:active { box-shadow: 0 0 0 #357ABD; }
-
-        .btn-reiniciar {
+        .btn-amarillo-3d {
             background-color: #FFB703;
-            box-shadow: 0 6px 0 #D99B00;
+            box-shadow: 0 8px 0 #CCA100, 0 12px 20px rgba(255, 183, 3, 0.4);
         }
-        .btn-reiniciar:active { box-shadow: 0 0 0 #D99B00; }
+        .btn-amarillo-3d:active {
+            box-shadow: 0 0 0 #CCA100, 0 4px 10px rgba(255, 183, 3, 0.4);
+            transform: translateY(8px);
+        }
 
+        .btn-verde-3d {
+            background-color: #2EC4B6;
+            box-shadow: 0 8px 0 #209489, 0 12px 20px rgba(46, 196, 182, 0.4);
+        }
+        .btn-verde-3d:active {
+            box-shadow: 0 0 0 #209489, 0 4px 10px rgba(46, 196, 182, 0.4);
+            transform: translateY(8px);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Botón Volver -->
-    <div class="top-bar">
-        <a href="lobby-semaforo.html" class="btn-volver">← Volver</a> 
-    </div>
-    
-    <!-- Tarjeta Principal del Juego -->
-    <div class="tarjeta-juego" id="tarjeta">
-        <h1 class="titulo-juego">Semáforo</h1>
-        <p class="instruccion">¿Esta imagen tiene el sonido <b>PL</b>?</p>
+    <header class="w-full max-w-md flex justify-between items-center mb-2">
+        <a href="#" onclick="reiniciarApp()" class="bg-white/80 hover:bg-white text-sky-600 font-extrabold px-4 py-2 rounded-2xl shadow-md transition-all flex items-center gap-2 text-sm">
+            <span>🏠</span> Inicio
+        </a>
+        <div id="progreso-texto" class="bg-white/85 text-slate-700 font-extrabold px-4 py-2 rounded-2xl shadow-md text-sm">
+            Pregunta 1 de 5
+        </div>
+    </header>
 
-        <!-- Se carga dinámicamente desde JS -->
-        <div class="caja-estimulo" id="dibujo-palabra"></div>
+    <main class="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center animate-pop my-auto">
+        
+        <h1 class="font-fredoka text-3xl text-sky-600 mb-1">Semáforo C 🚦</h1>
+        <p class="text-slate-500 font-bold text-sm mb-6" id="instruccion-texto">
+            ¿Esta palabra contiene el sonido inicial <b>"C"</b>?
+        </p>
 
-        <!-- Botones SÍ / NO -->
-        <div class="contenedor-semaforo" id="contenedor-opciones">
-            <button class="btn-semaforo rojo" id="btn-no" onclick="responder(false)">
-                <span>❌</span>
-                <span class="texto-btn">NO</span>
+        <!-- Caja de Estímulo Visual -->
+        <div class="relative w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sky-50 border-4 border-sky-200 rounded-3xl flex flex-col items-center justify-center shadow-inner mb-8 transition-transform duration-300 hover:scale-105" id="caja-estimulo">
+            <span class="text-7xl mb-2" id="icono-estimulo">🏠</span>
+            <span class="font-fredoka text-2xl text-slate-700 uppercase tracking-wide" id="palabra-estimulo">Casa</span>
+        </div>
+
+        <!-- Botones del Semáforo (100% circulares con estilo 3D grueso original) -->
+        <div class="flex justify-center items-center gap-4 sm:gap-6 my-6" id="contenedor-botones">
+            
+            <!-- Botón ROJO (NO) con icono X -->
+            <button onclick="verificarRespuesta(false)" class="btn-semaforo-3d btn-rojo-3d group" title="No">
+                <svg class="w-10 h-10 text-white group-hover:scale-110 transition-transform drop-shadow" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
             </button>
 
-            <button class="btn-semaforo verde" id="btn-si" onclick="responder(true)">
-                <span>✅</span>
-                <span class="texto-btn">SÍ</span>
+            <!-- Botón AMARILLO (ESCUCHAR) con icono de parlante -->
+            <button onclick="reproducirVoz()" class="btn-semaforo-3d btn-amarillo-3d group" title="Escuchar palabra">
+                <svg class="w-10 h-10 text-white group-hover:scale-110 transition-transform drop-shadow" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                </svg>
+            </button>
+
+            <!-- Botón VERDE (SÍ) con icono de tilde -->
+            <button onclick="verificarRespuesta(true)" class="btn-semaforo-3d btn-verde-3d group" title="Sí">
+                <svg class="w-10 h-10 text-white group-hover:scale-110 transition-transform drop-shadow" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </button>
+
+        </div>
+
+        <!-- Panel de Feedback (Oculto inicialmente) -->
+        <div id="panel-feedback" class="hidden mt-4 p-5 rounded-2xl animate-pop">
+            <p id="texto-feedback" class="font-fredoka text-2xl mb-4"></p>
+            <button id="btn-accion-feedback" onclick="manejarAccionFeedback()" class="w-full py-3.5 px-6 rounded-2xl font-fredoka text-lg text-white shadow-md transition-transform active:scale-95">
+                Siguiente
             </button>
         </div>
 
-        <!-- Botón de Siguiente / Reiniciar tras responder -->
-        <div class="contenedor-feedback" id="contenedor-feedback">
-            <p class="mensaje-feedback" id="mensaje-feedback"></p>
-            <button class="btn-accion" id="btn-accion"></button>
-        </div>
-    </div>
+    </main>
 
     <script>
-        // =========================================
-        // 1. BANCO DE IMÁGENES (Poner rutas reales a tus .png)
-        // =========================================
-        const bancoImagenes = [
-            { nombre: 'Compra', archivo: 'imagenes/compra.png', tieneSonido: false },
-            { nombre: 'Plato', archivo: 'imagenes/plato.png', tieneSonido: true },
-            { nombre: 'Planta', archivo: 'imagenes/planta.png', tieneSonido: true },
-            { nombre: 'Raton', archivo: 'imagenes/raton.png', tieneSonido: false },
-            { nombre: 'Playa', archivo: 'imagenes/playa.png', tieneSonido: true }
+        const bancoDatos = [
+            { palabra: "Casa", icono: "🏠", tieneSonido: true },
+            { palabra: "Sol", icono: "☀️", tieneSonido: false },
+            { palabra: "Cuchara", icono: "🥄", tieneSonido: true },
+            { palabra: "Robot", icono: "🤖", tieneSonido: false },
+            { palabra: "Coche", icono: "🚗", tieneSonido: true }
         ];
 
         let indiceActual = 0;
+        let estadoActual = 'jugando'; // 'jugando', 'feedback_acierto', 'feedback_error', 'victoria'
 
-        // Referencias del HTML
-        const dibujoPalabra = document.getElementById('dibujo-palabra');
-        const contenedorOpciones = document.getElementById('contenedor-opciones');
-        const contenedorFeedback = document.getElementById('contenedor-feedback');
-        const mensajeFeedback = document.getElementById('mensaje-feedback');
-        const btnAccion = document.getElementById('btn-accion');
+        const elementoProgreso = document.getElementById('progreso-texto');
+        const elementoIcono = document.getElementById('icono-estimulo');
+        const elementoPalabra = document.getElementById('palabra-estimulo');
+        const contenedorBotones = document.getElementById('contenedor-botones');
+        const panelFeedback = document.getElementById('panel-feedback');
+        const textoFeedback = document.getElementById('texto-feedback');
+        const btnAccionFeedback = document.getElementById('btn-accion-feedback');
+        const tarjetaPrincipal = document.querySelector('main');
 
-        // =========================================
-        // 2. MOSTRAR LA IMAGEN ACTUAL
-        // =========================================
-        function cargarImagenActual() {
-            const item = bancoImagenes[indiceActual];
-
-            // Renderizar la imagen y su nombre
-            dibujoPalabra.innerHTML = `
-                <img src="${item.archivo}" alt="${item.nombre}" onerror="this.style.display='none'">
-                <span class="nombre-imagen">${item.nombre}</span>
-            `;
-
-            // Ocultar pantalla de feedback y mostrar los botones SÍ/NO
-            contenedorFeedback.style.display = 'none';
-            contenedorOpciones.style.display = 'flex';
+        function iniciarJuego() {
+            indiceActual = 0;
+            cargarEstimulo();
         }
 
-        // =========================================
-        // 3. EVALUAR LA RESPUESTA
-        // =========================================
-        function responder(eleccionUsuario) {
-            const item = bancoImagenes[indiceActual];
-            const esCorrecto = (eleccionUsuario === item.tieneSonido);
+        function cargarEstimulo() {
+            estadoActual = 'jugando';
+            const item = bancoDatos[indiceActual];
 
-            // Ocultar botones SÍ/NO y activar la zona de feedback
-            contenedorOpciones.style.display = 'none';
-            contenedorFeedback.style.display = 'block';
+            elementoProgreso.innerText = `Pregunta ${indiceActual + 1} de ${bancoDatos.length}`;
+            elementoIcono.innerText = item.icono;
+            elementoPalabra.innerText = item.palabra;
 
-            if (esCorrecto) {
-                mensajeFeedback.innerText = "¡Adivinaste!";
-                mensajeFeedback.className = "mensaje-feedback mensaje-exito";
+            contenedorBotones.classList.remove('hidden');
+            panelFeedback.classList.add('hidden');
+            
+            // Reproducir audio automáticamente al mostrar el ítem
+            setTimeout(() => reproducirVoz(), 400);
+        }
+
+        function reproducirVoz() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const item = bancoDatos[indiceActual];
+                const utterance = new SpeechSynthesisUtterance(item.palabra);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function verificarRespuesta(eleccionUsuario) {
+            const item = bancoDatos[indiceActual];
+            const esAcertado = (eleccionUsuario === item.tieneSonido);
+
+            contenedorBotones.classList.add('hidden');
+            panelFeedback.classList.remove('hidden');
+
+            if (esAcertado) {
+                panelFeedback.className = "mt-4 p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 animate-pop";
+                textoFeedback.className = "font-fredoka text-2xl text-emerald-600 mb-4";
+                textoFeedback.innerText = "¡Correcto! 🎉 ¡Muy bien!";
                 
-                btnAccion.innerText = "Siguiente imagen";
-                btnAccion.className = "btn-accion btn-siguiente";
-                btnAccion.onclick = avanzarSiguiente;
+                btnAccionFeedback.className = "w-full py-3.5 px-6 rounded-2xl font-fredoka text-lg text-white bg-emerald-500 hover:bg-emerald-600 shadow-md transition-transform active:scale-95";
+                btnAccionFeedback.innerText = "Siguiente imagen ➡️";
+                estadoActual = 'feedback_acierto';
             } else {
-                mensajeFeedback.innerText = " Intentémoslo de nuevo ";
-                mensajeFeedback.className = "mensaje-feedback mensaje-error";
-
-                btnAccion.innerText = "Reintentar";
-                btnAccion.className = "btn-accion btn-reiniciar";
-                btnAccion.onclick = reiniciarImagen;
+                panelFeedback.className = "mt-4 p-5 rounded-2xl bg-rose-50 border-2 border-rose-200 animate-pop";
+                textoFeedback.className = "font-fredoka text-2xl text-rose-600 mb-4";
+                textoFeedback.innerText = "❌ Intentémoslo de nuevo";
+                
+                btnAccionFeedback.className = "w-full py-3.5 px-6 rounded-2xl font-fredoka text-lg text-white bg-amber-500 hover:bg-amber-600 shadow-md transition-transform active:scale-95";
+                btnAccionFeedback.innerText = "Reintentar 🔄";
+                estadoActual = 'feedback_error';
             }
         }
 
-        // =========================================
-        // 4. ACCIONES DE NAVEGACIÓN
-        // =========================================
-        function avanzarSiguiente() {
-            indiceActual++;
-
-            // Si quedan más imágenes en la lista, mostramos la siguiente
-            if (indiceActual < bancoImagenes.length) {
-                cargarImagenActual();
-            } else {
-                // Si completó todas las imágenes, mostramos la victoria final
-                mostrarVictoriaFinal();
+        function manejarAccionFeedback() {
+            if (estadoActual === 'feedback_acierto') {
+                indiceActual++;
+                if (indiceActual < bancoDatos.length) {
+                    cargarEstimulo();
+                } else {
+                    mostrarPantallaVictoria();
+                }
+            } else if (estadoActual === 'feedback_error') {
+                panelFeedback.classList.add('hidden');
+                contenedorBotones.classList.remove('hidden');
+                estadoActual = 'jugando';
             }
         }
 
-        function reiniciarImagen() {
-            // Mantiene el mismo indiceActual y vuelve a cargar
-            cargarImagenActual();
-        }
-
-        function mostrarVictoriaFinal() {
-            document.getElementById('tarjeta').innerHTML = `
-                <h1 class="titulo-juego">¡Felicidades! 🎉</h1>
-                <p class="instruccion">Completaste todas las palabras del Semáforo.</p>
-                <div class="caja-estimulo" style="font-size: 70px;">⭐</div>
-                <a href="lobby-semaforo.html" class="btn-accion btn-siguiente" style="display:inline-block; text-decoration:none;">
-                    Volver a Jugar
-                </a>
+        function mostrarPantallaVictoria() {
+            estadoActual = 'victoria';
+            tarjetaPrincipal.innerHTML = `
+                <div class="py-6 animate-pop">
+                    <div class="text-7xl mb-4">🏆⭐</div>
+                    <h1 class="font-fredoka text-3xl text-sky-600 mb-2">¡Felicidades!</h1>
+                    <p class="text-slate-600 font-bold mb-6 text-base">
+                        ¡Completaste todas las palabras del Semáforo C correctamente! Hiciste un gran trabajo.
+                    </p>
+                    <button onclick="reiniciarApp()" class="w-full py-4 px-6 rounded-2xl font-fredoka text-lg text-white bg-sky-500 hover:bg-sky-600 shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2">
+                        <span>🔄</span> Volver a elegir otro sonido
+                    </button>
+                </div>
             `;
         }
 
-        // Cargar la primera imagen al iniciar la página
-        cargarImagenActual();
+        function reiniciarApp() {
+            window.location.reload();
+        }
+
+        window.onload = function() {
+            iniciarJuego();
+        };
     </script>
 </body>
 </html>
