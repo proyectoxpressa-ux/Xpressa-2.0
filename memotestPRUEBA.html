@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Memotest</title>
+
+    <!-- Nuestras fuentes mágicas -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        body {
+            /* Fondo con degradado azul cielo divertido */
+            background: linear-gradient(135deg, #a3ceef 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* --- BURBUJAS DE FONDO (Para llenar los vacíos) --- */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 150px; height: 150px; top: -20px; right: -30px; }
+        .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
+        .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
+
+        .top-bar {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .btn-volver {
+            text-decoration: none;
+            color: #4A90E2;
+            font-weight: 800;
+            font-size: 18px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #FFFFFF;
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(75, 145, 225, 0.1);
+        }
+
+        /* CARTELITO ANIMADO PARA LAS PALABRAS */
+        .cartel-palabra {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-150px); /* Escondido arriba por defecto */
+            background-color: #10B981; /* Verde éxito */
+            color: white;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            border: 4px solid #FFFFFF;
+            z-index: 1000;
+            text-transform: capitalize;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote */
+            pointer-events: none;
+        }
+
+        .cartel-palabra.mostrar {
+            transform: translateX(-50%) translateY(0); /* Baja a la pantalla */
+        }
+
+        /* CONTENEDOR DEL TABLERO */
+        .contenedor-juego {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15), inset 0 0 0 5px #FFFFFF;
+            width: 100%;
+            max-width: 680px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        #titulo-juego {
+            font-family: 'Fredoka', sans-serif;
+            color: #1E3A8A;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* GRILLA DEL MEMOTEST */
+        #tablero {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columnas dinámicas */
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ESTILO DE LAS CARTAS (Fichas) */
+        .carta {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            /* Dorso súper vibrante (Azul-Violeta) */
+            background: linear-gradient(135deg, #60A5FA 0%, #8B5CF6 100%);
+            border: 4px solid #FFFFFF;
+            border-radius: 22px;
+            color: white;
+            
+            /* Sombra 3D y resplandor */
+            box-shadow: 0 8px 0 #4C1D95, 0 10px 20px rgba(139, 92, 246, 0.3);
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .signo {
+            font-size: 3.5rem;
+            text-shadow: 0 4px 0 #4C1D95;
+            transition: transform 0.2s;
+        }
+
+        .carta:hover .signo {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Efecto de hundimiento al apretar */
+        .carta:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #4C1D95, 0 5px 10px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Animación rápida de giro (flip) al revelar */
+        @keyframes flip-in {
+            0% { transform: scaleX(0); opacity: 0; }
+            100% { transform: scaleX(1); opacity: 1; }
+        }
+
+        /* ESTADO: CARTA REVELADA (Frente blanco brillante) */
+        .carta.revelada {
+            background: #FFFFFF;
+            border-color: #93C5FD;
+            box-shadow: 0 6px 0 #BFDBFE;
+            transform: translateY(2px);
+            cursor: default;
+            animation: flip-in 0.25s ease-out forwards;
+        }
+
+        /* Animación de baile de victoria */
+        @keyframes baile-victoria {
+            0% { transform: scale(1); }
+            10%, 20% { transform: scale(0.9) rotate(-3deg); }
+            30%, 50%, 70%, 90% { transform: scale(1.15) rotate(5deg); }
+            40%, 60%, 80% { transform: scale(1.15) rotate(-5deg); }
+            100% { transform: scale(1.05) rotate(0); }
+        }
+
+        /* ESTADO: CARTA EMPAREJADA (Verde neón pastel con baile) */
+        .carta.emparejada {
+            background-color: #ffffff;
+            border-color: #22C55E;
+            box-shadow: 0 6px 0 #ffffff, 0 0 20px rgba(34, 197, 94, 0.5);
+            animation: baile-victoria 0.8s ease-in-out forwards;
+            cursor: default;
+            z-index: 10;
+        }
+
+        /* Imagen dentro de la carta */
+        .carta img {
+            width: 60%;            
+            height: 60%;           
+            object-fit: contain;   
+            pointer-events: none;  
+        }
+
+        /* Texto debajo de la imagen */
+        .carta span.nombre-imagen {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            color: #1E3A8A;
+            margin-top: 4px;
+            text-transform: capitalize;
+            font-weight: 700;
+        }
+
+        /* RESPONSIVO: En celulares */
+        @media (max-width: 600px) {
+            #tablero { gap: 12px; }
+            .contenedor-juego { padding: 25px 20px; }
+            #titulo-juego { font-size: 1.8rem; margin-bottom: 15px; }
+            .signo { font-size: 2.5rem; }
+            .carta span.nombre-imagen { font-size: 0.9rem; margin-top: 2px;}
+            .carta { border-width: 3px; border-radius: 18px; box-shadow: 0 6px 0 #4C1D95; }
+            .carta:active { transform: translateY(6px); box-shadow: 0 0 0 #4C1D95;}
+            .carta.revelada { box-shadow: 0 4px 0 #BFDBFE; }
+            .carta.emparejada { box-shadow: 0 4px 0 #16A34A; }
+            .cartel-palabra { font-size: 1.6rem; padding: 12px 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CARTELITO FLOTANTE (Oculto por defecto) -->
+    <div id="cartel-palabra" class="cartel-palabra">¡Palabra! ✨</div>
+
+    <!-- Burbujas decorativas de fondo -->
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+
+    <div class="top-bar">
+        <a href="lobby-memotest.html" class="btn-volver">← Volver</a>
+    </div>
+
+    <div class="contenedor-juego">
+        <p id="subtitulo-juego">¿Podrás encontrar todas las parejas de sonidos?</p>
+        <div id="tablero"></div>
+    </div>
+
+    <script>
+        // 1. BANCO DE DATOS
+        const bancoDeImagenes = {
+            'R': [
+                { id: 'perro', contenido: 'imagenes/perrito.png' },
+                { id: 'gorra', contenido: 'imagenes/gorra.png' },
+                { id: 'ratón', contenido: 'imagenes/raton.png' },
+                { id: 'robot', contenido: 'imagenes/robot.png' }
+            ],
+            'TR': [
+                { id: 'tren',  contenido: 'imagenes/tren.png' },
+                { id: 'tractor',  contenido: 'imagenes/tractor.png' },
+                { id: 'trofeo',  contenido: 'imagenes/trofeo.png' },
+                { id: 'trueno',  contenido: 'imagenes/trueno.png' }
+            ],
+            'PR': [
+                { id: 'primavera', contenido: 'imagenes/primavera.png' },
+                { id: 'princesa', contenido: 'imagenes/princesa.png' },
+                { id: 'prenda',  contenido: 'imagenes/prenda.png' },
+                { id: 'compra',  contenido: 'imagenes/compra.png' }
+            ],
+            'DR': [
+                { id: 'dragón', contenido: 'imagenes/dragon.png' },
+                { id: 'ajedrez',  contenido: 'imagenes/ajedrez.png' },
+                { id: 'almendra', contenido: 'imagenes/almendra.png' },
+                { id: 'piedra', contenido: 'imagenes/piedra.png' }
+            ],
+            'PL': [
+                { id: 'planta', contenido: 'imagenes/planta.png' },
+                { id: 'plato',  contenido: 'imagenes/plato.png' },
+                { id: 'playa',  contenido: 'imagenes/playa.png' },
+                { id: 'planeta',  contenido: 'imagenes/planeta.png' }
+            ],
+            'C': [
+                { id: 'cuchara', contenido: 'imagenes/cuchara.png' },
+                { id: 'casa',    contenido: 'imagenes/casa.png' },
+                { id: 'caballo',   contenido: 'imagenes/caballo.png' },
+                { id: 'conejo',   contenido: 'imagenes/conejo.png' }
+            ]
+        };
+
+        // 2. LEER LOCALSTORAGE
+        let sonido = localStorage.getItem("sonidoMemotest") || "R";
+
+        // 3. ARMAR EL MAZO (Fijo: 4 parejas = 8 cartas)
+        let cartasElegidas = bancoDeImagenes[sonido];
+        let mazo = [...cartasElegidas, ...cartasElegidas]; 
+        mazo.sort(() => Math.random() - 0.5); 
+
+        // 4. DIBUJAR TABLERO
+        const tablero = document.getElementById("tablero");
+
+        mazo.forEach((item) => {
+            let cartaHTML = document.createElement("div");
+            cartaHTML.classList.add("carta");
+            cartaHTML.dataset.id = item.id;
+            cartaHTML.dataset.contenido = item.contenido;
+            
+            cartaHTML.innerHTML = '<span class="signo">❓</span>';
+            
+            cartaHTML.addEventListener("click", voltearCarta);
+            tablero.appendChild(cartaHTML);
+        });
+
+        // 5. LÓGICA DE JUEGO Y AUDIO
+        let cartasVolteadas = [];
+        let bloqueado = false;
+
+        // Función para decir la palabra en voz alta y mostrar el cartelito
+        function celebrarPalabra(palabra) {
+            // Mostrar cartelito
+            const cartel = document.getElementById('cartel-palabra');
+            cartel.innerText = `¡${palabra}! ✨`;
+            cartel.classList.add('mostrar');
+
+            // Leer la palabra usando la voz del navegador
+            if ('speechSynthesis' in window) {
+                // Cancelamos cualquier audio anterior por si encontró parejas muy rápido
+                window.speechSynthesis.cancel();
+                
+                const mensaje = new SpeechSynthesisUtterance(palabra);
+                mensaje.lang = 'es-ES'; // Lenguaje español
+                mensaje.rate = 0.9;     // Velocidad un poco más lenta para que se entienda bien
+                mensaje.pitch = 1.2;    // Tono un poco más agudo, más amigable para niños
+                
+                window.speechSynthesis.speak(mensaje);
+            }
+
+            // Ocultar el cartelito después de 2.5 segundos
+            setTimeout(() => {
+                cartel.classList.remove('mostrar');
+            }, 2500);
+        }
+
+        function voltearCarta() {
+            if (bloqueado) return;
+            if (this.classList.contains("revelada") || this.classList.contains("emparejada")) return;
+
+            // Inyectar HTML e iniciar animación de revelar
+            this.innerHTML = `
+                <img src="${this.dataset.contenido}" alt="${this.dataset.id}" draggable="false">
+                <span class="nombre-imagen">${this.dataset.id}</span>
+            `;
+            this.classList.add("revelada");
+            cartasVolteadas.push(this);
+
+            if (cartasVolteadas.length === 2) {
+                compararPareja();
+            }
+        }
+
+        function compararPareja() {
+            bloqueado = true;
+            let [carta1, carta2] = cartasVolteadas;
+
+            if (carta1.dataset.id === carta2.dataset.id) {
+                // ¡Acierto! 
+                carta1.classList.add("emparejada");
+                carta2.classList.add("emparejada");
+                
+                // Disparamos el audio y el cartelito con el ID de la carta (la palabra)
+                celebrarPalabra(carta1.dataset.id);
+
+                cartasVolteadas = [];
+                bloqueado = false;
+                verificarVictoria();
+            } else {
+                // Fallo: Ocultar después de un segundo
+                setTimeout(() => {
+                    carta1.innerHTML = '<span class="signo">❓</span>';
+                    carta2.innerHTML = '<span class="signo">❓</span>';
+                    carta1.classList.remove("revelada");
+                    carta2.classList.remove("revelada");
+                    cartasVolteadas = [];
+                    bloqueado = false;
+                }, 1000);
+            }
+        }
+
+        function verificarVictoria() {
+            let totalEmparejadas = document.querySelectorAll(".emparejada").length;
+            if (totalEmparejadas === mazo.length) {
+                // Pequeño retardo para dejar que termine de hablar la última palabra
+                setTimeout(() => {
+                    alert("¡¡GANASTE!! 🏆 ¡Muy bien hecho!");
+                    window.location.href = "lobby-memotest.html"; 
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
