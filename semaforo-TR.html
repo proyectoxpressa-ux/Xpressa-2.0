@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semáforo C - Educativo e Interactivo</title>
+    <title>Semáforo TR - Educativo e Interactivo</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -129,6 +129,24 @@
         .btn-verde-3d:active {
             box-shadow: 0 0 0 #209489, 0 4px 10px rgba(46, 196, 182, 0.4);
             transform: translateY(8px);
+        }
+
+        .btn-victoria {
+            background: #3B82F6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 0 #1D4ED8;
+            transition: all 0.1s;
+        }
+        .btn-victoria:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #1D4ED8;
         }
     </style>
 </head>
@@ -297,9 +315,9 @@
                     <div class="text-7xl mb-4">🏆⭐</div>
                     <h1 class="font-fredoka text-3xl text-sky-600 mb-2">¡Felicidades!</h1>
                     <p class="text-slate-600 font-bold mb-6 text-base">
-                        ¡Completaste todas las palabras del Semáforo C correctamente! Hiciste un gran trabajo.
+                        ¡Completaste todas las palabras del Semáforo TR correctamente! Hiciste un gran trabajo.
                     </p>
-                    <button class="btn-victoria" onclick="window.location.href='lobby-trencito.html'">
+                    <button class="btn-victoria" onclick="window.location.href='lobby-semaforo.html'">
                             <span>🔄</span> Volver a elegir otro sonido
                         </button>
                 </div>
