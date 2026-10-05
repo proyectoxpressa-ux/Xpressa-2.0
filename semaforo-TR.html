@@ -140,7 +140,7 @@
     <div class="burbuja burbuja-4"></div>
 
     <div class="top-bar">
-        <a href="lobby-trencito.html" class="btn-volver"><span>←</span> Volver</a>
+        <a href="lobby-semaforo.html" class="btn-volver"><span>←</span> Volver</a>
     </div>
         </a>
         <div id="progreso-texto" class="bg-white/85 text-slate-700 font-extrabold px-4 py-2 rounded-2xl shadow-md text-sm">
@@ -150,15 +150,15 @@
 
     <main class="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center animate-pop my-auto">
         
-        <h1 class="font-fredoka text-3xl text-sky-600 mb-1">Semáforo C 🚦</h1>
+        <h1 class="font-fredoka text-3xl text-sky-600 mb-1">Semáforo TR 🚦</h1>
         <p class="text-slate-500 font-bold text-sm mb-6" id="instruccion-texto">
-            ¿Esta palabra contiene el sonido inicial <b>"C"</b>?
+            ¿Esta palabra contiene el sonido <b>"TR"</b>?
         </p>
 
         <!-- Caja de Estímulo Visual -->
         <div class="relative w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sky-50 border-4 border-sky-200 rounded-3xl flex flex-col items-center justify-center shadow-inner mb-8 transition-transform duration-300 hover:scale-105" id="caja-estimulo">
-            <span class="text-7xl mb-2" id="icono-estimulo">🏠</span>
-            <span class="font-fredoka text-2xl text-slate-700 uppercase tracking-wide" id="palabra-estimulo">Casa</span>
+            <span class="text-7xl mb-2" id="icono-estimulo">🚂</span>
+            <span class="font-fredoka text-2xl text-slate-700 uppercase tracking-wide" id="palabra-estimulo">Tren</span>
         </div>
 
         <!-- Botones del Semáforo (100% circulares con estilo 3D grueso original) -->
@@ -199,11 +199,11 @@
 
     <script>
         const bancoDatos = [
-            { palabra: "Casa", icono: "🏠", tieneSonido: true },
-            { palabra: "Sol", icono: "☀️", tieneSonido: false },
-            { palabra: "Cuchara", icono: "🥄", tieneSonido: true },
+            { palabra: "Tren", icono: "🚂", tieneSonido: true },
+            { palabra: "Conejo", icono: "🐰", tieneSonido: false },
+            { palabra: "trofeo", icono: "🏆", tieneSonido: true },
             { palabra: "Robot", icono: "🤖", tieneSonido: false },
-            { palabra: "Coche", icono: "🚗", tieneSonido: true }
+            { palabra: "Trompeta", icono: "🎺", tieneSonido: true }
         ];
 
         let indiceActual = 0;
@@ -299,20 +299,12 @@
                     <p class="text-slate-600 font-bold mb-6 text-base">
                         ¡Completaste todas las palabras del Semáforo C correctamente! Hiciste un gran trabajo.
                     </p>
-                    <button onclick="reiniciarApp()" class="w-full py-4 px-6 rounded-2xl font-fredoka text-lg text-white bg-sky-500 hover:bg-sky-600 shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2">
-                        <span>🔄</span> Volver a elegir otro sonido
-                    </button>
+                    <button class="btn-victoria" onclick="window.location.href='lobby-trencito.html'">
+                            <span>🔄</span> Volver a elegir otro sonido
+                        </button>
                 </div>
             `;
-        }
-
-        function reiniciarApp() {
-            window.location.reload();
-        }
-
-        window.onload = function() {
-            iniciarJuego();
-        };
+            }
     </script>
 </body>
 </html>

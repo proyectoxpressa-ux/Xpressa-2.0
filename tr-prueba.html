@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semáforo C - Educativo e Interactivo</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Nunito', sans-serif; 
+        }
+        
+        body {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 15px 40px;
+        }
+
+        .top-bar {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-volver {
+            text-decoration: none; 
+            color: #3B82F6; 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1.1rem;
+            background: #FFFFFF; 
+            padding: 10px 22px; 
+            border-radius: 20px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 6px 0 #E2E8F0, 0 10px 15px rgba(0,0,0,0.05); 
+            transition: all 0.1s;
+        }
+        
+        .btn-volver:active { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #E2E8F0; 
+        }
+
+        /* Burbujas de fondo */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 160px; height: 160px; top: 5%; right: -40px; }
+        .burbuja-2 { width: 250px; height: 250px; top: 45%; left: -80px; }
+        .burbuja-3 { width: 130px; height: 130px; bottom: 8%; right: 30px; }
+        .burbuja-4 { width: 80px; height: 80px; top: 15%; left: 15%; opacity: 0.6; }
+
+        .font-fredoka {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-pop {
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Botones Circulares con Estilo 3D Grueso */
+        .btn-semaforo-3d {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.08s ease;
+            outline: none;
+        }
+
+        @media (min-width: 640px) {
+            .btn-semaforo-3d {
+                width: 95px;
+                height: 95px;
+            }
+        }
+
+        .btn-rojo-3d {
+            background-color: #FF6B6B;
+            box-shadow: 0 8px 0 #D93838, 0 12px 20px rgba(255, 107, 107, 0.4);
+        }
+        .btn-rojo-3d:active {
+            box-shadow: 0 0 0 #D93838, 0 4px 10px rgba(255, 107, 107, 0.4);
+            transform: translateY(8px);
+        }
+
+        .btn-amarillo-3d {
+            background-color: #FFB703;
+            box-shadow: 0 8px 0 #CCA100, 0 12px 20px rgba(255, 183, 3, 0.4);
+        }
+        .btn-amarillo-3d:active {
+            box-shadow: 0 0 0 #CCA100, 0 4px 10px rgba(255, 183, 3, 0.4);
+            transform: translateY(8px);
+        }
+
+        .btn-verde-3d {
+            background-color: #2EC4B6;
+            box-shadow: 0 8px 0 #209489, 0 12px 20px rgba(46, 196, 182, 0.4);
+        }
+        .btn-verde-3d:active {
+            box-shadow: 0 0 0 #209489, 0 4px 10px rgba(46, 196, 182, 0.4);
+            transform: translateY(8px);
+        }
+
+        .btn-victoria {
+            background: #3B82F6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 0 #1D4ED8;
+            transition: all 0.1s;
+        }
+        .btn-victoria:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #1D4ED8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+    <div class="burbuja burbuja-4"></div>
+
+    <header class="top-bar">
+        <a href="lobby-semaforo.html" class="btn-volver"><span>←</span> Volver</a>
+        <div id="progreso-texto" class="bg-white/85 text-slate-700 font-extrabold px-4 py-2 rounded-2xl shadow-md text-sm">
+            Pregunta 1 de 5
+        </div>
+    </header>
+
+    <main class="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center animate-pop my-auto">
+        
+        <h1 class="font-fredoka text-3xl text-sky-600 mb-1">Semáforo TR 🚦</h1>
+        <p class="text-slate-500 font-bold text-sm mb-6" id="instruccion-texto">
+            ¿Esta palabra contiene el sonido <b>"TR"</b>?
+        </p>
+
+        <!-- Caja de Estímulo Visual -->
+        <div class="relative w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-sky-50 border-4 border-sky-200 rounded-3xl flex flex-col items-center justify-center shadow-inner mb-8 transition-transform duration-300 hover:scale-105" id="caja-estimulo">
+            <span class="text-7xl mb-2" id="icono-estimulo">🚂</span>
+            <span class="font-fredoka text-2xl text-slate-700 uppercase tracking-wide" id="palabra-estimulo">Tren</span>
+        </div>
+
+        <!-- Botones del Semáforo -->
+        <div class="flex justify-center items-center gap-4 sm:gap-6 my-6" id="contenedor-botones">
+            
+            <!-- Botón ROJO (NO) -->
+            <button onclick="verificarRespuesta(false)" class="btn-semaforo-3d btn-rojo-3d group" title="No">
+                <svg class="w-10 h-10 text-white group-hover:scale-110 transition-transform drop-shadow" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Botón AMARILLO (ESCUCHAR) -->
+            <button onclick="reproducirVoz()" class="btn-semaforo-3d btn-amarillo-3d group" title="Escuchar palabra">
+                <svg class="w-10 h-10 text-white group-hover:scale-110 transition-transform drop-shadow" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                </svg>
+            </button>
+
+            <!-- Botón VERDE (SÍ) -->
+            <button onclick="verificarRespuesta(true)" class="btn-semaforo-3d btn-verde-3d group" title="Sí">
+                <svg class="w-10 h-10 text-white group-hover:scale-110 transition-transform drop-shadow" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </button>
+
+        </div>
+
+        <!-- Panel de Feedback (Oculto inicialmente) -->
+        <div id="panel-feedback" class="hidden mt-4 p-5 rounded-2xl animate-pop">
+            <p id="texto-feedback" class="font-fredoka text-2xl mb-4"></p>
+            <button id="btn-accion-feedback" onclick="manejarAccionFeedback()" class="w-full py-3.5 px-6 rounded-2xl font-fredoka text-lg text-white shadow-md transition-transform active:scale-95">
+                Siguiente
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        const bancoDatos = [
+            { palabra: "Tren", icono: "🚂", tieneSonido: true },
+            { palabra: "Conejo", icono: "🐰", tieneSonido: false },
+            { palabra: "Trofeo", icono: "🏆", tieneSonido: true },
+            { palabra: "Robot", icono: "🤖", tieneSonido: false },
+            { palabra: "Trompeta", icono: "🎺", tieneSonido: true }
+        ];
+
+        let indiceActual = 0;
+        let estadoActual = 'jugando'; // 'jugando', 'feedback_acierto', 'feedback_error', 'victoria'
+
+        const elementoProgreso = document.getElementById('progreso-texto');
+        const elementoIcono = document.getElementById('icono-estimulo');
+        const elementoPalabra = document.getElementById('palabra-estimulo');
+        const contenedorBotones = document.getElementById('contenedor-botones');
+        const panelFeedback = document.getElementById('panel-feedback');
+        const textoFeedback = document.getElementById('texto-feedback');
+        const btnAccionFeedback = document.getElementById('btn-accion-feedback');
+        const tarjetaPrincipal = document.querySelector('main');
+
+        function iniciarJuego() {
+            indiceActual = 0;
+            cargarEstimulo();
+        }
+
+        function cargarEstimulo() {
+            estadoActual = 'jugando';
+            const item = bancoDatos[indiceActual];
+
+            elementoProgreso.innerText = `Pregunta ${indiceActual + 1} de ${bancoDatos.length}`;
+            elementoIcono.innerText = item.icono;
+            elementoPalabra.innerText = item.palabra;
+
+            contenedorBotones.classList.remove('hidden');
+            panelFeedback.classList.add('hidden');
+            
+            // Reproducir audio automáticamente al cargar el estímulo
+            setTimeout(() => reproducirVoz(), 300);
+        }
+
+        function reproducirVoz() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const item = bancoDatos[indiceActual];
+                const utterance = new SpeechSynthesisUtterance(item.palabra);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function verificarRespuesta(eleccionUsuario) {
+            const item = bancoDatos[indiceActual];
+            const esAcertado = (eleccionUsuario === item.tieneSonido);
+
+            contenedorBotones.classList.add('hidden');
+            panelFeedback.classList.remove('hidden');
+
+            if (esAcertado) {
+                panelFeedback.className = "mt-4 p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 animate-pop";
+                textoFeedback.className = "font-fredoka text-2xl text-emerald-600 mb-4";
+                textoFeedback.innerText = "¡Correcto! 🎉 ¡Muy bien!";
+                
+                btnAccionFeedback.className = "w-full py-3.5 px-6 rounded-2xl font-fredoka text-lg text-white bg-emerald-500 hover:bg-emerald-600 shadow-md transition-transform active:scale-95";
+                btnAccionFeedback.innerText = "Siguiente imagen ➡️";
+                estadoActual = 'feedback_acierto';
+            } else {
+                panelFeedback.className = "mt-4 p-5 rounded-2xl bg-rose-50 border-2 border-rose-200 animate-pop";
+                textoFeedback.className = "font-fredoka text-2xl text-rose-600 mb-4";
+                textoFeedback.innerText = "❌ Intentémoslo de nuevo";
+                
+                btnAccionFeedback.className = "w-full py-3.5 px-6 rounded-2xl font-fredoka text-lg text-white bg-amber-500 hover:bg-amber-600 shadow-md transition-transform active:scale-95";
+                btnAccionFeedback.innerText = "Reintentar 🔄";
+                estadoActual = 'feedback_error';
+            }
+        }
+
+        function manejarAccionFeedback() {
+            if (estadoActual === 'feedback_acierto') {
+                indiceActual++;
+                if (indiceActual < bancoDatos.length) {
+                    cargarEstimulo();
+                } else {
+                    mostrarPantallaVictoria();
+                }
+            } else if (estadoActual === 'feedback_error') {
+                panelFeedback.classList.add('hidden');
+                contenedorBotones.classList.remove('hidden');
+                estadoActual = 'jugando';
+            }
+        }
+
+        function mostrarPantallaVictoria() {
+            estadoActual = 'victoria';
+            tarjetaPrincipal.innerHTML = `
+                <div class="py-6 animate-pop">
+                    <div class="text-7xl mb-4">🏆⭐</div>
+                    <h1 class="font-fredoka text-3xl text-sky-600 mb-2">¡Felicidades!</h1>
+                    <p class="text-slate-600 font-bold mb-6 text-base">
+                        ¡Completaste todas las palabras del Semáforo TR correctamente! Hiciste un gran trabajo.
+                    </p>
+                    <button class="btn-victoria" onclick="window.location.href='lobby-trencito.html'">
+                        <span>🔄</span> Volver a elegir otro sonido
+                    </button>
+                </div>
+            `;
+        }
+
+        // Inicia el juego automáticamente al cargar la página
+        window.onload = iniciarJuego;
+    </script>
+</body>
+</html>
