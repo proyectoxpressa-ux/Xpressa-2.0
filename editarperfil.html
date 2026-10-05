@@ -42,34 +42,42 @@
         .burbuja-3 { width: 130px; height: 130px; bottom: 8%; right: 30px; }
         .burbuja-4 { width: 80px; height: 80px; top: 15%; left: 15%; opacity: 0.6; }
 
+        /* BARRA SUPERIOR: BOTÓN Y TÍTULO A LA MISMA ALTURA */
         .top-bar {
             width: 100%;
-            max-width: 750px;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 12px;
-            z-index: 2;
+            margin-bottom: 20px;
         }
 
         .btn-volver {
+            justify-self: start;
             text-decoration: none; 
             color: #3B82F6; 
             font-family: 'Fredoka', sans-serif; 
-            font-size: 1.1rem;
+            font-size: 1rem;
             background: #FFFFFF; 
-            padding: 8px 20px; 
-            border-radius: 20px; 
+            padding: 6px 18px; 
+            border-radius: 18px; 
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 6px 0 #E2E8F0, 0 10px 15px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 0 #E2E8F0, 0 6px 10px rgba(0,0,0,0.05); 
             transition: all 0.1s;
         }
         
         .btn-volver:active { 
-            transform: translateY(6px); 
+            transform: translateY(4px); 
             box-shadow: 0 0 0 #E2E8F0; 
+        }
+
+        .titulo-perfil {
+            font-family: 'Fredoka', sans-serif; 
+            color: #1E3A8A;
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 0;
         }
 
         /* TARJETA HORIZONTAL */
@@ -77,20 +85,12 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             width: 100%; 
-            max-width: 750px; /* Más ancha para albergar el contenido en horizontal */
+            max-width: 750px;
             border-radius: 40px; 
-            padding: 30px 40px;
+            padding: 25px 35px;
             box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2), inset 0 0 0 5px #FFFFFF;
             border: 4px solid #E0F2FE;
             z-index: 2;
-        }
-
-        .titulo-perfil {
-            font-family: 'Fredoka', sans-serif; 
-            color: #1E3A8A;
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            text-align: center;
         }
 
         /* DISEÑO DE DOS COLUMNAS */
@@ -125,6 +125,7 @@
 
         .btn-cambiar-foto {
             background-color: #93C5FD; 
+            text-decoration: none; 
             color: white;
             border: none; 
             padding: 8px 16px;
@@ -134,6 +135,8 @@
             box-shadow: 0 4px 0 #60A5FA;
             transition: transform 0.1s ease;
             width: 100%;
+            display: inline-flex;
+            justify-content: center;
         }
 
         .btn-cambiar-foto:active { 
@@ -155,7 +158,7 @@
         }
         
         .grupo-input.ancho-completo {
-            grid-column: span 2; /* Para que elementos como el botón ocupen todo el ancho */
+            grid-column: span 2;
         }
 
         .grupo-input label {
@@ -208,7 +211,7 @@
             box-shadow: 0 0 0 #1D4ED8; 
         }
 
-        /* Responsivo para celulares: si la pantalla es chica, vuelve a vertical automáticamente */
+        /* Responsivo para celulares */
         @media (max-width: 650px) {
             .cuerpo-horizontal {
                 flex-direction: column;
@@ -222,7 +225,10 @@
                 grid-column: span 1;
             }
             .tarjeta-perfil {
-                padding: 25px 20px;
+                padding: 20px;
+            }
+            .titulo-perfil {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -235,19 +241,20 @@
     <div class="burbuja burbuja-3"></div>
     <div class="burbuja burbuja-4"></div>
 
-    <!-- Botón Volver a la pestaña principal de Perfil -->
-    <div class="top-bar">
-        <a href="perfil.html" class="btn-volver"><span>←</span> Volver</a> 
-    </div>
-    
     <div class="tarjeta-perfil">
-        <h1 class="titulo-perfil">Tus Datos</h1>
+
+        <!-- ENCABEZADO CON BOTÓN VOLVER Y TÍTULO A LA MISMA ALTURA -->
+        <div class="top-bar">
+            <a href="perfil.html" class="btn-volver"><span>←</span> Volver</a>
+            <h1 class="titulo-perfil">Tus Datos</h1>
+            <div></div> <!-- Espaciador para centrar perfectamente el título -->
+        </div>
 
         <div class="cuerpo-horizontal">
             <!-- Columna Izquierda: Avatar -->
             <div class="columna-avatar">
-                <div class="circulo-foto">🧒🏽</div>
-                <button class="btn-cambiar-foto">Cambiar foto</button>
+                <div class="circulo-foto" id="foto-perfil">🧒🏽</div>
+                <a href="editar-avatar.html" class="btn-cambiar-foto">Editar Avatar</a>
             </div>
 
             <!-- Columna Derecha: Formulario -->
@@ -294,6 +301,7 @@
         document.addEventListener("DOMContentLoaded", async () => {
             const usuario_id = localStorage.getItem('usuario_id');
             const nombreGuardado = localStorage.getItem('nombre_usuario');
+            const avatarLocal = localStorage.getItem('avatar_usuario'); 
             
             if (!usuario_id) {
                 window.location.href = 'sesion.html';
@@ -311,12 +319,22 @@
                     document.getElementById('input-dni').value = datos.dni || '';
                     document.getElementById('input-edad').value = datos.edad || '';
                     document.getElementById('input-sexo').value = datos.sexo || '';
+
+                    // ¡NUEVO! Ponemos el avatar que viene de la base de datos o de la memoria
+                    if (datos.avatar) {
+                        document.getElementById('foto-perfil').textContent = datos.avatar;
+                    } else if (avatarLocal) {
+                        document.getElementById('foto-perfil').textContent = avatarLocal;
+                    }
+
                 } else {
                     document.getElementById('input-nombre').value = nombreGuardado || '';
+                    if(avatarLocal) document.getElementById('foto-perfil').textContent = avatarLocal;
                 }
             } catch (error) {
                 console.error('Error cargando los datos:', error);
                 document.getElementById('input-nombre').value = nombreGuardado || '';
+                if(avatarLocal) document.getElementById('foto-perfil').textContent = avatarLocal;
             }
         });
 
@@ -335,12 +353,14 @@
             const dni = document.getElementById('input-dni').value;
             const edad = document.getElementById('input-edad').value;
             const sexo = document.getElementById('input-sexo').value;
+            // ¡NUEVO! Capturamos el avatar actual para enviarlo y no borrarlo por accidente
+            const avatar = document.getElementById('foto-perfil').textContent; 
 
             try {
                 const response = await fetch('http://localhost:3000/api/perfil', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ usuario_id, nombre, apellido, dni, edad, sexo })
+                    body: JSON.stringify({ usuario_id, nombre, apellido, dni, edad, sexo, avatar })
                 });
 
                 const data = await response.json();

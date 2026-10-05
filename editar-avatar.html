@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Editar Avatar</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Nunito', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #a3ceef 0%, #e0f2fe 100%);
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: relative;
+        }
+
+        /* --- BURBUJAS DE FONDO DECORATIVAS --- */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 140px; height: 140px; top: 2%; right: -20px; }
+        .burbuja-2 { width: 220px; height: 220px; top: 40%; left: -70px; }
+        .burbuja-3 { width: 110px; height: 110px; bottom: 5%; right: 20px; }
+        .burbuja-4 { width: 70px; height: 70px; top: 10%; left: 10%; opacity: 0.6; }
+
+        /* BARRA SUPERIOR: BOTÓN Y TÍTULO A LA MISMA ALTURA */
+        .top-bar {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-volver {
+            justify-self: start;
+            text-decoration: none; 
+            color: #3B82F6; 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1rem;
+            background: #FFFFFF; 
+            padding: 6px 18px; 
+            border-radius: 18px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 0 #E2E8F0, 0 6px 10px rgba(0,0,0,0.05); 
+            transition: all 0.1s;
+        }
+        
+        .btn-volver:active { 
+            transform: translateY(4px); 
+            box-shadow: 0 0 0 #E2E8F0; 
+        }
+
+
+        /* Contenedor principal ajustado al alto de la pantalla */
+        .contenedor-panel {
+            width: 100%;
+            max-width: 600px;
+            max-height: 95vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: 35px;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15), inset 0 0 0 4px #FFFFFF;
+            border: 3px solid #E0F2FE;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        /* --- TARJETA RESUMEN SUPERIOR --- */
+        .tarjeta-resumen {
+            background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+            border-radius: 22px;
+            padding: 14px 20px;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            color: #FFFFFF;
+        }
+
+        .tarjeta-resumen::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            bottom: -15px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+        }
+
+        .resumen-info p {
+            font-size: 20px;
+            color: #FFFFFF;
+            font-weight: 800;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .avatar-actual-box {
+            width: 58px;
+            height: 58px;
+            background: #FFFFFF;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            z-index: 1;
+        }
+
+        /* --- SELECCIÓN DE AVATAR (GRILLA) --- */
+        .seccion-titulo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.05rem;
+            color: #1E3A8A;
+            margin-bottom: 8px;
+            margin-top: 5px;
+        }
+
+        .grilla-avatares {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .opcion-avatar {
+            background-color: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+        }
+
+        .opcion-avatar:hover {
+            border-color: #93C5FD;
+            transform: scale(1.05);
+        }
+
+        .opcion-avatar.seleccionado {
+            background-color: #E0F2FE;
+            border-color: #3B82F6;
+            box-shadow: 0 4px 0 #3B82F6;
+            transform: scale(1.05);
+        }
+
+        /* --- BOTÓN GUARDAR --- */
+        .btn-guardar-principal {
+            background-color: #3B82F6;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 6px 0 #1D4ED8, 0 10px 15px rgba(59, 130, 246, 0.25);
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-guardar-principal:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #1D4ED8;
+        }
+
+        @media (max-width: 480px) {
+            .grilla-avatares { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+            .contenedor-panel { padding: 15px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Burbujas decorativas de fondo -->
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+    <div class="burbuja burbuja-4"></div>
+
+    <div class="contenedor-panel">
+        <div>
+            <!-- TARJETA RESUMEN HERO -->
+            <div class="top-bar">
+                <a href="editarperfil.html" class="btn-volver"><span>←</span> Volver</a>
+            </div>
+
+            <div class="tarjeta-resumen">
+                <div class="resumen-info">
+                    <p>Elige tu nuevo avatar ✨</p>
+                </div>
+                <div class="avatar-actual-box" id="preview-avatar">
+                    🧒🏽
+                </div>
+            </div>
+
+            <!-- SELECCIÓN DE AVATAR -->
+            <div class="seccion-titulo">Opciones de Avatar</div>
+            <div class="grilla-avatares">
+                <!-- Personas -->
+                <div class="opcion-avatar seleccionado" data-avatar="🧒🏽">🧒🏽</div>
+                <div class="opcion-avatar" data-avatar="👦🏻">👦🏻</div>
+                <div class="opcion-avatar" data-avatar="👧🏽">👧🏽</div>
+                <div class="opcion-avatar" data-avatar="👧🏻">👧🏻</div>
+                <div class="opcion-avatar" data-avatar="🧑🏼">🧑🏼</div>
+                <div class="opcion-avatar" data-avatar="👨🏽">👨🏽</div>
+                <div class="opcion-avatar" data-avatar="👩🏻">👩🏻</div>
+                <div class="opcion-avatar" data-avatar="👶">👶</div>
+                <!-- Fantasía y Personajes -->
+                <div class="opcion-avatar" data-avatar="🦸🏽‍♂️">🦸🏽‍♂️</div>
+                <div class="opcion-avatar" data-avatar="🦸🏻‍♀️">🦸🏻‍♀️</div>
+                <div class="opcion-avatar" data-avatar="🤴🏽">🤴🏽</div>
+                <div class="opcion-avatar" data-avatar="👸🏻">👸🏻</div>
+                <!-- Animales y Objetos -->
+                <div class="opcion-avatar" data-avatar="🦁">🦁</div>
+                <div class="opcion-avatar" data-avatar="🐶">🐶</div>
+                <div class="opcion-avatar" data-avatar="🤖">🤖</div>
+                <div class="opcion-avatar" data-avatar="🚀">🚀</div>
+            </div>
+        </div>
+
+        <!-- BOTÓN GUARDAR AL PIE -->
+        <button id="boton-guardar" class="btn-guardar-principal">
+            <span>💾</span> Guardar Cambios
+        </button>
+    </div>
+
+    <script>
+        const previewAvatar = document.getElementById('preview-avatar');
+        const opcionesAvatar = document.querySelectorAll('.opcion-avatar');
+        const botonGuardar = document.getElementById('boton-guardar');
+        let avatarSeleccionado = '🧒🏽';
+
+        // Selección interactiva de avatar
+        opcionesAvatar.forEach(opcion => {
+            opcion.addEventListener('click', () => {
+                opcionesAvatar.forEach(o => o.classList.remove('seleccionado'));
+                opcion.classList.add('seleccionado');
+                avatarSeleccionado = opcion.getAttribute('data-avatar');
+                previewAvatar.textContent = avatarSeleccionado;
+            });
+        });
+
+        // Cargar avatar previo desde el Servidor
+        async function cargarDatosPerfil() {
+            const usuario_id = localStorage.getItem('usuario_id');
+            const avatarGuardado = localStorage.getItem('avatar_usuario');
+
+            if (!usuario_id) return;
+
+            try {
+                // Ruta corregida: Busca en tu servidor el perfil actual
+                const respuesta = await fetch(`http://localhost:3000/api/perfil/${usuario_id}`);
+                if (respuesta.ok) {
+                    const datos = await respuesta.json();
+                    if (datos.avatar) {
+                        avatarSeleccionado = datos.avatar;
+                        previewAvatar.textContent = datos.avatar;
+                        opcionesAvatar.forEach(opcion => {
+                            if (opcion.getAttribute('data-avatar') === datos.avatar) {
+                                opcion.classList.add('seleccionado');
+                            } else {
+                                opcion.classList.remove('seleccionado');
+                            }
+                        });
+                    }
+                } else if (avatarGuardado) {
+                    previewAvatar.textContent = avatarGuardado;
+                }
+            } catch (error) {
+                console.log('Error de conexión.');
+            }
+        }
+
+        cargarDatosPerfil();
+
+        // Guardar cambios
+        botonGuardar.addEventListener('click', async function() {
+            const usuario_id = localStorage.getItem('usuario_id');
+            if (!usuario_id) {
+                alert("Debes iniciar sesión");
+                return;
+            }
+
+            localStorage.setItem('avatar_usuario', avatarSeleccionado);
+
+            try {
+                // Ruta corregida: Guarda el avatar en la base de datos
+                await fetch('http://localhost:3000/api/avatar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        usuario_id: usuario_id, 
+                        avatar: avatarSeleccionado 
+                    })
+                });
+
+                window.location.href = 'editarperfil.html';
+            } catch (error) {
+                console.error('Error al conectar con el servidor:', error);
+                window.location.href = 'editarperfil.html';
+            }
+        });
+    </script>
+</body>
+</html>

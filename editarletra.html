@@ -476,7 +476,6 @@
 
     <!-- BOTÓN DE GUARDADO AL PIE DEL PANEL -->
     <button id="boton-avanzar" class="btn-guardar-principal">
-      <span>💾</span> Guardar Cambios
     </button>
 
   </div>
@@ -488,16 +487,9 @@
     const enlaceVolver = document.getElementById('enlace-volver');
     const btnToggleTodos = document.getElementById('btn-toggle-todos');
 
-    // Detectar si el usuario viene desde el Perfil
-    const urlParams = new URLSearchParams(window.location.search);
-    const esEdicionDesdePerfil = urlParams.get('origen') === 'perfil';
-
-    if (esEdicionDesdePerfil) {
-        enlaceVolver.href = 'perfil.html';
-    } else {
-        enlaceVolver.href = 'home.html';
-        botonAvanzar.innerHTML = '<span>🚀</span> ¡Comenzar a jugar!';
-    }
+    // Configuración fija de navegación hacia Perfil
+    enlaceVolver.href = 'perfil.html';
+    botonAvanzar.innerHTML = '<span>💾</span> Guardar Cambios';
 
     // Actualizar interfaz e indicador de fonemas activos
     function actualizarInterfaz() {
@@ -551,7 +543,7 @@
 
     cargarLetrasPrevias();
 
-    // Guardar cambios en la base de datos
+    // Guardar cambios y volver a perfil.html
     botonAvanzar.addEventListener('click', async function() {
         const usuario_id = localStorage.getItem('usuario_id');
         if (!usuario_id) {
@@ -577,11 +569,7 @@
             });
 
             if (respuesta.ok) {
-                if (esEdicionDesdePerfil) {
-                    window.location.href = 'perfil.html';
-                } else {
-                    window.location.href = 'home.html';
-                }
+                window.location.href = 'perfil.html';
             } else {
                 alert('Error al guardar los cambios.');
             }
@@ -590,6 +578,6 @@
             alert('No se pudo conectar con el servidor.');
         }
     });
-  </script>
+</script>
 </body>
 </html>
