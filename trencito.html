@@ -34,26 +34,33 @@
         .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
 
         /* --- BARRA SUPERIOR --- */
+        
         .top-bar {
             width: 100%;
-            max-width: 800px;
+            max-width: 700px; /* Agrandado para coincidir con la caja principal */
+            margin: 0 auto 15px auto;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            z-index: 5;
+            justify-content: flex-start;
         }
 
         .btn-volver {
-            text-decoration: none;
-            color: #1E3A8A;
-            font-family: 'Fredoka', sans-serif;
+            text-decoration: none; 
+            color: #3B82F6; 
+            font-family: 'Fredoka', sans-serif; 
             font-size: 1.1rem;
-            background: rgba(255,255,255,0.9);
-            padding: 8px 18px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border: 2px solid #FFF;
+            background: #FFFFFF; 
+            padding: 10px 22px; 
+            border-radius: 20px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 6px 0 #E2E8F0, 0 10px 15px rgba(0,0,0,0.05); 
+            transition: all 0.1s;
+        }
+        
+        .btn-volver:active { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #E2E8F0; 
         }
 
         /* --- CARTEL DE INSTRUCCIÓN --- */
@@ -527,8 +534,7 @@
     <div class="burbuja burbuja-3"></div>
 
     <div class="top-bar">
-        <a href="lobby-trencito.html" class="btn-volver">← Volver a lobby</a>
-        <span class="marca-app">Xpressa+</span>
+        <a href="lobby-trencito.html" class="btn-volver"><span>←</span> Volver</a>
     </div>
 
     <div class="cartel-instruccion">
