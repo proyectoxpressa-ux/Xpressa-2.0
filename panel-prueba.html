@@ -32,10 +32,11 @@
 
         .nav-perfil { display: flex; align-items: center; gap: 15px; }
         
+        /* Botones unificados con el mismo tamaño y estilo armónico */
         .btn-accion-nav {
-            background-color: #10B981; color: white; border: none; padding: 9px 18px;
+            background-color: #3B82F6; color: white; border: none; padding: 9px 18px;
             border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1rem;
-            cursor: pointer; box-shadow: 0 4px 0 #059669; transition: transform 0.1s;
+            cursor: pointer; box-shadow: 0 4px 0 #1D4ED8; transition: transform 0.1s;
             display: flex; align-items: center; gap: 8px; height: 42px; justify-content: center;
         }
         .btn-accion-nav:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
@@ -73,14 +74,14 @@
         /* --- VISTA 2: EXPEDIENTE --- */
         #vista-expediente { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 25px; }
         
-        /* Botón Volver Rediseñado tipo píldora amigable */
+        /* Botón Volver Rediseñado (Más elegante y limpio sin bordes pesados) */
         .btn-volver {
-            background: #3B82F6; color: white; border: none;
-            padding: 12px 24px; border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.05rem;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
-            box-shadow: 0 4px 0 #1D4ED8; transition: transform 0.1s;
+            background: rgba(255, 255, 255, 0.95); border: 2px solid #E2E8F0; color: #3B82F6;
+            padding: 10px 20px; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1rem;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; align-self: flex-start;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08); transition: all 0.2s;
         }
-        .btn-volver:active { transform: translateY(4px); box-shadow: 0 0 0 #1D4ED8; }
+        .btn-volver:hover { background: #FFFFFF; border-color: #3B82F6; transform: translateX(-3px); }
 
         .perfil-cabecera {
             background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 25px 35px;
@@ -97,36 +98,35 @@
         .kpi-box span { font-size: 0.8rem; color: #64748B; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 4px; }
         .kpi-box strong { display: block; font-family: 'Fredoka', sans-serif; font-size: 1.6rem; color: #1E293B; }
 
-        /* Estructura de columnas con ancho y alineación simétrica */
-        .layout-modulos { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: start; }
+        .layout-modulos { display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
         
         .tarjeta-modulo {
             background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 30px;
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); border: 3px solid #FFF;
-            display: flex; flex-direction: column; gap: 18px; width: 100%;
+            margin-bottom: 25px; display: flex; flex-direction: column; gap: 18px;
         }
         .tarjeta-modulo h2 { font-family: 'Fredoka', sans-serif; font-size: 1.45rem; color: #1E3A8A; display: flex; align-items: center; gap: 10px; justify-content: space-between; }
 
-        /* Tareas (Optimizado sin espacio blanco inferior) */
+        /* Tareas */
         .zona-upload {
-            border: 3px dashed #CBD5E1; border-radius: 20px; padding: 25px 20px; text-align: center;
+            border: 3px dashed #CBD5E1; border-radius: 20px; padding: 35px 20px; text-align: center;
             background: #F8FAFC; cursor: pointer; position: relative; transition: all 0.2s;
         }
         .zona-upload:hover { border-color: #3B82F6; background: #EFF6FF; }
-        .upload-icon { font-size: 2.5rem; margin-bottom: 8px; display: block; }
+        .upload-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
         .upload-text { color: #64748B; font-weight: 800; font-size: 0.95rem; }
         .file-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         
         .input-tarea {
-            width: 100%; padding: 14px; border-radius: 18px; border: 2px solid #E2E8F0;
+            width: 100%; padding: 16px; border-radius: 18px; border: 2px solid #E2E8F0;
             font-family: 'Nunito', sans-serif; font-size: 1rem; color: #1E293B;
-            resize: none; height: 95px; outline: none; transition: border-color 0.2s;
+            resize: none; height: 110px; outline: none; transition: border-color 0.2s;
         }
         .input-tarea:focus { border-color: #3B82F6; background: #FFF; }
 
         .btn-accion {
-            width: 100%; background: #3B82F6; color: white; border: none; padding: 15px;
-            border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.15rem;
+            width: 100%; background: #3B82F6; color: white; border: none; padding: 16px;
+            border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.2rem;
             cursor: pointer; box-shadow: 0 4px 0 #1D4ED8; transition: transform 0.1s;
         }
         .btn-accion:active { transform: translateY(4px); box-shadow: 0 0 0 #1D4ED8; }
@@ -160,7 +160,7 @@
         input:checked + .slider { background-color: #3B82F6; }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        .columna-derecha { display: flex; flex-direction: column; gap: 25px; }
+        .columna-derecha { display: flex; flex-direction: column; gap: 0px; }
 
         /* --- MODAL VINCULAR --- */
         .modal-overlay {
@@ -175,8 +175,8 @@
         }
         .modal-content h3 { font-family: 'Fredoka', sans-serif; color: #1E3A8A; font-size: 1.6rem; }
         .codigo-generado { background: #F8FAFC; border: 3px dashed #CBD5E1; padding: 18px; font-family: 'Fredoka', sans-serif; font-size: 2.5rem; color: #3B82F6; letter-spacing: 3px; border-radius: 20px; }
-        .btn-cerrar-modal { background: #EF4444; color: white; border: none; padding: 14px; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; }
-        .btn-cerrar-modal:hover { background: #DC2626; }
+        .btn-cerrar-modal { background: #3B82F6; color: white; border: none; padding: 14px; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; }
+        .btn-cerrar-modal:hover { background: #1D4ED8; }
 
         @media (max-width: 900px) { .layout-modulos { grid-template-columns: 1fr; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
