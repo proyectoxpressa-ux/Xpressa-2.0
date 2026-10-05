@@ -67,17 +67,9 @@
         .header-top {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 25px; background: transparent;
+            gap: 12px; width: 100%; max-width: 680px;
         }
-
-        .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-img { 
-            width: 45px; height: 45px; border-radius: 12px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            background: white; padding: 2px;
-        }
-        .logo-text { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700; color: #1E3A8A; }
         
-
         .btn-volver {
             text-decoration: none; 
             color: #3B82F6; 
@@ -174,13 +166,19 @@
             transition: transform 0.1s, box-shadow 0.1s;
         }
 
-        .signo {
-            font-size: 3.5rem;
-            text-shadow: 0 4px 0 #4C1D95;
-            transition: transform 0.2s;
+        /* CSS Moderno */
+        .icon-help {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;            /* Indigo moderno */
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        font-weight: bold;
+        font-size: 2.5rem;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1);
         }
 
-        .carta:hover .signo {
+        .carta:hover .icon-help {
             transform: scale(1.1) rotate(5deg);
         }
 
@@ -243,12 +241,60 @@
             font-weight: 700;
         }
 
+        /* --- TARJETA DE VICTORIA (Estilo Semáforo C) --- */
+        .pantalla-victoria {
+            padding: 24px 0;
+            animation: flip-in 0.35s ease-out;
+        }
+
+        .victoria-icono {
+            font-size: 4.5rem;
+            margin-bottom: 16px;
+        }
+
+        .victoria-titulo {
+            font-family: 'Fredoka', sans-serif;
+            color: #0284C7;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .victoria-mensaje {
+            color: #475569;
+            font-weight: 700;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .btn-victoria {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.125rem;
+            color: white;
+            background-color: #0EA5E9;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-victoria:active {
+            transform: scale(0.95);
+        }
+
         /* RESPONSIVO: En celulares */
         @media (max-width: 600px) {
             #tablero { gap: 12px; }
             .contenedor-juego { padding: 25px 20px; }
             #titulo-juego { font-size: 1.8rem; margin-bottom: 15px; }
-            .signo { font-size: 2.5rem; }
+            .icon-help  { font-size: 2.5rem; }
             .carta span.nombre-imagen { font-size: 0.9rem; margin-top: 2px;}
             .carta { border-width: 3px; border-radius: 18px; box-shadow: 0 6px 0 #4C1D95; }
             .carta:active { transform: translateY(6px); box-shadow: 0 0 0 #4C1D95;}
@@ -269,11 +315,7 @@
     <div class="burbuja burbuja-3"></div>
 
     <div class="header-top">
-        <div class="logo-container">
-            <img src="imagenes/logo.png" alt="Logo" class="logo-img">
-            <span class="logo-text">Memotest</span>
-        </div>
-        <a href="lobby-memotest.html" class="btn-volver"><span>←</span>← Volver a lobby</a>
+        <a href="lobby-memotest.html" class="btn-volver"><span>←</span>Volver a lobby</a>
     </div>
 
     <!-- Contenedor principal -->
@@ -341,7 +383,7 @@
             cartaHTML.dataset.id = item.id;
             cartaHTML.dataset.contenido = item.contenido;
             
-            cartaHTML.innerHTML = '<span class="signo">❓</span>';
+            cartaHTML.innerHTML = '<span class="icon-help">?</span>';
             
             cartaHTML.addEventListener("click", voltearCarta);
             tablero.appendChild(cartaHTML);
@@ -412,8 +454,8 @@
             } else {
                 // Fallo: Ocultar después de un segundo
                 setTimeout(() => {
-                    carta1.innerHTML = '<span class="signo">❓</span>';
-                    carta2.innerHTML = '<span class="signo">❓</span>';
+                    carta1.innerHTML = '<span class="icon-help">?</span>';
+                    carta2.innerHTML = '<span class="icon-help">?</span>';
                     carta1.classList.remove("revelada");
                     carta2.classList.remove("revelada");
                     cartasVolteadas = [];
@@ -422,16 +464,32 @@
             }
         }
 
+        // CÓDIGO NUEVO
         function verificarVictoria() {
             let totalEmparejadas = document.querySelectorAll(".emparejada").length;
             if (totalEmparejadas === mazo.length) {
-                // Pequeño retardo para dejar que termine de hablar la última palabra
                 setTimeout(() => {
-                    alert("¡¡GANASTE!! 🏆 ¡Muy bien hecho!");
-                    window.location.href = "lobby-memotest.html"; 
-                }, 3000);
-            }
-        }
+                // Ocultar el botón superior de 'Volver a lobby'
+                const headerTop = document.querySelector('.header-top');
+                if (headerTop) headerTop.style.display = 'none';
+
+                // Reemplazar contenido de la tarjeta principal por el de victoria
+                const contenedor = document.querySelector('.contenedor-juego');
+                contenedor.innerHTML = `
+                    <div class="pantalla-victoria">
+                        <div class="victoria-icono">🏆⭐</div>
+                        <h1 class="victoria-titulo">¡Felicidades!</h1>
+                        <p class="victoria-mensaje">
+                            ¡Completaste todas las parejas del Memotest correctamente! Hiciste un gran trabajo.
+                        </p>
+                        <button class="btn-victoria" onclick="window.location.href='lobby-memotest.html'">
+                            <span>🔄</span> Volver a elegir otro sonido
+                        </button>
+                    </div>
+                `;
+        }, 1500);
+    }
+}
     </script>
 </body>
 </html>
