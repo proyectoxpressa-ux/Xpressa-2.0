@@ -15,6 +15,7 @@
             display: flex; flex-direction: column; align-items: center;
             justify-content: center; min-height: 100vh; padding: 20px;
             font-family: 'Nunito', sans-serif;
+            overflow-x: hidden; /* <--- Agrega esta línea para bloquear el scroll horizontal */
         }
 
         /* --- BURBUJAS DE FONDO (Para llenar los vacíos) --- */
@@ -101,7 +102,7 @@
     <div class="contenedor-principal">
         <div class="tarjeta-mensaje">
         <div class="avatar-xpri">🐣</div>
-        <p>Toca los animales y descubre con qué letras vamos a jugar hoy.</p>
+        <p>Toca los emojis y descubre con qué sonidos vamos a jugar hoy.</p>
     </div>
 
     <div class="grilla-animales">
@@ -141,14 +142,25 @@
         if (!usuario_id) { alert("Error: No se encontró la sesión del usuario."); return; }
         let letrasSeleccionadas = [];
         checkboxesDeLetras.forEach(checkbox => { if (checkbox.checked) letrasSeleccionadas.push(checkbox.value); });
+        
         try {
             const respuesta = await fetch('http://localhost:3000/api/guardar-letras', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ usuario_id: usuario_id, letras: letrasSeleccionadas })
             });
-            if (respuesta.ok) window.location.href = 'home.html';
-            else alert('Error al guardar las letras.');
-        } catch (error) { console.error('Error:', error); alert('No se pudo conectar con el servidor.'); }
+            
+            const data = await respuesta.json(); // Leemos la respuesta del servidor
+
+            if (respuesta.ok) {
+                window.location.href = 'home.html';
+            } else {
+                // AQUÍ CAMBIAMOS para que te muestre el error real del backend en pantalla
+                alert('Error del servidor: ' + (data.mensaje || JSON.stringify(data))); 
+            }
+        } catch (error) { 
+            console.error('Error:', error); 
+            alert('No se pudo conectar con el servidor.'); 
+        }
     });
   </script>
 </body>

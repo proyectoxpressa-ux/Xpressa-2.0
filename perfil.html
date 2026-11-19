@@ -18,7 +18,6 @@
             overflow-x: hidden;
         }
 
-        /* --- BURBUJAS DE FONDO --- */
         .burbuja {
             position: absolute;
             border-radius: 50%;
@@ -30,7 +29,6 @@
         .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
         .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
 
-        /* --- ENCABEZADO SUPERIOR --- */
         .header-top {
             display: flex; justify-content: space-between; align-items: center; 
             padding: 20px 25px; background: transparent;
@@ -40,17 +38,18 @@
             width: 45px; height: 45px; border-radius: 12px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
             background: white; padding: 2px;
+            object-fit: contain;
         }
         .logo-text { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700; color: #1E3A8A; }
 
         main { 
-            padding: 10px 25px 25px; max-width: 600px; margin: 0 auto; width: 100%; 
+            padding: 10px 25px 25px; max-width: 950px; margin: 0 auto; width: 100%; 
             display: flex; flex-direction: column; gap: 20px;
         }
 
         .titulo-seccion {
             font-family: 'Fredoka', sans-serif; 
-            font-size: 40px; 
+            font-size: 38px; 
             color: #1E3A8A; 
             line-height: 1.1;
             margin-bottom: 4px;
@@ -58,82 +57,177 @@
         }
 
         .subtitulo {
-            font-size: 20px;
+            font-size: 18px;
             color: #3B82F6;
             font-weight: 800;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-align: center;
         }
 
+        /* --- GRILLA DINÁMICA --- */
+        .grilla-opciones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; /* Ajustamos el espacio para que respire mejor */
+            width: 100%;
+        }
+
+        .grid-perfil-fono {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            grid-template-areas: 
+                "actividad datos"
+                "actividad letras"
+                "cerrar    cerrar";
+            gap: 18px;
+            width: 100%;
+        }
+
+        /* Responsive para celulares (Aplica a ambas grillas) */
+        @media (max-width: 768px) {
+            .grilla-opciones {
+                grid-template-columns: 1fr; /* En móvil, 1 columna (4 filas) */
+            }
+            .grid-perfil-fono {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "actividad"
+                    "datos"
+                    "letras"
+                    "cerrar";
+            }
+        }
+
+        .area-actividad { grid-area: actividad; }
+        .area-datos     { grid-area: datos; }
+        .area-letras    { grid-area: letras; }
+        .area-cerrar    { grid-area: cerrar; }
+
+        .seccion-tareas {
+            background: #FFFFFF; border-radius: 30px; padding: 22px 25px;
+            box-shadow: 0 12px 25px rgba(59, 130, 246, 0.15); border: 4px solid #FFFFFF;
+            display: flex; flex-direction: column; gap: 15px; height: 100%;
+            justify-content: space-between;
+        }
+        .seccion-tareas h3 {
+            font-family: 'Fredoka', sans-serif; font-size: 1.3rem; color: #1E3A8A;
+            display: flex; align-items: center; gap: 10px;
+        }
+        
+        .card-tarea-paciente {
+            background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 20px; padding: 18px;
+            display: flex; flex-direction: column; gap: 15px; transition: all 0.3s ease;
+            height: 100%; justify-content: space-between;
+        }
+        
+        .tarea-info-top { display: flex; align-items: center; gap: 15px; }
+        
+        .tarea-foto-mini { 
+            width: 55px; height: 55px; border-radius: 14px; object-fit: cover;  
+            background: #E2E8F0; border: 2px solid #CBD5E1; cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .tarea-foto-mini:hover { transform: scale(1.05); border-color: #3B82F6; }
+
+        .tarea-detalles h4 { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; color: #1E293B; }
+        .tarea-detalles p { font-size: 0.85rem; color: #64748B; font-weight: 700; margin-top: 2px; }
+
+        .btn-completar-tarea {
+            background-color: #10B981; color: white; border: none; padding: 12px;
+            border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1rem;
+            cursor: pointer; box-shadow: 0 4px 0 #059669; transition: transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+        }
+        .btn-completar-tarea:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
+
+        .sin-tareas {
+            background: #F8FAFC; border: 2px dashed #CBD5E1; border-radius: 20px; padding: 25px;
+            text-align: center; color: #64748B; font-weight: 700; display: none; flex-direction: column;
+            gap: 8px; align-items: center; justify-content: center; height: 100%;
+        }
+
         .menu-card {
-            background-color: #FFFFFF; padding: 22px 25px; border-radius: 30px;
-            box-shadow: 0 12px 25px rgba(59, 130, 246, 0.15); width: 100%; display: flex;
+            background-color: #FFFFFF; padding: 20px 22px; border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.12); width: 100%; display: flex;
             align-items: center; justify-content: space-between; text-decoration: none;
             border: 4px solid #FFFFFF; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; min-height: 90px;
         }
-        .menu-card:hover { transform: translateY(-5px); border-color: #60A5FA; box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25); }
-        .menu-card:active { transform: scale(0.95); }
+        .menu-card:hover { transform: translateY(-4px); border-color: #60A5FA; box-shadow: 0 12px 28px rgba(59, 130, 246, 0.2); }
+        .menu-card:active { transform: scale(0.96); }
         
-        .menu-left { display: flex; align-items: center; gap: 20px; }
+        .menu-left { display: flex; align-items: center; gap: 15px; }
         .menu-icon-box {
-            width: 65px; height: 65px; border-radius: 20px; background-color: #EFF6FF;
-            display: flex; align-items: center; justify-content: center; font-size: 35px;
-            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.05);
+            width: 50px; height: 50px; border-radius: 16px; background-color: #EFF6FF;
+            display: flex; align-items: center; justify-content: center; font-size: 26px;
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.05); flex-shrink: 0;
         }
+     
         .menu-text { display: flex; flex-direction: column; gap: 2px;}
-        .menu-title { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; color: #1E293B; }
-        .menu-subtitle { font-size: 0.85rem; font-weight: 800; color: #64748B; }
-        .menu-arrow { font-size: 2rem; color: #3B82F6; font-weight: 800; }
+        .menu-title { font-family: 'Fredoka', sans-serif; font-size: 1.15rem; color: #1E293B; line-height: 1.2; }
+        .menu-subtitle { font-size: 0.8rem; font-weight: 800; color: #64748B; line-height: 1.2; }
+        .menu-arrow { font-size: 1.8rem; color: #3B82F6; font-weight: 800; flex-shrink: 0; }
 
-        /* --- BARRA INFERIOR (Estilo Burbuja) --- */
-        .bottom-nav {
-            position: fixed; 
-            bottom: 15px; 
-            left: 50%; 
-            transform: translateX(-50%);
-            width: 90%; 
-            max-width: 400px; 
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex; 
-            justify-content: space-around; 
-            padding: 10px;
-            border-radius: 35px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            z-index: 10; 
-            border: 3px solid #FFF;
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
         }
-
-        .nav-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 3px; 
-            text-decoration: none; 
-            color: #94A3B8; 
-            font-weight: 800; 
-            font-size: 0.8rem; 
-            transition: all 0.3s; 
+        .modal-content {
+            background: white; padding: 35px; border-radius: 30px; text-align: center;
+            max-width: 420px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; gap: 20px;
         }
-
-        .nav-icon { 
-            font-size: 1.5rem; 
-            transition: transform 0.3s; 
-        }
-
-        .nav-item.active { 
-            color: #3B82F6; 
-        }
+        .modal-content h3 { font-family: 'Fredoka', sans-serif; color: #1E3A8A; font-size: 1.6rem; }
         
-        .nav-item.active .nav-icon { 
-            transform: scale(1.2) translateY(-2px); 
+        .modal-imagen-content {
+            background: white; padding: 20px; border-radius: 30px; text-align: center;
+            max-width: 450px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; gap: 15px; align-items: center;
+        }
+        .imagen-zoom-ampliada {
+            width: 100%; max-height: 350px; object-fit: contain; border-radius: 16px;
+            border: 3px solid #E2E8F0; background: #F8FAFC;
         }
 
-        /* Responsive para pantallas extremadamente pequeñas */
-        @media (max-width: 360px) {
-            .grilla-juegos { grid-template-columns: 1fr; } /* Todo en 1 columna si es muy chiquito */
-            .card-destacada { grid-column: span 1; flex-direction: column !important; text-align: center !important; }
-            .card-destacada .juego-textos { align-items: center !important; margin-left: 0; }
+        .input-codigo {
+            width: 100%; padding: 15px; border-radius: 18px; border: 3px solid #CBD5E1;
+            font-family: 'Fredoka', sans-serif; font-size: 1.8rem; color: #3B82F6;
+            text-align: center; letter-spacing: 2px; outline: none; transition: border-color 0.2s;
+            background: #F8FAFC;
+        }
+        .input-codigo:focus { border-color: #10B981; background: #FFF; }
+
+        .btn-modal-accion {
+            background: #10B981; color: white; border: none; padding: 14px;
+            border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem;
+            cursor: pointer; box-shadow: 0 4px 0 #059669; transition: transform 0.1s; width: 100%;
+        }
+        .btn-modal-accion:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
+
+        .btn-cerrar-modal { background: #EF4444; color: white; border: none; padding: 12px; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1rem; cursor: pointer; width: 100%; }
+
+        .bottom-nav {
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); display: flex; justify-content: space-around; 
+            padding: 10px; border-radius: 35px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 10; border: 3px solid #FFF;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #94A3B8; font-weight: 800; font-size: 0.8rem; transition: all 0.3s; }
+        .nav-icon { font-size: 1.5rem; transition: transform 0.3s; }
+        .nav-item.active { color: #3B82F6; }
+        .nav-item.active .nav-icon { transform: scale(1.2) translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .grid-perfil-fono {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "actividad"
+                    "datos"
+                    "letras"
+                    "cerrar";
+            }
         }
     </style>
 </head>
@@ -155,32 +249,287 @@
             <p class="subtitulo">Configura tu cuenta y sonidos</p>
         </div>
 
-        <a href="editarperfil.html" class="menu-card">
-            <div class="menu-left">
-                <div class="menu-icon-box">✏️</div>
-                <div class="menu-text">
-                    <span class="menu-title">Mis Datos</span>
-                    <span class="menu-subtitle">Cambia tu nombre o foto</span>
-                </div>
-            </div>
-            <span class="menu-arrow">›</span>
-        </a>
-        <a href="editarletra.html" class="menu-card">
-            <div class="menu-left">
-                <div class="menu-icon-box">🔤</div>
-                <div class="menu-text">
-                    <span class="menu-title">Mis Letras</span>
-                    <span class="menu-subtitle">Elige nuevos sonidos</span>
-                </div>
-            </div>
-            <span class="menu-arrow">›</span>
-        </a>
+        <div id="contenedor-dinamico-perfil">
+            <!-- Renderizado dinámico -->
+        </div>
     </main>
+
+    <!-- Modal Vincular -->
+    <div class="modal-overlay" id="modal-vinculacion">
+        <div class="modal-content">
+            <h3>Vincular con tu Fonoaudiólogo</h3>
+            <p style="color: #64748B; font-weight: 700; line-height: 1.4;">Pídele el código secreto a tu especialista (Ej: XPR-482) y escribítelo aquí:</p>
+            <input type="text" class="input-codigo" id="codigo-input" placeholder="XPR-..." maxlength="8">
+            <button class="btn-modal-accion" onclick="vincularEspecialista()">¡Vincularme!</button>
+            <button class="btn-cerrar-modal" onclick="cerrarModalVinculacion()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal Cerrar Sesión -->
+    <div class="modal-overlay" id="modal-cerrar-sesion">
+        <div class="modal-content">
+            <div style="font-size: 3.5rem; margin-bottom: -10px;">🚪</div>
+            <h3>¿Cerrar Sesión?</h3>
+            <p style="color: #64748B; font-weight: 700; line-height: 1.4;">¿Estás seguro de que quieres salir de tu cuenta?</p>
+            <div style="display: flex; gap: 12px; flex-direction: column;">
+                <button class="btn-modal-accion" style="background: #3B82F6; box-shadow: 0 6px 0 #1D4ED8;" onclick="confirmarCierreSesion()">Sí, salir</button>
+                <button class="btn-cerrar-modal" style="background: #F1F5F9; color: #64748B; border: 2px solid #CBD5E1;" onclick="cerrarModalSesion()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Zoom Imagen -->
+    <div class="modal-overlay" id="modal-zoom-imagen">
+        <div class="modal-imagen-content">
+            <h3 style="font-family: 'Fredoka', sans-serif; color: #1E3A8A; font-size: 1.4rem;">Actividad del Fonoaudiólogo</h3>
+            <img src="" alt="Imagen ampliada" class="imagen-zoom-ampliada" id="imagen-modal-src">
+            <button class="btn-cerrar-modal" onclick="cerrarZoomImagen()">Cerrar</button>
+        </div>
+    </div>
 
     <nav class="bottom-nav">
         <a href="home.html" class="nav-item"><span class="nav-icon">🏠</span>Inicio</a>
         <a href="juegos.html" class="nav-item"><span class="nav-icon">🎮</span>Juegos</a>
         <a href="perfil.html" class="nav-item active"><span class="nav-icon">⚙️</span>Perfil</a>
     </nav>
+
+    <script>
+        let idTareaPendiente = null;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const usuario_id = localStorage.getItem('usuario_id');
+            if (!usuario_id) {
+                window.location.href = 'sesion.html';
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(`http://localhost:3000/api/perfil/${usuario_id}`);
+                if (respuesta.ok) {
+                    const datos = await respuesta.json();
+                    renderizarPerfil(datos.fonoaudiologo_id);
+                    
+                    if (datos.fonoaudiologo_id) {
+                        cargarActividadPendiente(usuario_id);
+                    }
+                } else {
+                    renderizarPerfil(null);
+                }
+            } catch (error) {
+                console.error("Error al verificar perfil:", error);
+                renderizarPerfil(null);
+            }
+        });
+
+        function renderizarPerfil(fonoaudiologoId) {
+            const contenedor = document.getElementById('contenedor-dinamico-perfil');
+
+            if (fonoaudiologoId) {
+                contenedor.className = "grid-perfil-fono";
+                contenedor.innerHTML = `
+                    <div class="seccion-tareas area-actividad">
+                        <h3>Actividades de tu Fonoaudiólogo</h3>
+                        
+                        <div class="card-tarea-paciente" id="tarjeta-tarea" style="display: none;">
+                            <div class="tarea-info-top">
+                                <img src="" alt="Actividad" class="tarea-foto-mini" id="img-tarea" onclick="abrirZoomImagen(this)" style="display: none;">
+                                <div class="tarea-detalles">
+                                    <h4>Nueva Actividad</h4>
+                                    <p id="desc-tarea">Cargando...</p>
+                                </div>
+                            </div>
+                            <button class="btn-completar-tarea" onclick="marcarCompletada()">Realizada ✔️</button>
+                        </div>
+
+                        <div class="sin-tareas" id="mensaje-sin-tareas" style="display: flex;">
+                            <span style="font-size: 2.5rem;">🎉</span>
+                            <h4 style="font-family: 'Fredoka', sans-serif; color: #1E3A8A; font-size: 1.1rem;">¡Todo al día!</h4>
+                            <p style="font-size: 0.85rem;">Esperando nuevas actividades.</p>
+                        </div>
+                    </div>
+
+                    <a href="editarperfil.html" class="menu-card area-datos">
+                        <div class="menu-left">
+                            <div class="menu-icon-box">✏️</div>
+                            <div class="menu-text">
+                                <span class="menu-title">Mis Datos</span>
+                                <span class="menu-subtitle">Cambia tu nombre o foto</span>
+                            </div>
+                        </div>
+                        <span class="menu-arrow">›</span>
+                    </a>
+
+                    <a href="editarletra.html" class="menu-card area-letras">
+                        <div class="menu-left">
+                            <div class="menu-icon-box">🔤</div>
+                            <div class="menu-text">
+                                <span class="menu-title">Mis Letras</span>
+                                <span class="menu-subtitle">Elige nuevos sonidos</span>
+                            </div>
+                        </div>
+                        <span class="menu-arrow">›</span>
+                    </a>
+
+                    <div onclick="cerrarSesion()" class="menu-card area-cerrar">
+                        <div class="menu-left">
+                            <div class="menu-icon-box">🚪</div>
+                            <div class="menu-text">
+                                <span class="menu-title">Cerrar Sesión</span>
+                                <span class="menu-subtitle">Salir de tu cuenta</span>
+                            </div>
+                        </div>
+                        <span class="menu-arrow">›</span>
+                    </div>
+                `;
+            } else {
+                contenedor.className = "grilla-opciones";
+                contenedor.innerHTML = `
+                    <a href="editarperfil.html" class="menu-card">
+                        <div class="menu-left">
+                            <div class="menu-icon-box">✏️</div>
+                            <div class="menu-text">
+                                <span class="menu-title">Mis Datos</span>
+                                <span class="menu-subtitle">Cambia tu nombre o foto</span>
+                            </div>
+                        </div>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                    
+                    <a href="editarletra.html" class="menu-card">
+                        <div class="menu-left">
+                            <div class="menu-icon-box">🔤</div>
+                            <div class="menu-text">
+                                <span class="menu-title">Mis Letras</span>
+                                <span class="menu-subtitle">Elige nuevos sonidos</span>
+                            </div>
+                        </div>
+                        <span class="menu-arrow">›</span>
+                    </a>
+
+                    <div onclick="abrirModalVinculacion()" class="menu-card">
+                        <div class="menu-left">
+                            <div class="menu-icon-box">🩺</div>
+                            <div class="menu-text">
+                                <span class="menu-title">Vincular Fono</span>
+                                <span class="menu-subtitle">Código de terapeuta</span>
+                            </div>
+                        </div>
+                        <span class="menu-arrow">›</span>
+                    </div> <!-- ¡AQUÍ FALTABA ESTE DIV! -->
+
+                    <div onclick="cerrarSesion()" class="menu-card">
+                        <div class="menu-left">
+                            <div class="menu-icon-box">🚪</div>
+                            <div class="menu-text">
+                                <span class="menu-title">Cerrar Sesión</span>
+                                <span class="menu-subtitle">Salir de tu cuenta</span>
+                            </div>
+                        </div>
+                        <span class="menu-arrow">›</span>
+                    </div>
+                `;
+            }
+        }
+        
+        async function cargarActividadPendiente(usuario_id) {
+            try {
+                const resp = await fetch(`http://localhost:3000/api/actividades/${usuario_id}`);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.tarea) {
+                        idTareaPendiente = data.tarea.id;
+                        document.getElementById('tarjeta-tarea').style.display = 'flex';
+                        document.getElementById('mensaje-sin-tareas').style.display = 'none';
+                        document.getElementById('desc-tarea').textContent = data.tarea.consigna;
+                        
+                        const imgElement = document.getElementById('img-tarea');
+                        if (data.tarea.foto_path) {
+                            imgElement.src = `http://localhost:3000/uploads/${data.tarea.foto_path}`;
+                            imgElement.style.display = 'block';
+                        } else {
+                            imgElement.style.display = 'none';
+                        }
+                    } else {
+                        document.getElementById('tarjeta-tarea').style.display = 'none';
+                        document.getElementById('mensaje-sin-tareas').style.display = 'flex';
+                    }
+                }
+            } catch (error) {
+                console.error("Error al cargar actividad:", error);
+            }
+        }
+
+        async function marcarCompletada() {
+            if (!idTareaPendiente) return;
+            
+            try {
+                const resp = await fetch(`http://localhost:3000/api/actividades/${idTareaPendiente}/completar`, { method: 'PUT' });
+                if (resp.ok) {
+                    alert('¡Excelente trabajo! Le avisamos a tu fonoaudiólogo.');
+                    
+                    const tarjeta = document.getElementById('tarjeta-tarea');
+                    tarjeta.style.opacity = '0';
+                    setTimeout(() => {
+                        tarjeta.style.display = 'none';
+                        document.getElementById('mensaje-sin-tareas').style.display = 'flex';
+                    }, 300);
+                }
+            } catch (e) {
+                console.error("Error al completar la tarea:", e);
+                alert("Hubo un error al marcar la tarea.");
+            }
+        }
+
+        function abrirModalVinculacion() { document.getElementById('modal-vinculacion').style.display = 'flex'; }
+        function cerrarModalVinculacion() { document.getElementById('modal-vinculacion').style.display = 'none'; document.getElementById('codigo-input').value = ''; }
+
+        async function vincularEspecialista() {
+            const codigo = document.getElementById('codigo-input').value.trim();
+            const usuario_id = localStorage.getItem('usuario_id');
+
+            if(!codigo) {
+                alert('Por favor, ingresa un código válido.');
+                return;
+            }
+
+            try {
+                const respuesta = await fetch('http://localhost:3000/api/vincular', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ paciente_id: usuario_id, codigo: codigo })
+                });
+
+                const data = await respuesta.json();
+                if (respuesta.ok) {
+                    alert('¡Listo! Te has vinculado correctamente. Tu fonoaudiólogo ya puede ver tus progresos.');
+                    cerrarModalVinculacion();
+                    location.reload(); 
+                } else {
+                    alert('Error: ' + data.mensaje);
+                }
+            } catch (error) {
+                alert('No se pudo conectar con el servidor.');
+            }
+        }
+
+        function cerrarSesion() { document.getElementById('modal-cerrar-sesion').style.display = 'flex'; }
+        function cerrarModalSesion() { document.getElementById('modal-cerrar-sesion').style.display = 'none'; }
+        
+        function confirmarCierreSesion() {
+            localStorage.removeItem('usuario_id');
+            localStorage.removeItem('nombre_usuario');
+            window.location.href = 'sesion.html';
+        }
+
+        function abrirZoomImagen(element) {
+            const modal = document.getElementById('modal-zoom-imagen');
+            const imagenAmpliada = document.getElementById('imagen-modal-src');
+            imagenAmpliada.src = element.src;
+            modal.style.display = 'flex';
+        }
+        function cerrarZoomImagen() {
+            document.getElementById('modal-zoom-imagen').style.display = 'none';
+        }
+    </script>
 </body>
 </html>

@@ -33,9 +33,9 @@
         .nav-perfil { display: flex; align-items: center; gap: 15px; }
         
         .btn-accion-nav {
-            background-color: #10B981; color: white; border: none; padding: 9px 18px;
+            background-color: #3B82F6; color: white; border: none; padding: 9px 18px;
             border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1rem;
-            cursor: pointer; box-shadow: 0 4px 0 #059669; transition: transform 0.1s;
+            cursor: pointer; box-shadow: 0 4px 0 #1D4ED8; transition: transform 0.1s;
             display: flex; align-items: center; gap: 8px; height: 42px; justify-content: center;
         }
         .btn-accion-nav:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
@@ -73,14 +73,13 @@
         /* --- VISTA 2: EXPEDIENTE --- */
         #vista-expediente { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 25px; }
         
-        /* Botón Volver Rediseñado tipo píldora amigable */
         .btn-volver {
-            background: #3B82F6; color: white; border: none;
-            padding: 12px 24px; border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.05rem;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
-            box-shadow: 0 4px 0 #1D4ED8; transition: transform 0.1s;
+            background: rgba(255, 255, 255, 0.95); border: 2px solid #E2E8F0; color: #3B82F6;
+            padding: 10px 20px; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1rem;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; align-self: flex-start;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08); transition: all 0.2s;
         }
-        .btn-volver:active { transform: translateY(4px); box-shadow: 0 0 0 #1D4ED8; }
+        .btn-volver:hover { background: #FFFFFF; border-color: #3B82F6; transform: translateX(-3px); }
 
         .perfil-cabecera {
             background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 25px 35px;
@@ -91,43 +90,39 @@
         .pc-avatar { font-size: 3.5rem; background: #F1F5F9; width: 85px; height: 85px; border-radius: 25px; display: flex; align-items: center; justify-content: center; }
         .pc-nombre { font-family: 'Fredoka', sans-serif; font-size: 2.1rem; color: #1E3A8A; line-height: 1.1; margin-bottom: 4px; }
         .pc-id { color: #64748B; font-weight: 800; font-size: 0.95rem; }
-        
-        .pc-kpis { display: flex; gap: 18px; }
-        .kpi-box { background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 20px; padding: 12px 24px; text-align: center; }
-        .kpi-box span { font-size: 0.8rem; color: #64748B; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 4px; }
-        .kpi-box strong { display: block; font-family: 'Fredoka', sans-serif; font-size: 1.6rem; color: #1E293B; }
 
-        /* Estructura de columnas con ancho y alineación simétrica */
-        .layout-modulos { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: start; }
+        .layout-modulos { display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; align-items: stretch; }
         
         .tarjeta-modulo {
             background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 30px;
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); border: 3px solid #FFF;
-            display: flex; flex-direction: column; gap: 18px; width: 100%;
+            display: flex; flex-direction: column; gap: 18px; height: 100%;
         }
         .tarjeta-modulo h2 { font-family: 'Fredoka', sans-serif; font-size: 1.45rem; color: #1E3A8A; display: flex; align-items: center; gap: 10px; justify-content: space-between; }
 
-        /* Tareas (Optimizado sin espacio blanco inferior) */
+        /* Tareas */
         .zona-upload {
-            border: 3px dashed #CBD5E1; border-radius: 20px; padding: 25px 20px; text-align: center;
+            border: 3px dashed #CBD5E1; border-radius: 20px; padding: 52px 20px; text-align: center;
             background: #F8FAFC; cursor: pointer; position: relative; transition: all 0.2s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;
         }
         .zona-upload:hover { border-color: #3B82F6; background: #EFF6FF; }
-        .upload-icon { font-size: 2.5rem; margin-bottom: 8px; display: block; }
+        .upload-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
         .upload-text { color: #64748B; font-weight: 800; font-size: 0.95rem; }
         .file-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         
         .input-tarea {
-            width: 100%; padding: 14px; border-radius: 18px; border: 2px solid #E2E8F0;
+            width: 100%; padding: 16px; border-radius: 18px; border: 2px solid #E2E8F0;
             font-family: 'Nunito', sans-serif; font-size: 1rem; color: #1E293B;
-            resize: none; height: 95px; outline: none; transition: border-color 0.2s;
+            resize: none; height: 110px; outline: none; transition: border-color 0.2s;
         }
         .input-tarea:focus { border-color: #3B82F6; background: #FFF; }
 
         .btn-accion {
-            width: 100%; background: #3B82F6; color: white; border: none; padding: 15px;
-            border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.15rem;
+            width: 100%; background: #3B82F6; color: white; border: none; padding: 16px;
+            border-radius: 20px; font-family: 'Fredoka', sans-serif; font-size: 1.2rem;
             cursor: pointer; box-shadow: 0 4px 0 #1D4ED8; transition: transform 0.1s;
+            margin-top: auto;
         }
         .btn-accion:active { transform: translateY(4px); box-shadow: 0 0 0 #1D4ED8; }
 
@@ -162,7 +157,7 @@
 
         .columna-derecha { display: flex; flex-direction: column; gap: 25px; }
 
-        /* --- MODAL VINCULAR --- */
+        /* --- MODALES --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
@@ -175,8 +170,15 @@
         }
         .modal-content h3 { font-family: 'Fredoka', sans-serif; color: #1E3A8A; font-size: 1.6rem; }
         .codigo-generado { background: #F8FAFC; border: 3px dashed #CBD5E1; padding: 18px; font-family: 'Fredoka', sans-serif; font-size: 2.5rem; color: #3B82F6; letter-spacing: 3px; border-radius: 20px; }
-        .btn-cerrar-modal { background: #EF4444; color: white; border: none; padding: 14px; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; }
-        .btn-cerrar-modal:hover { background: #DC2626; }
+
+        .btn-modal-accion {
+            background: #3B82F6; color: white; border: none; padding: 14px;
+            border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem;
+            cursor: pointer; box-shadow: 0 6px 0 #1D4ED8, 0 12px 15px rgba(59, 130, 246, 0.3); transition: transform 0.1s;
+        }
+        
+        .btn-cerrar-modal { background: #3B82F6; color: white; border: none; padding: 14px; border-radius: 16px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; }
+        .btn-cerrar-modal:hover { background: #1D4ED8; }
 
         @media (max-width: 900px) { .layout-modulos { grid-template-columns: 1fr; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -195,51 +197,29 @@
             <button class="btn-accion-nav" onclick="abrirModal()">
                 <span>➕</span> Vincular Paciente
             </button>
-            <button class="btn-salir" onclick="window.location.href='sesion.html'">Cerrar Sesión</button>
+            <button class="btn-salir" onclick="abrirModalCerrarSesionFono()">Cerrar Sesión</button>
         </div>
     </nav>
 
     <main class="main-container">
 
-        <!-- ==========================================
-             VISTA 1: DASHBOARD
-             ========================================== -->
+        <!-- VISTA 1: DASHBOARD -->
         <div id="vista-dashboard">
             <div class="action-bar">
                 <div class="bienvenida">
-                    <h1>Hola, Especialista 👋</h1>
+                    <h1 id="titulo-bienvenida">Hola 👋</h1>
                     <p>Aquí tienes el estado de tus pacientes.</p>
                 </div>
             </div>
 
             <div class="grid-pacientes">
-                <div class="tarjeta-paciente" onclick="abrirExpediente('Lihuel Silva', '🧒🏽', '3', '150')">
-                    <div class="tp-header">
-                        <div class="tp-avatar">🧒🏽</div>
-                        <div class="tp-info">
-                            <span class="tp-nombre">Lihuel Silva</span>
-                            <span class="tp-estado">🟢 Activo hoy</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tarjeta-paciente" onclick="abrirExpediente('Sofía Martínez', '👧🏻', '0', '80')">
-                    <div class="tp-header">
-                        <div class="tp-avatar">👧🏻</div>
-                        <div class="tp-info">
-                            <span class="tp-nombre">Sofía Martínez</span>
-                            <span class="tp-estado" style="color: #F59E0B;">🟠 Hace 4 días</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Se llenará dinámicamente -->
             </div>
         </div>
 
-        <!-- ==========================================
-             VISTA 2: EXPEDIENTE
-             ========================================== -->
+        <!-- VISTA 2: EXPEDIENTE -->
         <div id="vista-expediente">
-            <button class="btn-volver" onclick="cerrarExpediente()">⬅ Volver a Mis Pacientes</button>
+            <button class="btn-volver" onclick="cerrarExpediente()">⬅ Volver</button>
 
             <div class="perfil-cabecera">
                 <div class="pc-identidad">
@@ -247,16 +227,6 @@
                     <div>
                         <h2 class="pc-nombre" id="exp-nombre">Nombre</h2>
                         <span class="pc-id">Paciente Activo</span>
-                    </div>
-                </div>
-                <div class="pc-kpis">
-                    <div class="kpi-box">
-                        <span>Racha</span>
-                        <strong>🔥 <span id="exp-racha">0</span></strong>
-                    </div>
-                    <div class="kpi-box">
-                        <span>Puntos</span>
-                        <strong>⭐ <span id="exp-estrellas">0</span></strong>
                     </div>
                 </div>
             </div>
@@ -272,21 +242,17 @@
                         <span class="upload-icon">🖼️</span>
                         <span class="upload-text" id="texto-foto">Haz clic o arrastra una foto aquí</span>
                     </div>
-                    <textarea class="input-tarea" placeholder="Ej: Mira la foto de la boca y repite el sonido frente al espejo 5 veces..."></textarea>
-                    <button class="btn-accion" onclick="alert('¡Tarea enviada al paciente!')">Enviar Actividad</button>
+                    <textarea class="input-tarea" id="input-descripcion-tarea" placeholder="Ej: Mira la foto de la boca y repite el sonido frente al espejo 5 veces..."></textarea>
+                    
+                    <button class="btn-accion" onclick="enviarActividad()">Enviar Actividad</button>
                 </div>
 
                 <!-- Columna Der: Estadísticas, Hábitos y Mochila -->
                 <div class="columna-derecha">
                     <div class="tarjeta-modulo">
-                        <h2>📊 Rendimiento</h2>
-                        <div class="stat-bar-container">
-                            <div class="stat-header"><span>Precisión Fonema R</span> <span>80%</span></div>
-                            <div class="barra-fondo"><div class="barra-progreso progreso-verde" style="width: 80%;"></div></div>
-                        </div>
-                        <div class="stat-bar-container">
-                            <div class="stat-header"><span>Precisión Fonema S</span> <span style="color: #F59E0B;">45%</span></div>
-                            <div class="barra-fondo"><div class="barra-progreso progreso-naranja" style="width: 45%;"></div></div>
+                        <h2>📊 Rendimiento (Últimos 7 días)</h2>
+                        <div id="contenedor-rendimiento">
+                            <p style="color: #64748B; font-size: 0.9rem;">Cargando estadísticas...</p>
                         </div>
                     </div>
 
@@ -295,22 +261,19 @@
                         <div class="grid-habitos-mini">
                             <div class="habito-mini-box">
                                 <h4>Tiempo Semanal</h4>
-                                <p>⏱️ 45 min</p>
+                                <p id="tiempo-semanal">⏱️ 0 min</p>
                             </div>
                             <div class="habito-mini-box">
                                 <h4>Juego Favorito</h4>
-                                <p>🚂 Trencito</p>
+                                <p id="juego-favorito">-</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="tarjeta-modulo">
                         <h2 style="font-size: 1.3rem;">🎒 Sonidos Activos</h2>
-                        <div class="grid-fonemas-mini">
-                            <div class="item-fonema"><span>R - RR</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-                            <div class="item-fonema"><span>S</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
-                            <div class="item-fonema"><span>TR</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-                            <div class="item-fonema"><span>L</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                        <div class="grid-fonemas-mini" id="contenedor-letras">
+                            <p style="color: #64748B; font-size: 0.9rem;">Cargando mochila...</p>
                         </div>
                     </div>
                 </div>
@@ -324,24 +287,189 @@
         <div class="modal-content">
             <h3>Código de Vinculación</h3>
             <p style="color: #64748B; font-weight: 700; line-height: 1.4;">Dile a la familia que ingrese este código en el perfil del niño:</p>
-            <div class="codigo-generado" id="texto-codigo">XPR-482</div>
+            <div class="codigo-generado">Cargando...</div>
             <button class="btn-cerrar-modal" onclick="cerrarModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Cerrar Sesión -->
+    <div class="modal-overlay" id="modal-cerrar-sesion-fono">
+        <div class="modal-content">
+            <div style="font-size: 3.5rem; margin-bottom: -10px;">🚪</div>
+            <h3>¿Cerrar Sesión?</h3>
+            <p style="color: #64748B; font-weight: 700; line-height: 1.4;">¿Estás seguro de que quieres salir del panel profesional?</p>
+            <div style="display: flex; gap: 12px; flex-direction: column;">
+                <button class="btn-modal-accion" style="background: #3B82F6; box-shadow: 0 6px 0 #1D4ED8, 0 12px 15px rgba(59, 130, 246, 0.3);" onclick="confirmarCierreSesionFono()">Sí, salir</button>
+                <button class="btn-cerrar-modal" style="background: #F1F5F9; color: #64748B; border: 2px solid #CBD5E1;" onclick="cerrarModalSesionFono()">Cancelar</button>
+            </div>
         </div>
     </div>
 
     <script>
         const vistaDashboard = document.getElementById('vista-dashboard');
         const vistaExpediente = document.getElementById('vista-expediente');
+        let pacienteActualId = null; 
+        
+        // Cargar pacientes dinámicamente al entrar
+        document.addEventListener('DOMContentLoaded', async () => {
+            const fonoaudiologo_id = localStorage.getItem('usuario_id');
+            const nombre_fonoaudiologo = localStorage.getItem('nombre_usuario'); // Rescatamos el nombre real
+            
+            if (!fonoaudiologo_id) {
+                window.location.href = 'sesion.html';
+                return;
+            }
 
-        function abrirExpediente(nombre, avatar, racha, estrellas) {
+            // Inyectamos el nombre en el título
+            const tituloBienvenida = document.getElementById('titulo-bienvenida');
+            if (nombre_fonoaudiologo) {
+                tituloBienvenida.textContent = `Hola, ${nombre_fonoaudiologo} 👋`;
+            }
+
+            const grid = document.querySelector('.grid-pacientes');
+            
+            try {
+                const respuesta = await fetch(`http://localhost:3000/api/pacientes/${fonoaudiologo_id}`);
+                grid.innerHTML = ''; 
+                
+                if (respuesta.ok) {
+                    const pacientes = await respuesta.json();
+                    
+                    if (pacientes.length === 0) {
+                        grid.innerHTML = '<p style="color: #64748B; font-weight: 700; grid-column: 1 / -1; text-align: center; padding: 20px;">Aún no tienes pacientes vinculados. ¡Dales tu código de vinculación!</p>';
+                        return;
+                    }
+
+                    pacientes.forEach(p => {
+                        const nombreMostrado = p.nombre ? `${p.nombre} ${p.apellido || ''}` : p.username;
+                        const avatar = p.avatar || '🧒🏽';
+                        
+                        let estadoHtml = '<span class="tp-estado">🟢 Activo</span>';
+                        if (!p.fecha_ultimo_juego) {
+                            estadoHtml = '<span class="tp-estado" style="color: #64748B;">⚪ Sin actividad aún</span>';
+                        }
+
+                        grid.innerHTML += `
+                            <div class="tarjeta-paciente" onclick="abrirExpediente('${nombreMostrado}', '${avatar}', '${p.id}')">
+                                <div class="tp-header">
+                                    <div class="tp-avatar">${avatar}</div>
+                                    <div class="tp-info">
+                                        <span class="tp-nombre">${nombreMostrado}</span>
+                                        ${estadoHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    grid.innerHTML = '<p style="color: #EF4444; font-weight: 700; grid-column: 1 / -1; text-align: center; padding: 20px;">Error del servidor.</p>';
+                }
+            } catch (error) {
+                console.warn('Error de red:', error);
+            }
+        });
+
+        async function abrirExpediente(nombre, avatar, paciente_id = null) {
             document.getElementById('exp-nombre').textContent = nombre;
             document.getElementById('exp-avatar').textContent = avatar;
-            document.getElementById('exp-racha').textContent = racha;
-            document.getElementById('exp-estrellas').textContent = estrellas;
+            pacienteActualId = paciente_id;
 
             vistaDashboard.style.display = 'none';
             vistaExpediente.style.display = 'flex';
             window.scrollTo(0, 0);
+
+            // Limpiar datos previos
+            document.getElementById('contenedor-rendimiento').innerHTML = '<p style="color: #64748B; font-size: 0.9rem;">Cargando...</p>';
+            document.getElementById('tiempo-semanal').innerHTML = '⏱️ 0 min';
+            document.getElementById('juego-favorito').innerHTML = '-';
+            document.getElementById('contenedor-letras').innerHTML = '';
+
+            // Cargar datos reales del servidor
+            try {
+                const resp = await fetch(`http://localhost:3000/api/estadisticas/${paciente_id}`);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    renderizarEstadisticas(data.estadisticas);
+                    renderizarMochila(data.letras_activas);
+                }
+            } catch (error) {
+                console.error("Error cargando expediente:", error);
+            }
+        }
+
+        function renderizarEstadisticas(estadisticas) {
+            const contRend = document.getElementById('contenedor-rendimiento');
+            const contTiempo = document.getElementById('tiempo-semanal');
+            const contJuego = document.getElementById('juego-favorito');
+
+            if (!estadisticas || estadisticas.length === 0 || !estadisticas[0].fonema) {
+                contRend.innerHTML = '<p style="color: #64748B; font-size: 0.9rem;">Sin actividad esta semana.</p>';
+                return;
+            }
+
+            let tiempoTotalSegundos = 0;
+            let juegoFavorito = estadisticas[0].juego_favorito || '-';
+            contRend.innerHTML = '';
+
+            estadisticas.forEach(stat => {
+                if(!stat.fonema) return;
+                
+                tiempoTotalSegundos += (stat.tiempo_total || 0);
+                const totalIntentos = stat.total_intentos || 1; 
+                const porcentaje = Math.round((stat.total_aciertos / totalIntentos) * 100);
+                
+                const colorClase = porcentaje >= 70 ? 'progreso-verde' : 'progreso-naranja';
+                const colorTexto = porcentaje >= 70 ? '' : 'style="color: #F59E0B;"';
+
+                contRend.innerHTML += `
+                    <div class="stat-bar-container" style="margin-bottom: 12px;">
+                        <div class="stat-header"><span>Precisión ${stat.fonema}</span> <span ${colorTexto}>${porcentaje}%</span></div>
+                        <div class="barra-fondo"><div class="barra-progreso ${colorClase}" style="width: ${porcentaje}%;"></div></div>
+                    </div>
+                `;
+            });
+
+            contTiempo.innerHTML = `⏱️ ${Math.floor(tiempoTotalSegundos / 60)} min`;
+            contJuego.innerHTML = juegoFavorito;
+        }
+
+        function renderizarMochila(letrasActivas) {
+            letrasActivasGlobal = letrasActivas || [];
+            const contLetras = document.getElementById('contenedor-letras');
+            contLetras.innerHTML = '';
+
+            todasLasLetras.forEach(letra => {
+                const estaActiva = letrasActivasGlobal.includes(letra);
+                const checkedHTML = estaActiva ? 'checked' : '';
+                
+                contLetras.innerHTML += `
+                    <div class="item-fonema">
+                        <span>${letra}</span>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleLetra('${letra}', this.checked)" ${checkedHTML}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                `;
+            });
+        }
+
+        async function toggleLetra(letra, activada) {
+            if (activada && !letrasActivasGlobal.includes(letra)) {
+                letrasActivasGlobal.push(letra);
+            } else if (!activada) {
+                letrasActivasGlobal = letrasActivasGlobal.filter(l => l !== letra);
+            }
+
+            try {
+                await fetch('http://localhost:3000/api/guardar-letras', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario_id: pacienteActualId, letras: letrasActivasGlobal })
+                });
+            } catch (error) {
+                console.error("Error al actualizar letra:", error);
+            }
         }
 
         function cerrarExpediente() {
@@ -357,15 +485,85 @@
                 texto.style.color = '#10B981';
             }
         }
-
-        function abrirModal() {
-            const randomNum = Math.floor(100 + Math.random() * 900);
-            document.getElementById('texto-codigo').textContent = `XPR-${randomNum}`;
+        
+        async function abrirModal() {
+            const fonoaudiologo_id = localStorage.getItem('usuario_id');
+            try {
+                const respuesta = await fetch(`http://localhost:3000/api/fonoaudiologo/token/${fonoaudiologo_id}`);
+                if (respuesta.ok) {
+                    const data = await respuesta.json();
+                    document.querySelector('.codigo-generado').textContent = data.token; 
+                }
+            } catch (error) {
+                console.warn('Usando código temporal', error);
+                document.querySelector('.codigo-generado').textContent = `XPR-${fonoaudiologo_id}-0000`;
+            }
             document.getElementById('modal-vinculacion').style.display = 'flex';
         }
 
         function cerrarModal() {
             document.getElementById('modal-vinculacion').style.display = 'none';
+        }
+
+        function abrirModalCerrarSesionFono() {
+            document.getElementById('modal-cerrar-sesion-fono').style.display = 'flex';
+        }
+
+        function cerrarModalSesionFono() {
+            document.getElementById('modal-cerrar-sesion-fono').style.display = 'none';
+        }
+
+        function confirmarCierreSesionFono() {
+            localStorage.removeItem('usuario_id');
+            localStorage.removeItem('nombre_usuario');
+            localStorage.removeItem('rol');
+            window.location.href = 'sesion.html';
+        }
+
+        async function enviarActividad() {
+            const descripcion = document.getElementById('input-descripcion-tarea').value.trim();
+            const inputFile = document.getElementById('input-foto');
+            // NUEVO: Rescatamos el ID del fonoaudiólogo conectado
+            const fonoaudiologo_id = localStorage.getItem('usuario_id'); 
+            
+            if (!pacienteActualId) {
+                alert('Por favor selecciona un paciente primero.');
+                return;
+            }
+            if (!descripcion) {
+                alert('Por favor escribe una descripción para la actividad.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('paciente_id', pacienteActualId);
+            formData.append('profesional_id', fonoaudiologo_id); // NUEVO: Enviamos el ID a la base de datos
+            formData.append('descripcion', descripcion);
+            if (inputFile.files && inputFile.files[0]) {
+                formData.append('foto', inputFile.files[0]);
+            }
+
+            try {
+                const respuesta = await fetch('http://localhost:3000/api/asignar-tarea', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await respuesta.json();
+
+                if (respuesta.ok) {
+                    alert('¡Actividad enviada con éxito al paciente!');
+                    document.getElementById('input-descripcion-tarea').value = '';
+                    inputFile.value = '';
+                    document.getElementById('texto-foto').textContent = 'Haz clic o arrastra una foto aquí';
+                    document.getElementById('texto-foto').style.color = '#64748B';
+                } else {
+                    alert('Error al enviar la actividad: ' + (data.mensaje || 'Intenta nuevamente'));
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
+                alert('No se pudo conectar con el servidor.');
+            }
         }
     </script>
 </body>

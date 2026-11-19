@@ -13,35 +13,52 @@
         body {
             background: linear-gradient(180deg, #7DD3FC 0%, #E0F2FE 100%);
             background-attachment: fixed;
-            animation: fondoMagico 10s ease infinite;
             display: flex; flex-direction: column; align-items: center;
             justify-content: center; min-height: 100vh; padding: 20px;
             font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* --- BURBUJAS DE FONDO (Para llenar los vacíos) --- */
+        /* --- BURBUJAS DE FONDO --- */
         .burbuja {
             position: absolute;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.4);
             filter: blur(2px);
             z-index: -1;
+            pointer-events: none;
         }
         .burbuja-1 { width: 150px; height: 150px; top: -20px; right: -30px; }
         .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
         .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
 
-
-        @keyframes fondoMagico {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* --- NOTIFICACIÓN TOAST PERSONALIZADA --- */
+        .toast-alerta {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #EF4444;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 20px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+            z-index: 9999;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            max-width: 90%;
+        }
+        .toast-alerta.visible {
+            transform: translateX(-50%) translateY(0);
         }
 
         .caja-iniciodesesion {
             background-color: #ffffff;
             width: 100%; max-width: 420px;
-            padding: 45px 35px;
+            padding: 40px 32px;
             border-radius: 35px;
             border: 4px solid #ffffff;
             box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2), 0 0 0 8px rgba(255,255,255,0.4);
@@ -50,77 +67,99 @@
 
         .brand-box {
             display: flex; align-items: center; justify-content: center;
-            gap: 15px; margin-bottom: 20px;
+            gap: 15px; margin-bottom: 18px;
         }
 
         .brand-logo {
-            width: 70px; height: 70px; border-radius: 20px;
+            width: 65px; height: 65px; border-radius: 20px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
 
         .brand-title {
             color: #3B82F6; font-family: 'Fredoka', sans-serif;
-            font-size: 2.8rem; font-weight: 700; text-shadow: 2px 2px 0px #BFDBFE;
+            font-size: 2.6rem; font-weight: 700; text-shadow: 2px 2px 0px #BFDBFE;
         }
 
         .caja-iniciodesesion h1 {
             color: #334155; font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem; margin-bottom: 25px;
+            font-size: 1.45rem; margin-bottom: 22px;
         }
 
-        form { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+        form { width: 100%; display: flex; flex-direction: column; gap: 18px; }
 
         .form-group { text-align: left; }
 
         .form-label {
-            font-size: 1rem; font-weight: 800; color: #64748B;
-            margin-bottom: 8px; display: inline-block; margin-left: 5px;
+            font-size: 0.95rem; font-weight: 800; color: #64748B;
+            margin-bottom: 6px; display: inline-block; margin-left: 5px;
         }
 
         .input-texto {
-            width: 100%; padding: 16px 20px;
+            width: 100%; padding: 15px 18px;
             background-color: #F8FAFC;
             border-radius: 20px; border: 3px solid #E2E8F0;
-            font-size: 1.1rem; font-family: 'Nunito', sans-serif;
-            font-weight: 700; color: #334155; transition: all 0.3s ease;
+            font-size: 1.05rem; font-family: 'Nunito', sans-serif;
+            font-weight: 700; color: #334155; transition: all 0.2s ease;
         }
 
         .input-texto::placeholder { color: #CBD5E1; font-weight: 600; }
         .input-texto:focus {
             outline: none; border-color: #3B82F6; background-color: #ffffff;
-            box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.15); transform: scale(1.02);
+            box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.15);
         }
 
         .btn-iniciar {
-            background-color: #3B82F6; /* Azul divertido */
-            color: #ffffff; width: 100%; padding: 18px;
-            margin-top: 10px; border: none; border-radius: 22px;
-            font-family: 'Fredoka', sans-serif; font-size: 1.4rem;
+            background-color: #3B82F6;
+            color: #ffffff; width: 100%; padding: 16px;
+            margin-top: 8px; border: none; border-radius: 22px;
+            font-family: 'Fredoka', sans-serif; font-size: 1.35rem;
             cursor: pointer; transition: all 0.1s;
             box-shadow: 0 8px 0 #1D4ED8, 0 15px 20px rgba(59, 130, 246, 0.3);
         }
 
-        .btn-iniciar:active {
+        .btn-iniciar:active:not(:disabled) {
             transform: translateY(8px);
             box-shadow: 0 0 0 #1D4ED8, 0 5px 10px rgba(59, 130, 246, 0.3);
         }
 
+        .btn-iniciar:disabled {
+            background-color: #93C5FD;
+            box-shadow: 0 6px 0 #60A5FA;
+            cursor: not-allowed;
+        }
+
         .caja-iniciodesesion h3 {
-            font-size: 1rem; font-weight: 700; color: #94A3B8; margin-top: 10px;
+            font-size: 0.95rem; font-weight: 700; color: #94A3B8; margin-top: 8px;
         }
 
         .caja-iniciodesesion h3 a {
             color: #3B82F6; text-decoration: none; font-weight: 800;
         }
+
+        /* =========================================
+           MEDIA QUERIES PARA CELULARES
+           ========================================= */
+        @media (max-width: 480px) {
+            body { padding: 14px; }
+            .caja-iniciodesesion {
+                padding: 28px 20px;
+                border-radius: 28px;
+            }
+            .brand-logo { width: 52px; height: 52px; border-radius: 15px; }
+            .brand-title { font-size: 2.1rem; }
+            .caja-iniciodesesion h1 { font-size: 1.25rem; margin-bottom: 18px; }
+            .input-texto { padding: 13px 15px; font-size: 1rem; border-radius: 16px; }
+            .btn-iniciar { padding: 14px; font-size: 1.2rem; border-radius: 18px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Burbujas decorativas de fondo -->
+    <div id="toast-alerta" class="toast-alerta"></div>
+
     <div class="burbuja burbuja-1"></div>
     <div class="burbuja burbuja-2"></div>
     <div class="burbuja burbuja-3"></div>
-    <div class="burbuja burbuja-4"></div>
     
     <div class="caja-iniciodesesion"> 
         <div class="brand-box">
@@ -136,29 +175,43 @@
             <div class="form-group">
                 <label class="form-label" for="password">Contraseña secreta</label>
                 <div style="position: relative;">
-                    <!-- El input con espacio a la derecha -->
                     <input class="input-texto" type="password" id="password" name="password" placeholder="••••••••" required style="padding-right: 45px;">
                     
-                    <!-- Contenedor del ojo -->
                     <div id="btn-ojo" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #94A3B8; display: flex;">
-                        <!-- Ojo tachado (VISIBLE por defecto porque arranca oculta) -->
                         <svg id="ojo-cerrado" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                        
-                        <!-- Ojo normal (OCULTO por defecto) -->
                         <svg id="ojo-abierto" style="display: none;" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn-iniciar">¡A Jugar!</button>
+            <button type="submit" id="btn-submit" class="btn-iniciar">Comenzar</button>
             <h3>¿No tienes cuenta? <a href="crearcuenta.html">Crear cuenta</a></h3>
         </form>
     </div>
 
     <script>
+        function mostrarAlerta(mensaje) {
+            const toast = document.getElementById('toast-alerta');
+            toast.textContent = mensaje;
+            toast.classList.add('visible');
+            setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 3500);
+        }
+
         document.getElementById('form-login').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+            const btnSubmit = document.getElementById('btn-submit');
+
+            if (!username || !password) {
+                mostrarAlerta('Por favor completa todos los campos.');
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Entrando... ⏳';
+            
             try {
                 const respuesta = await fetch('http://localhost:3000/api/login', {
                     method: 'POST',
@@ -166,31 +219,45 @@
                     body: JSON.stringify({ username, password })
                 });
                 const data = await respuesta.json();
+                
                 if (respuesta.ok) {
                     localStorage.setItem('usuario_id', data.id);
                     localStorage.setItem('nombre_usuario', data.username);
-                    if (data.es_primer_ingreso) { window.location.href = 'elegirletraoficial.html'; } 
-                    else { window.location.href = 'home.html'; }
-                } else { alert('Error: ' + data.mensaje); }
+                    localStorage.setItem('rol', data.rol);
+
+                    if (data.rol === 'profesional') {
+                        window.location.href = 'panel-fonoaudiologo.html';
+                    } else if (data.es_primer_ingreso) { 
+                        window.location.href = 'elegirletraoficial.html'; 
+                    } else { 
+                        window.location.href = 'home.html'; 
+                    }
+                } else { 
+                    mostrarAlerta('⚠️ ' + data.mensaje);
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Comenzar';
+                }
             } catch (error) {
-                console.error('Error:', error); alert('No se pudo conectar con el servidor.');
+                console.error('Error:', error); 
+                mostrarAlerta('❌ No se pudo conectar con el servidor.');
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = 'Comenzar';
             }
         });
 
-        // Mostrar/Ocultar contraseña corregido
         document.getElementById('btn-ojo').addEventListener('click', function() {
             const inputPass = document.getElementById('password');
             const ojoAbierto = document.getElementById('ojo-abierto');
             const ojoCerrado = document.getElementById('ojo-cerrado');
             
             if (inputPass.type === 'password') {
-                inputPass.type = 'text'; // Contraseña visible
-                ojoCerrado.style.display = 'none'; // Ocultamos el tachado
-                ojoAbierto.style.display = 'block'; // Mostramos el destapado
+                inputPass.type = 'text';
+                ojoCerrado.style.display = 'none';
+                ojoAbierto.style.display = 'block';
             } else {
-                inputPass.type = 'password'; // Contraseña oculta
-                ojoAbierto.style.display = 'none'; // Ocultamos el destapado
-                ojoCerrado.style.display = 'block'; // Mostramos el tachado
+                inputPass.type = 'password';
+                ojoAbierto.style.display = 'none';
+                ojoCerrado.style.display = 'block';
             }
         });
     </script>

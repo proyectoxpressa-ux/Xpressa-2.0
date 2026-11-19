@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semáforo TR - Educativo e Interactivo</title>
+    <title>Semáforo C - Educativo e Interactivo</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,7 +18,7 @@
             box-sizing: border-box; 
             font-family: 'Nunito', sans-serif; 
         }
-        
+
         body {
             background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
             min-height: 100vh;
@@ -27,6 +27,10 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px 15px 40px;
+            height: 100vh;           /* Cambia min-height por height */
+            overflow: hidden;        /* Oculta cualquier barra de scroll */
+            position: relative;     /* Evita desbordamientos por elementos absolutos */
+            padding: 20px;
         }
 
         .top-bar {
@@ -158,13 +162,13 @@
     <div class="burbuja burbuja-3"></div>
     <div class="burbuja burbuja-4"></div>
 
-    <div class="top-bar">
+    <header class="top-bar">
+        <div class="top-bar" style="justify-content: space-between; align-items: center;">
         <a href="lobby-semaforo.html" class="btn-volver"><span>←</span> Volver</a>
-    </div>
-        </a>
-        <div id="progreso-texto" class="bg-white/85 text-slate-700 font-extrabold px-4 py-2 rounded-2xl shadow-md text-sm">
+        <div id="progreso-texto" class="bg-white/90 text-slate-700 font-extrabold px-4 py-2 rounded-2xl shadow-md text-sm">
             Pregunta 1 de 5
         </div>
+    </div>
     </header>
 
     <main class="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center animate-pop my-auto">
@@ -228,6 +232,11 @@
         let indiceActual = 0;
         let estadoActual = 'jugando'; // 'jugando', 'feedback_acierto', 'feedback_error', 'victoria'
 
+        // NUEVAS VARIABLES PARA ESTADÍSTICAS
+        let aciertosTotales = 0;
+        let erroresTotales = 0;
+        let tiempoInicio = 0;
+
         const elementoProgreso = document.getElementById('progreso-texto');
         const elementoIcono = document.getElementById('icono-estimulo');
         const elementoPalabra = document.getElementById('palabra-estimulo');
@@ -239,6 +248,9 @@
 
         function iniciarJuego() {
             indiceActual = 0;
+            aciertosTotales = 0;
+            erroresTotales = 0;
+            tiempoInicio = Date.now(); // Inicia el cronómetro
             cargarEstimulo();
         }
 
@@ -276,6 +288,7 @@
             panelFeedback.classList.remove('hidden');
 
             if (esAcertado) {
+                aciertosTotales++; // Suma un acierto
                 panelFeedback.className = "mt-4 p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 animate-pop";
                 textoFeedback.className = "font-fredoka text-2xl text-emerald-600 mb-4";
                 textoFeedback.innerText = "¡Correcto! 🎉 ¡Muy bien!";
@@ -284,6 +297,7 @@
                 btnAccionFeedback.innerText = "Siguiente imagen ➡️";
                 estadoActual = 'feedback_acierto';
             } else {
+                erroresTotales++; // Suma un error
                 panelFeedback.className = "mt-4 p-5 rounded-2xl bg-rose-50 border-2 border-rose-200 animate-pop";
                 textoFeedback.className = "font-fredoka text-2xl text-rose-600 mb-4";
                 textoFeedback.innerText = "❌ Intentémoslo de nuevo";
@@ -309,8 +323,45 @@
             }
         }
 
-        function mostrarPantallaVictoria() {
+        async function mostrarPantallaVictoria() {
             estadoActual = 'victoria';
+            
+            const tiempoFin = Date.now();
+            const segundosJugados = Math.floor((tiempoFin - tiempoInicio) / 1000);
+            const usuarioId = localStorage.getItem('usuario_id');
+
+            if (usuarioId) {
+                console.log("Enviando progreso...", { paciente_id: usuarioId, aciertos: aciertosTotales, errores: erroresTotales, tiempo: segundosJugados });
+                try {
+                    const respuesta = await fetch('http://localhost:3000/api/progreso', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            paciente_id: usuarioId,
+                            juego: 'Semáforo',
+                            fonema: 'C',
+                            aciertos: aciertosTotales,
+                            errores: erroresTotales,
+                            tiempo_segundos: segundosJugados
+                        })
+                    });
+                    
+                    const dataRespuesta = await respuesta.json();
+                    if (respuesta.ok) {
+                        console.log("✅ Progreso guardado:", dataRespuesta.mensaje);
+                    } else {
+                        console.error("❌ Error del servidor:", dataRespuesta.mensaje);
+                        alert("Error del servidor: " + dataRespuesta.mensaje);
+                    }
+                } catch (error) {
+                    console.error("❌ Error de conexión:", error);
+                    alert("No se pudo conectar con el servidor backend.");
+                }
+            } else {
+                console.error("❌ No hay usuario_id en localStorage.");
+                alert("Atención: No hay sesión iniciada, el progreso no se guardará.");
+            }
+
             tarjetaPrincipal.innerHTML = `
                 <div class="py-6 animate-pop">
                     <div class="text-7xl mb-4">🏆⭐</div>
@@ -320,10 +371,13 @@
                     </p>
                     <button class="btn-victoria" onclick="window.location.href='lobby-semaforo.html'">
                             <span>🔄</span> Volver a elegir otro sonido
-                        </button>
+                    </button>
                 </div>
             `;
-            }
+        }
+        
+        // Arranca el juego al cargar la página
+        window.onload = iniciarJuego;
     </script>
 </body>
 </html>

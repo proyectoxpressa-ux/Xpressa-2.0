@@ -182,7 +182,7 @@
                 <div class="logro-icono icono-fuego">🔥</div>
                 <div class="logro-textos">
                     <span class="logro-titulo">Racha</span>
-                    <span class="logro-valor">3 Días</span>
+                    <span class="logro-valor" id="contador-racha-ui">3 Días</span>
                 </div>
             </div>
             
@@ -239,18 +239,18 @@
     </nav>
 
     <script>
+        let regaloAbierto = false;
+
         document.addEventListener("DOMContentLoaded", async () => {
             const usuario_id = localStorage.getItem('usuario_id');
             const nombreUsuario = localStorage.getItem('nombre_usuario');
             const avatarLocal = localStorage.getItem('avatar_usuario');
             
-            // Redirigir si no hay sesión
             if (!usuario_id) { 
                 window.location.href = 'sesion.html'; 
                 return; 
             }
 
-            // Establecer saludo inicial con LocalStorage por si el fetch tarda
             if (nombreUsuario) {
                 const nombreFormateado = nombreUsuario.charAt(0).toUpperCase() + nombreUsuario.slice(1);
                 document.getElementById('saludo-usuario').textContent = `¡Hola, ${nombreFormateado}!`;
@@ -259,53 +259,75 @@
                 document.getElementById('avatar-usuario').textContent = avatarLocal;
             }
 
-            // Buscar datos actualizados en el servidor
             try {
                 const resPerfil = await fetch(`http://localhost:3000/api/perfil/${usuario_id}`);
                 if (resPerfil.ok) {
                     const datosPerfil = await resPerfil.json();
                     
-                    // Actualizar Avatar si existe en la BD
                     if (datosPerfil.avatar) { 
                         document.getElementById('avatar-usuario').textContent = datosPerfil.avatar;
-                        localStorage.setItem('avatar_usuario', datosPerfil.avatar); // Sincroniza local
+                        localStorage.setItem('avatar_usuario', datosPerfil.avatar);
                     }
-                    
-                    // Actualizar Nombre si existe en la BD
                     if (datosPerfil.nombre) {
                         const nombreF = datosPerfil.nombre.charAt(0).toUpperCase() + datosPerfil.nombre.slice(1);
                         document.getElementById('saludo-usuario').textContent = `¡Hola, ${nombreF}!`;
-                        localStorage.setItem('nombre_usuario', datosPerfil.nombre); // Sincroniza local
+                        localStorage.setItem('nombre_usuario', datosPerfil.nombre);
+                    }
+
+                    // Inyectar racha y estrellas reales
+                    document.getElementById('contador-racha-ui').textContent = `${datosPerfil.dias_racha || 0} Días`;
+                    document.getElementById('contador-estrellas-ui').textContent = datosPerfil.estrellas || 0;
+
+                    // Verificar si ya reclamó el regalo hoy usando la fecha en texto plano
+                    const hoyObj = new Date();
+                    const hoyStr = hoyObj.getFullYear() + '-' + String(hoyObj.getMonth() + 1).padStart(2, '0') + '-' + String(hoyObj.getDate()).padStart(2, '0');
+
+                    if (datosPerfil.fecha_ultimo_regalo_str === hoyStr) {
+                        marcarRegaloComoAbierto();
                     }
                 }
             } catch (e) {
                 console.error("Error al obtener perfil del servidor:", e);
-                // Si falla, se queda con lo que ya pusimos del LocalStorage
             }
         });
-        
-        // Lógica Interactiva del Regalo
-        let regaloAbierto = false;
-        function abrirRegalo() {
-            if(regaloAbierto) return;
+
+        async function abrirRegalo() {
+            if (regaloAbierto) return;
+            
+            const usuario_id = localStorage.getItem('usuario_id');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/reclamar-regalo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario_id })
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('contador-estrellas-ui').textContent = data.estrellas;
+                    marcarRegaloComoAbierto();
+                } else {
+                    alert(data.mensaje);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("No se pudo conectar con el servidor.");
+            }
+        }
+
+        function marcarRegaloComoAbierto() {
             const icono = document.getElementById('icono-regalo');
             const titulo = document.getElementById('titulo-regalo');
             const texto = document.getElementById('texto-regalo');
-            const contadorUI = document.getElementById('contador-estrellas-ui');
             
-            // Animación y cambio de textos
             icono.textContent = '🌟';
             icono.style.animation = 'none';
             icono.style.transform = 'scale(1.2)';
             
-            titulo.textContent = '¡Ganaste 10 estrellas!';
+            titulo.textContent = '¡Ya tienes tu premio!';
             texto.textContent = 'Vuelve mañana por más.';
             
-            // Suma los puntos visualmente en la tarjeta de arriba
-            let estrellasActuales = parseInt(contadorUI.textContent);
-            contadorUI.textContent = estrellasActuales + 10;
-            
-            // Cambia el color de la tarjeta
             document.getElementById('caja-regalo').style.background = 'linear-gradient(135deg, #38BDF8, #7DD3FC)';
             regaloAbierto = true;
         }
