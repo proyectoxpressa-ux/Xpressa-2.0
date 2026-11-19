@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Viaje de Letras</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; -webkit-tap-highlight-color: transparent;}
+
+        body {
+            background: linear-gradient(180deg, #7DD3FC 0%, #E0F2FE 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px 40px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .burbuja-1 { width: 150px; height: 150px; top: -20px; right: -30px; }
+        .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
+        .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
+
+        .top-bar {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .btn-volver {
+            text-decoration: none; 
+            color: #3B82F6; 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1.05rem;
+            background: #FFFFFF; 
+            padding: 9px 18px; 
+            border-radius: 18px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 5px 0 #E2E8F0, 0 8px 12px rgba(0,0,0,0.05); 
+            transition: all 0.1s;
+        }
+        .btn-volver:active { transform: translateY(5px); box-shadow: 0 0 0 #E2E8F0; }
+
+        .cartel-instruccion {
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #FFFFFF;
+            border-radius: 30px;
+            padding: 15px 20px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
+            margin-bottom: 45px; 
+            z-index: 5;
+        }
+
+        .cartel-instruccion h2 { font-family: 'Fredoka', sans-serif; color: #0284C7; font-size: 1.8rem; margin-bottom: 2px; }
+        .cartel-instruccion p { color: #334155; font-weight: 800; font-size: 1.1rem; }
+
+        /* =========================================
+           DISEÑO DEL TREN
+           ========================================= */
+        .contenedor-tren {
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 55px;
+            padding-bottom: 25px; 
+            z-index: 5;
+            gap: 20px; 
+        }
+
+        .vias {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            max-width: 800px;
+            height: 14px;
+            background: #94A3B8;
+            border-top: 3px solid #CBD5E1;
+            border-bottom: 3px solid #64748B;
+            border-radius: 4px;
+        }
+        .vias::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: 0; right: 0; bottom: -2px;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 30px, #78350F 30px, #78350F 42px);
+            z-index: -1;
+        }
+
+        .locomotora-wrapper { width: 140px; height: 140px; position: relative; flex-shrink: 0; }
+        .locomotora-cuerpo {
+            width: 140px; height: 130px; background: #E52E2D; border: 3px solid #1E293B;
+            border-radius: 40px 10px 10px 10px; position: absolute; bottom: 10px;
+            box-shadow: inset -5px -5px 0 rgba(0,0,0,0.15); z-index: 3;
+        }
+        .locomotora-cuerpo::before {
+            content: ''; position: absolute; top: -20px; right: -5px; width: 85px; height: 30px;
+            background: #93A6D8; border: 3px solid #1E293B; border-radius: 20px 20px 0 0;
+        }
+        .locomotora-ventana {
+            position: absolute; top: 10px; right: 5px; width: 65px; height: 60px;
+            background: #49C5F6; border: 3px solid #1E293B; border-radius: 25px 5px 5px 5px;
+            display: flex; justify-content: center; align-items: flex-end; overflow: hidden;
+            box-shadow: inset 4px 4px 0 rgba(255,255,255,0.4);
+        }
+        .maquinista {
+            width: 50px; height: 50px; background: #FBBF24; border: 2px solid #1E293B;
+            border-radius: 50%; margin-bottom: -15px; position: relative; display: flex;
+            align-items: center; justify-content: center; font-size: 24px; padding-top: 5px;
+        }
+        .maquinista::before {
+            content: ''; position: absolute; top: -12px; left: 2px; width: 42px; height: 18px;
+            background: #1D4ED8; border: 2px solid #1E293B; border-radius: 10px 10px 0 0;
+        }
+        .maquinista::after {
+            content: ''; position: absolute; top: 4px; left: -4px; width: 54px; height: 4px;
+            background: #1E293B; border-radius: 2px;
+        }
+        .chimenea-base {
+            position: absolute; top: 15px; left: 10px; width: 35px; height: 35px;
+            background: #94A3B8; border: 3px solid #1E293B; border-radius: 5px;
+        }
+        .chimenea-tope {
+            position: absolute; top: -30px; left: -5px; width: 50px; height: 35px;
+            background: #E52E2D; border: 3px solid #1E293B; border-radius: 10px 10px 30px 30px;
+            border-top: 10px solid #FBBF24; 
+        }
+        .detalles-frontales {
+            position: absolute; top: 60px; left: -15px; width: 25px; height: 40px;
+            background: #94A3B8; border: 3px solid #1E293B; border-radius: 10px 0 0 10px;
+        }
+        .farol-naranja {
+            position: absolute; top: 75px; left: -5px; width: 15px; height: 25px;
+            background: #F59E0B; border: 3px solid #1E293B; border-radius: 10px;
+        }
+        .atrapavacas-img {
+            position: absolute; bottom: -5px; left: -35px; width: 45px; height: 30px;
+            background: #CBD5E1; border: 3px solid #1E293B; clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+        .ruedas-locomotora {
+            position: absolute; bottom: -20px; width: 100%; display: flex; justify-content: space-around;
+        }
+        .rueda-locomotora {
+            width: 55px; height: 55px; background: #475569; border: 6px solid #CBD5E1;
+            border-radius: 50%; outline: 3px solid #1E293B; position: relative;
+        }
+        .ruedas-locomotora::before {
+            content: ''; position: absolute; top: 25px; left: 20px; width: 70px; height: 6px;
+            background: #FBBF24; border: 2px solid #1E293B; z-index: 5;
+        }
+
+        /* --- VAGONES --- */
+        .vagon-wrapper { position: relative; width: 130px; height: 120px; flex-shrink: 0; display: flex; justify-content: center; }
+        .enganche-img {
+            position: absolute; left: -28px; bottom: 30px; width: 28px; height: 8px;
+            background: #94A3B8; border: 2px solid #1E293B; z-index: 1;
+        }
+        .vagon-borde {
+            position: absolute; bottom: 20px; width: 130px; height: 95px; background: #1E293B;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); z-index: 2;
+            display: flex; justify-content: center; align-items: center; transition: transform 0.2s; cursor: pointer;
+        }
+        .vagon-borde:hover { transform: translateY(-5px); }
+        .vagon-borde:active { transform: translateY(0); }
+        .vagon {
+            width: 130px; height: 95px; clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            position: relative; box-shadow: inset 0 20px 25px rgba(0,0,0,0.15);
+        }
+        .v-inicio-color { background: #0EA5E9; } 
+        .v-medio-color  { background: #22C55E; } 
+        .v-final-color  { background: #FACC15; } 
+        .v-no-esta-color  { background: #F87171; }
+        .vagon::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: rgba(255,255,255,0.4); }
+
+        .ranura-vagon {
+            position: absolute; top: 18px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 1;
+        }
+        .ruedas-vagon {
+            position: absolute; bottom: 5px; width: 100%; display: flex; justify-content: space-around; padding: 0 15px; z-index: 3;
+        }
+        .rueda-vagon {
+            width: 35px; height: 35px; background: #475569; border: 4px solid #CBD5E1; border-radius: 50%; outline: 2px solid #1E293B;
+        }
+
+        .etiqueta-vagon {
+            position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);
+            padding: 6px 14px; border-radius: 20px; background: #FFFFFF; font-family: 'Fredoka', sans-serif;
+            font-weight: 800; font-size: 13px; text-transform: uppercase; white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 10;
+        }
+        .etiqueta-inicio { color: #0284C7; border: 3px solid #38BDF8; }
+        .etiqueta-medio { color: #16A34A; border: 3px solid #4ADE80; }
+        .etiqueta-final { color: #CA8A04; border: 3px solid #FACC15; }
+        .etiqueta-no-esta { color: #DC2626; border: 3px solid #F87171; }
+
+        /* --- BANDEJA Y CARTA --- */
+        .contenedor-cartas {
+            display: flex; justify-content: center; align-items: center; width: 100%; max-width: 180px;
+            min-height: 155px; background: rgba(255,255,255,0.5); border: 3px dashed #BAE6FD;
+            border-radius: 28px; margin-top: 5px; z-index: 5;
+        }
+        .carta {
+            width: 115px; height: 125px; background: #FFFFFF; border: 4px solid #3B82F6;
+            border-radius: 20px; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; padding: 8px; box-shadow: 0 8px 0 #2563EB, 0 15px 20px rgba(59, 130, 246, 0.3);
+            user-select: none; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pop-in 0.4s ease-out;
+        }
+        @keyframes pop-in { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+        .carta img { width: 65px; height: 65px; object-fit: contain; pointer-events: none; }
+        .carta span { font-family: 'Fredoka', sans-serif; font-size: 1.05rem; color: #1E3A8A; margin-top: 5px; text-transform: capitalize; }
+
+        .ranura-vagon .carta {
+            width: 60px; height: 60px; border-width: 2px; border-radius: 10px; padding: 4px;
+            background: #F8FAFC; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .ranura-vagon .carta img { width: 38px; height: 38px; }
+        .ranura-vagon .carta span { display: none; }
+        .carta.correcta { border-color: #22C55E; box-shadow: 0 0 20px #4ADE80; background-color: #ffffff; }
+
+        /* --- CONTROLES Y MENSAJES --- */
+        .panel-control { margin-top: 18px; width: 100%; max-width: 500px; text-align: center; z-index: 5; }
+        .mensaje-resultado { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; margin-bottom: 12px; min-height: 32px; }
+        .btn-accion {
+            width: 100%; padding: 15px; border: none; border-radius: 22px; font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem; color: white; cursor: pointer; display: none; transition: all 0.1s ease;
+        }
+        .btn-accion:active { transform: translateY(8px); box-shadow: 0 0 0 transparent !important; }
+        .btn-siguiente { background-color: #10B981; box-shadow: 0 8px 0 #059669; }
+        .btn-reintentar { background-color: #F59E0B; box-shadow: 0 8px 0 #D97706; }
+
+        /* =========================================
+           MEDIA QUERIES PARA CELULARES Y TABLETS
+           ========================================= */
+        @media (max-width: 780px) {
+            .contenedor-tren { transform: scale(0.75); transform-origin: center bottom; margin-bottom: 20px; }
+            .cartel-instruccion { margin-bottom: 15px; }
+        }
+        @media (max-width: 600px) {
+            .contenedor-tren { transform: scale(0.58); transform-origin: center bottom; margin-bottom: 10px; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 10px 8px 25px; }
+            .contenedor-tren { transform: scale(0.45); transform-origin: center bottom; margin-top: -30px; margin-bottom: 5px; }
+            .cartel-instruccion { padding: 12px 14px; border-radius: 22px; margin-bottom: 5px; }
+            .cartel-instruccion h2 { font-size: 1.35rem; }
+            .cartel-instruccion p { font-size: 0.95rem; }
+            .etiqueta-vagon { font-size: 15px; padding: 7px 14px; bottom: -55px; }
+            .contenedor-cartas { min-height: 135px; max-width: 155px; }
+            .carta { width: 100px; height: 110px; }
+            .carta img { width: 55px; height: 55px; }
+            .mensaje-resultado { font-size: 1.25rem; }
+            .btn-accion { padding: 13px; font-size: 1.2rem; }
+        }
+        @media (max-width: 375px) {
+            .contenedor-tren { transform: scale(0.40); margin-top: -40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+
+    <div class="top-bar">
+        <a href="lobby-trencito.html" class="btn-volver"><span>←</span> Volver</a>
+    </div>
+
+    <div class="cartel-instruccion">
+        <h2>Viaje de Letras 🚂</h2>
+        <p id="instruccion-texto">Cargando...</p>
+    </div>
+
+    <div class="contenedor-tren" id="zona-tren">
+        <div class="vias"></div>
+
+        <div class="locomotora-wrapper">
+            <div class="locomotora-cuerpo">
+                <div class="locomotora-ventana"><div class="maquinista">😊</div></div>
+                <div class="chimenea-base"><div class="chimenea-tope"></div></div>
+                <div class="detalles-frontales"></div>
+                <div class="farol-naranja"></div>
+                <div class="atrapavacas-img"></div>
+                <div class="ruedas-locomotora">
+                    <div class="rueda-locomotora"></div><div class="rueda-locomotora"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('INICIO')">
+                <div class="vagon v-inicio-color"><div class="ranura-vagon" id="vagon-INICIO"></div></div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-inicio">INICIO</div>
+        </div>
+
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('MEDIO')">
+                <div class="vagon v-medio-color"><div class="ranura-vagon" id="vagon-MEDIO"></div></div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-medio">MEDIO</div>
+        </div>
+
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('FINAL')">
+                <div class="vagon v-final-color"><div class="ranura-vagon" id="vagon-FINAL"></div></div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-final">FINAL</div>
+        </div>
+
+        <div class="vagon-wrapper">
+            <div class="enganche-img"></div>
+            <div class="vagon-borde" onclick="evaluarVagon('NO_ESTA')">
+                <div class="vagon v-no-esta-color"><div class="ranura-vagon" id="vagon-NO_ESTA"></div></div>
+            </div>
+            <div class="ruedas-vagon"><div class="rueda-vagon"></div><div class="rueda-vagon"></div></div>
+            <div class="etiqueta-vagon etiqueta-no-esta">NO ESTÁ</div>
+        </div>
+    </div>
+
+    <div class="contenedor-cartas" id="bandeja-cartas"></div>
+
+    <div class="panel-control">
+        <p class="mensaje-resultado" id="mensaje-resultado"></p>
+        <button class="btn-accion btn-siguiente" id="btn-siguiente" onclick="siguienteNivel()">¡Siguiente! ➡️</button>
+        <button class="btn-accion btn-reintentar" id="btn-reintentar" onclick="reintentarNivel()">Volver a intentar 🔄</button>
+    </div>
+
+    <script>
+        const bancoEjercicios = {
+            'R-RR': [
+                { nombre: 'Ratón', posicion: 'INICIO', archivo: 'imagenes/raton.png' },
+                { nombre: 'Ropa', posicion: 'INICIO',  archivo: 'imagenes/ropa.png' },
+                { nombre: 'Playa',   posicion: 'NO_ESTA', archivo: 'imagenes/playa.png' },
+                { nombre: 'Perro',  posicion: 'MEDIO',  archivo: 'imagenes/perrito.png' },
+                { nombre: 'Pato',  posicion: 'NO_ESTA',  archivo: 'imagenes/pato.png' },
+                { nombre: 'Burro',  posicion: 'MEDIO',  archivo: 'imagenes/burro.png' },
+            ],
+            'C': [
+                { nombre: 'Casa',   posicion: 'INICIO', archivo: 'imagenes/casa.png' },
+                { nombre: 'Piedra', posicion: 'NO_ESTA', archivo: 'imagenes/piedra.png' },
+                { nombre: 'Conejo', posicion: 'INICIO', archivo: 'imagenes/conejo.png' },
+                { nombre: 'Caballo',posicion: 'INICIO', archivo: 'imagenes/caballo.png' },
+                { nombre: 'Burro',posicion: 'NO_ESTA', archivo: 'imagenes/burro.png' },
+                { nombre: 'Actor',posicion: 'MEDIO', archivo: 'imagenes/actor.png' }
+            ],
+            'PL': [
+                { nombre: 'Plato',  posicion: 'INICIO', archivo: 'imagenes/plato.png' },
+                { nombre: 'Tractor',  posicion: 'NO_ESTA', archivo: 'imagenes/tractor.png' },
+                { nombre: 'Aplauso',posicion: 'MEDIO', archivo: 'imagenes/aplauso.png' },
+                { nombre: 'Cumpleaños', posicion: 'MEDIO', archivo: 'imagenes/cumpleaños.png' },
+                { nombre: 'Casa',posicion: 'NO_ESTA', archivo: 'imagenes/casa.png' },
+                { nombre: 'Playa',posicion: 'INICIO', archivo: 'imagenes/playa.png' }
+            ],
+            'TR': [
+                { nombre: 'Tren',   posicion: 'INICIO', archivo: 'imagenes/tren.png' },
+                { nombre: 'Conejo',   posicion: 'NO_ESTA', archivo: 'imagenes/conejo.png' },
+                { nombre: 'Trofeo', posicion: 'INICIO', archivo: 'imagenes/trofeo.png' },
+                { nombre: 'Entrenar', posicion: 'MEDIO', archivo: 'imagenes/entrenar.png' },
+                { nombre: 'Trabajo',posicion: 'INICIO', archivo: 'imagenes/trabajo.png' },
+                { nombre: 'Pato',posicion: 'NO_ESTA', archivo: 'imagenes/pato.png' }
+            ],
+            'DR': [
+                { nombre: 'Dragón', posicion: 'INICIO', archivo: 'imagenes/dragon.png' },
+                { nombre: 'Piedra', posicion: 'MEDIO',  archivo: 'imagenes/piedra.png' },
+                { nombre: 'Robot',    posicion: 'NO_ESTA', archivo: 'imagenes/robot.png' },
+                { nombre: 'Ajedrez',posicion: 'MEDIO',  archivo: 'imagenes/ajedrez.png' },
+                { nombre: 'Plato',posicion: 'NO_ESTA', archivo: 'imagenes/plato.png' },
+                { nombre: 'Dron',posicion: 'INICIO', archivo: 'imagenes/dron.png' }
+            ],
+            'PR': [
+                { nombre: 'Princesa',posicion: 'INICIO', archivo: 'imagenes/princesa.png' },
+                { nombre: 'Trofeo',    posicion: 'NO_ESTA', archivo: 'imagenes/trofeo.png' },
+                { nombre: 'Primavera',posicion: 'INICIO', archivo: 'imagenes/primavera.png' },
+                { nombre: 'Compra',  posicion: 'MEDIO',  archivo: 'imagenes/compra.png' },
+                { nombre: 'Caballo',posicion: 'NO_ESTA', archivo: 'imagenes/caballo.png' },
+                { nombre: 'Precio',posicion: 'INICIO', archivo: 'imagenes/precio.png' }
+            ]
+        };
+
+        const sonidoElegido = localStorage.getItem("sonidoTrencito") || "R-RR";
+        const listaImagenes = bancoEjercicios[sonidoElegido] || bancoEjercicios['R-RR'];
+
+        let indiceActual = 0;
+        let respondido = false;
+        let aciertos = 0;
+        let errores = 0;
+        const tiempoInicio = Date.now();
+
+        document.getElementById('instruccion-texto').innerHTML = 
+            `¿Dónde suena la <b>"${sonidoElegido}"</b> en este dibujo?<br>¡Toca el vagón correcto!`;
+
+        function cargarNivel() {
+            respondido = false;
+            ocultarFeedback();
+
+            ['INICIO', 'MEDIO', 'NO_ESTA', 'FINAL'].forEach(v => {
+                document.getElementById(`vagon-${v}`).innerHTML = '';
+            });
+
+            const itemActual = listaImagenes[indiceActual];
+            const bandeja = document.getElementById('bandeja-cartas');
+
+            bandeja.innerHTML = `
+                <div class="carta" id="carta-activa">
+                    <img src="${itemActual.archivo}" alt="${itemActual.nombre}" onerror="this.src='https://via.placeholder.com/70/3B82F6/FFF?text=?'">
+                    <span>${itemActual.nombre}</span>
+                </div>
+            `;
+        }
+
+        function evaluarVagon(vagonElegido) {
+            if (respondido) return; 
+
+            const itemActual = listaImagenes[indiceActual];
+            const carta = document.getElementById('carta-activa');
+            const ranuraVagon = document.getElementById(`vagon-${vagonElegido}`);
+
+            if (!carta) return;
+
+            ranuraVagon.appendChild(carta);
+            respondido = true;
+
+            const esCorrecto = (vagonElegido === itemActual.posicion);
+            const mensaje = document.getElementById('mensaje-resultado');
+
+            if (esCorrecto) {
+                aciertos++;
+                carta.classList.add('correcta');
+                mensaje.innerText = "¡Excelente! 🏆";
+                mensaje.style.color = "#059669";
+                document.getElementById('btn-siguiente').style.display = 'block';
+            } else {
+                errores++;
+                mensaje.innerText = "¡Uy! Ese no es su vagón 💡";
+                mensaje.style.color = "#D97706";
+                document.getElementById('btn-reintentar').style.display = 'block';
+            }
+        }
+
+        function siguienteNivel() {
+            indiceActual++;
+            if (indiceActual < listaImagenes.length) {
+                cargarNivel();
+            } else {
+                mostrarFinJuego();
+            }
+        }
+
+        function reintentarNivel() { cargarNivel(); }
+
+        function ocultarFeedback() {
+            document.getElementById('mensaje-resultado').innerText = '';
+            document.getElementById('btn-siguiente').style.display = 'none';
+            document.getElementById('btn-reintentar').style.display = 'none';
+        }
+
+        async function mostrarFinJuego() {
+            const pacienteId = localStorage.getItem('usuario_id');
+            const tiempoSegundos = Math.round((Date.now() - tiempoInicio) / 1000);
+
+            if (pacienteId) {
+                try {
+                    await fetch('/api/progreso', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            paciente_id: pacienteId,
+                            juego: 'Viaje de Letras',
+                            fonema: sonidoElegido,
+                            aciertos: aciertos,
+                            errores: errores,
+                            tiempo_segundos: tiempoSegundos
+                        })
+                    });
+                } catch (e) { console.error("Error guardando progreso:", e); }
+            }
+
+            document.querySelector('.cartel-instruccion').innerHTML = `
+                <h2>¡Felicitaciones! 🎉</h2>
+                <p>¡Completaste todo el recorrido!</p>
+            `;
+            document.getElementById('zona-tren').style.display = 'none';
+            document.getElementById('bandeja-cartas').style.display = 'none';
+            
+            const panel = document.querySelector('.panel-control');
+            panel.innerHTML = `
+                <a href="lobby-trencito.html" class="btn-accion btn-siguiente" style="display:inline-block; text-decoration:none;">
+                    Elegir otro sonido 🚂
+                </a>
+            `;
+        }
+
+        cargarNivel();
+    </script>
+</body>
+</html>

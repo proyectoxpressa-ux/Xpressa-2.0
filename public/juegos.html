@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Juegos</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        body {
+            /* Fondo con degradado azul cielo divertido */
+            background: linear-gradient(135deg, #a3ceef 0%, #e0f2fe 100%);
+            background-attachment: fixed;
+            font-family: 'Nunito', sans-serif;
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            max-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- BURBUJAS DE FONDO (Para llenar los vacíos) --- */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 150px; height: 150px; top: -20px; right: -30px; }
+        .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
+        .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
+
+        /* --- ENCABEZADO SUPERIOR --- */
+        .header-top {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 25px; background: transparent;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-img { 
+            width: 45px; height: 45px; border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            background: white; padding: 2px;
+        }
+        .logo-text { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700; color: #1E3A8A; }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .cont-juegos { 
+            width: 100%; 
+            max-width: 600px; 
+            margin-top: 100px;
+            margin: 0 auto; 
+            padding: 5px 25px 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        .saludo-actividad { 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 50px; /* Ligeramente más grande como pedido */
+            color: #1E3A8A; 
+            line-height: 1.1;
+            margin-bottom: 4px;
+            text-align: center; /* Centrado */
+        }
+
+        .subtitulo {
+            font-size: 30px; /* Ligeramente más grande como pedido */
+            color: #3B82F6;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center; /* Centrado */
+        }
+
+        /* --- CUADRÍCULA DE JUEGOS (2 Columnas) --- */
+        .grilla-juegos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columnas iguales */
+            gap: 12px; /* Espacio entre tarjetas reducido para que no desborde */
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        /* El primer juego ocupa las dos columnas para darle jerarquía */
+        .card-destacada {
+            grid-column: span 2;
+            flex-direction: row !important; /* En horizontal */
+            text-align: left !important;
+            padding: 18px 22px !important; /* Ligeramente más grande */
+        }
+
+        .card-destacada .juego-textos {
+            align-items: flex-start !important;
+            margin-left: 15px;
+            flex: 1;
+            margin-bottom: 0 !important;
+        }
+
+        .card-destacada .btn-playjugar {
+            margin-top: 0;
+            width: auto;
+            padding: 8px 22px;
+        }
+
+        .card-destacada .emoji-juego {
+            margin-bottom: 0 !important;
+            width: 62px;
+            height: 62px;
+            font-size: 34px;
+        }
+
+        /* --- ESTILO BASE DE LAS TARJETAS --- */
+        .game-card-link {
+            background-color: #FFFFFF; 
+            border-radius: 24px; 
+            padding: 18px 14px; /* Ligeramente más grandes como pedido */
+            display: flex; 
+            flex-direction: column; /* Apilado vertical */
+            align-items: center; 
+            text-align: center;
+            text-decoration: none; 
+            border: 3px solid #FFFFFF;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.12); 
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .game-card-link:hover { 
+            transform: translateY(-3px); 
+            border-color: #60A5FA; 
+            box-shadow: 0 12px 25px rgba(59, 130, 246, 0.2);
+        }
+        
+        .game-card-link:active { 
+            transform: scale(0.95); 
+        }
+
+        .emoji-juego {
+            width: 62px; /* Ligeramente más grande */
+            height: 62px; /* Ligeramente más grande */
+            border-radius: 18px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 36px; /* Ligeramente más grande */
+            margin-bottom: 10px;
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.1);
+        }
+
+        /* Colores únicos por juego */
+        .card-viaje .emoji-juego { background-color: #FECACA; } /* Rojo pastel */
+        .card-memotest .emoji-juego { background-color: #E9D5FF; } /* Morado pastel */
+        .card-semaforo .emoji-juego { background-color: #BBF7D0; } /* Verde pastel */
+
+        .juego-textos { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            gap: 3px; 
+            margin-bottom: 12px;
+        }
+
+        .nombre-juego { 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 1.25rem; /* Ligeramente más grande */
+            color: #1E293B; 
+            line-height: 1.1;
+        }
+
+        .game-desc { 
+            font-size: 0.88rem; /* Ligeramente más grande */
+            color: #64748B; 
+            font-weight: 700; 
+            line-height: 1.1;
+        }
+
+        .btn-playjugar {
+            background-color: #3B82F6; 
+            color: white; 
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.05rem; /* Ligeramente más grande */
+            padding: 8px 22px; /* Ligeramente más grande */
+            border-radius: 16px; 
+            box-shadow: 0 4px 0 #2563EB; 
+            transition: all 0.1s;
+            width: 100%;
+            max-width: 110px;
+        }
+
+        /* --- BARRA INFERIOR (Estilo Burbuja) --- */
+        .bottom-nav {
+            position: fixed; 
+            bottom: 15px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 90%; 
+            max-width: 400px; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex; 
+            justify-content: space-around; 
+            padding: 10px;
+            border-radius: 35px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 10; 
+            border: 3px solid #FFF;
+        }
+
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 3px; 
+            text-decoration: none; 
+            color: #94A3B8; 
+            font-weight: 800; 
+            font-size: 0.8rem; 
+            transition: all 0.3s; 
+        }
+
+        .nav-icon { 
+            font-size: 1.5rem; 
+            transition: transform 0.3s; 
+        }
+
+        .nav-item.active { 
+            color: #3B82F6; 
+        }
+        
+        .nav-item.active .nav-icon { 
+            transform: scale(1.2) translateY(-2px); 
+        }
+
+        /* Responsive para pantallas extremadamente pequeñas */
+        @media (max-width: 360px) {
+            .grilla-juegos { grid-template-columns: 1fr; } /* Todo en 1 columna si es muy chiquito */
+            .card-destacada { grid-column: span 1; flex-direction: column !important; text-align: center !important; }
+            .card-destacada .juego-textos { align-items: center !important; margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Burbujas decorativas de fondo -->
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+    
+    <!-- ENCABEZADO -->
+    <header class="header-top">
+        <div class="logo-container">
+            <!-- Recuerda mantener tu logo.png en la carpeta imagenes -->
+            <img src="imagenes/logo.png" alt="Xpressa+" class="logo-img" onerror="this.src='https://via.placeholder.com/45/FFF/3B82F6?text=X'">
+            <span class="logo-text">Xpressa+</span>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL DE LOS JUEGOS -->
+    <main class="cont-juegos">
+        
+        <h2 class="saludo-actividad">¡A jugar! 🚀</h2>
+        <p class="subtitulo">Elige tu aventura de hoy</p>
+
+        <div class="grilla-juegos">
+            
+            <!-- Juego 1: Viaje de letras (Destacado - Ocupa todo el ancho) -->
+            <a href="lobby-trencito.html" class="game-card-link card-viaje card-destacada">
+                <div class="emoji-juego">🚂</div>
+                <div class="juego-textos">
+                    <span class="nombre-juego">Viaje de letras</span>
+                    <span class="game-desc">Acomoda los sonidos en el vagón correcto</span>
+                </div>
+                <span class="btn-playjugar">¡Ir!</span>
+            </a>
+
+            <!-- Juego 2: Memotest (Mitad de pantalla) -->
+            <a href="lobby-memotest.html" class="game-card-link card-memotest">
+                <div class="emoji-juego">🃏</div>
+                <div class="juego-textos">
+                    <span class="nombre-juego">Memotest</span>
+                    <span class="game-desc">Encuentra los pares ocultos</span>
+                </div>
+                <span class="btn-playjugar">¡Ir!</span>
+            </a>
+
+            <!-- Juego 3: Semáforo de palabras (Mitad de pantalla) -->
+            <a href="lobby-semaforo.html" class="game-card-link card-semaforo">
+                <div class="emoji-juego">🚦</div>
+                <div class="juego-textos">
+                    <span class="nombre-juego">Semáforo</span>
+                    <span class="game-desc">Verde o rojo según el sonido</span>
+                </div>
+                <span class="btn-playjugar">¡Ir!</span>
+            </a>
+
+        </div>
+        
+    </main>
+  
+    <!-- BARRA INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            Inicio
+        </a>
+        <a href="juegos.html" class="nav-item active">
+            <span class="nav-icon">🎮</span>
+            Juegos
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            Perfil
+        </a>
+    </nav>
+
+</body>
+</html>

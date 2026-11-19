@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpressa+ | Inicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background: linear-gradient(135deg, #a3ceef 0%, #e0f2fe 100%);
+            background-attachment: fixed;
+            color: #1E293B;
+            font-family: 'Nunito', sans-serif;
+            display: flex; flex-direction: column; min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- BURBUJAS DE FONDO --- */
+        .burbuja {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .burbuja-1 { width: 150px; height: 150px; top: -20px; right: -30px; }
+        .burbuja-2 { width: 200px; height: 200px; top: 40%; left: -80px; }
+        .burbuja-3 { width: 100px; height: 100px; bottom: 10%; right: 20px; }
+
+        /* --- ENCABEZADO SUPERIOR --- */
+        .header-top {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 25px; background: transparent;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-img { 
+            width: 45px; height: 45px; border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            background: white; padding: 2px;
+        }
+        .logo-text { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700; color: #1E3A8A; }
+
+        .user-container {
+            display: flex; align-items: center; gap: 10px;
+            background-color: rgba(255,255,255,0.85); padding: 6px 16px;
+            border-radius: 25px; backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+            border: 2px solid #FFFFFF;
+        }
+        .avatar-placeholder { font-size: 1.6rem; text-decoration: none; display: block; }
+        .user-greeting { font-weight: 800; font-size: 1.05rem; color: #1E3A8A; }
+
+        .main-content {
+            padding: 5px 20px 20px; display: flex; flex-direction: column; gap: 18px;
+            align-items: center; flex: 1; padding-bottom: 120px;
+            max-width: 600px; margin: 0 auto; width: 100%;
+        }
+
+        /* --- NUEVO PANEL DE LOGROS (RACHA Y ESTRELLAS UNIFICADOS) --- */
+        .panel-logros {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%; border-radius: 30px; padding: 18px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); border: 4px solid #FFF;
+        }
+        
+        .logro-item {
+            display: flex; align-items: center; gap: 12px; flex: 1;
+            justify-content: center;
+        }
+
+        .logro-icono {
+            width: 50px; height: 50px; border-radius: 18px; display: flex; 
+            align-items: center; justify-content: center; font-size: 1.8rem;
+        }
+        .icono-fuego { background-color: #FFEDD5; box-shadow: inset 0 -3px 0 #FDBA74; animation: latido 2s infinite; }
+        .icono-estrella { background-color: #FEF08A; box-shadow: inset 0 -3px 0 #FDE047; }
+
+        .logro-textos { display: flex; flex-direction: column; text-align: left; }
+        .logro-titulo { font-size: 0.8rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; }
+        .logro-valor { font-family: 'Fredoka', sans-serif; font-size: 1.4rem; color: #1E293B; line-height: 1.1; }
+
+        .divisor-vertical { width: 3px; height: 45px; background-color: #E2E8F0; border-radius: 2px; }
+
+        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* --- REGALO DIARIO MEJORADO --- */
+        .tarjeta-regalo {
+            background: linear-gradient(135deg, #10B981, #34D399); width: 100%;
+            border-radius: 25px; padding: 18px 20px; display: flex; align-items: center; gap: 18px;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); border: 3px solid #FFF; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .tarjeta-regalo:active { transform: scale(0.95); }
+        .regalo-emoji { font-size: 3rem; animation: sacudir 3s infinite; }
+        .regalo-textos h3 { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; color: #FFF; margin-bottom: 2px; }
+        .regalo-textos p { font-size: 0.95rem; color: #ECFDF5; font-weight: 800; }
+
+        @keyframes sacudir {
+            0%, 100% { transform: rotate(0deg); }
+            5%, 15% { transform: rotate(10deg); }
+            10%, 20% { transform: rotate(-10deg); }
+            25% { transform: rotate(0deg); }
+        }
+
+        /* --- NUEVA TIENDA DE RECOMPENSAS (CANJE) --- */
+        .tarjeta-tienda {
+            background: rgba(255, 255, 255, 0.95); width: 100%;
+            border-radius: 30px; padding: 20px;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); border: 4px solid #FFF;
+        }
+
+        .tienda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .tienda-header h3 { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; color: #1E3A8A; display: flex; align-items: center; gap: 8px; }
+        .tienda-header span { font-size: 0.85rem; font-weight: 800; color: #64748B; background: #F1F5F9; padding: 4px 10px; border-radius: 12px;}
+
+        .grid-recompensas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 15px; }
+
+        .item-recompensa {
+            background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 20px; padding: 15px 10px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .item-emoji { font-size: 2.5rem; margin-bottom: 5px; }
+        .item-nombre { font-size: 0.9rem; font-weight: 800; color: #334155; margin-bottom: 8px; line-height: 1.1; }
+        .item-precio { 
+            background: #FEF08A; color: #CA8A04; font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem; padding: 4px 12px; border-radius: 15px; box-shadow: 0 2px 0 #FDE047;
+        }
+
+        .btn-ir-tienda {
+            width: 100%; background: #3B82F6; color: white; border: none; padding: 12px;
+            border-radius: 18px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem;
+            cursor: pointer; box-shadow: 0 4px 0 #2563EB; transition: all 0.1s;
+        }
+        .btn-ir-tienda:active { transform: translateY(4px); box-shadow: 0 0 0 #2563EB; }
+
+        /* --- BARRA INFERIOR --- */
+        .bottom-nav {
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); display: flex; justify-content: space-around; 
+            padding: 10px; border-radius: 35px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 10; border: 3px solid #FFF;
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; gap: 3px; 
+            text-decoration: none; color: #94A3B8; font-weight: 800; font-size: 0.8rem; 
+            transition: all 0.3s; 
+        }
+        .nav-icon { font-size: 1.5rem; transition: transform 0.3s; }
+        .nav-item.active { color: #3B82F6; }
+        .nav-item.active .nav-icon { transform: scale(1.2) translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="burbuja burbuja-1"></div>
+    <div class="burbuja burbuja-2"></div>
+    <div class="burbuja burbuja-3"></div>
+
+    <header class="header-top">
+        <div class="logo-container">
+            <img src="imagenes/logo.png" alt="Xpressa+" class="logo-img" onerror="this.src='https://via.placeholder.com/45/FFF/3B82F6?text=X'">
+            <h1 class="logo-text">Xpressa+</h1>
+        </div>
+        <a href="perfil.html" style="text-decoration: none;">
+            <div class="user-container">
+                <div class="avatar-placeholder" id="avatar-usuario">🧒🏽</div> 
+                <span class="user-greeting" id="saludo-usuario">¡Hola!</span>
+            </div>
+        </a>
+    </header>
+
+    <main class="main-content">
+        
+        <!-- NUEVO DISEÑO UNIFICADO: RACHA Y ESTRELLAS -->
+        <div class="panel-logros">
+            <div class="logro-item">
+                <div class="logro-icono icono-fuego">🔥</div>
+                <div class="logro-textos">
+                    <span class="logro-titulo">Racha</span>
+                    <span class="logro-valor" id="contador-racha-ui">3 Días</span>
+                </div>
+            </div>
+            
+            <div class="divisor-vertical"></div>
+            
+            <div class="logro-item">
+                <div class="logro-icono icono-estrella">⭐</div>
+                <div class="logro-textos">
+                    <span class="logro-titulo">Estrellas</span>
+                    <span class="logro-valor" id="contador-estrellas-ui">150</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- EL REGALO DIARIO -->
+        <div class="tarjeta-regalo" id="caja-regalo" onclick="abrirRegalo()">
+            <div class="regalo-emoji" id="icono-regalo">🎁</div>
+            <div class="regalo-textos">
+                <h3 id="titulo-regalo">¡Tu Regalo Diario!</h3>
+                <p id="texto-regalo">Toca para abrirlo</p>
+            </div>
+        </div>
+
+        <!-- NUEVA TIENDA DE CANJE -->
+        <div class="tarjeta-tienda">
+            <div class="tienda-header">
+                <h3>🛒 Tienda Mágica</h3>
+                <span>¡Canjea tus premios!</span>
+            </div>
+            
+            <div class="grid-recompensas">
+                <div class="item-recompensa">
+                    <div class="item-emoji">🦸🏽‍♂️️</div>
+                    <span class="item-nombre">Avatar Súper</span>
+                    <span class="item-precio">⭐ 300</span>
+                </div>
+                <div class="item-recompensa">
+                    <div class="item-emoji">🎨</div>
+                    <span class="item-nombre">Tren Neón</span>
+                    <span class="item-precio">⭐ 500</span>
+                </div>
+            </div>
+            
+            <!-- Este botón preparará el camino para la pantalla de la tienda -->
+            <button class="btn-ir-tienda" onclick="alert('¡Pronto abriremos la tienda completa!')">Ver más recompensas</button>
+        </div>
+
+    </main>
+    
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item active"><span class="nav-icon">🏠</span>Inicio</a>
+        <a href="juegos.html" class="nav-item"><span class="nav-icon">🎮</span>Juegos</a>
+        <a href="perfil.html" class="nav-item"><span class="nav-icon">⚙️</span>Perfil</a>
+    </nav>
+
+    <script>
+        let regaloAbierto = false;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const usuario_id = localStorage.getItem('usuario_id');
+            const nombreUsuario = localStorage.getItem('nombre_usuario');
+            const avatarLocal = localStorage.getItem('avatar_usuario');
+            
+            if (!usuario_id) { 
+                window.location.href = 'sesion.html'; 
+                return; 
+            }
+
+            if (nombreUsuario) {
+                const nombreFormateado = nombreUsuario.charAt(0).toUpperCase() + nombreUsuario.slice(1);
+                document.getElementById('saludo-usuario').textContent = `¡Hola, ${nombreFormateado}!`;
+            }
+            if (avatarLocal) {
+                document.getElementById('avatar-usuario').textContent = avatarLocal;
+            }
+
+            try {
+                const resPerfil = await fetch(`/api/perfil/${usuario_id}`);
+                if (resPerfil.ok) {
+                    const datosPerfil = await resPerfil.json();
+                    
+                    if (datosPerfil.avatar) { 
+                        document.getElementById('avatar-usuario').textContent = datosPerfil.avatar;
+                        localStorage.setItem('avatar_usuario', datosPerfil.avatar);
+                    }
+                    if (datosPerfil.nombre) {
+                        const nombreF = datosPerfil.nombre.charAt(0).toUpperCase() + datosPerfil.nombre.slice(1);
+                        document.getElementById('saludo-usuario').textContent = `¡Hola, ${nombreF}!`;
+                        localStorage.setItem('nombre_usuario', datosPerfil.nombre);
+                    }
+
+                    // Inyectar racha y estrellas reales
+                    document.getElementById('contador-racha-ui').textContent = `${datosPerfil.dias_racha || 0} Días`;
+                    document.getElementById('contador-estrellas-ui').textContent = datosPerfil.estrellas || 0;
+
+                    // Verificar si ya reclamó el regalo hoy usando la fecha en texto plano
+                    const hoyObj = new Date();
+                    const hoyStr = hoyObj.getFullYear() + '-' + String(hoyObj.getMonth() + 1).padStart(2, '0') + '-' + String(hoyObj.getDate()).padStart(2, '0');
+
+                    if (datosPerfil.fecha_ultimo_regalo_str === hoyStr) {
+                        marcarRegaloComoAbierto();
+                    }
+                }
+            } catch (e) {
+                console.error("Error al obtener perfil del servidor:", e);
+            }
+        });
+
+        async function abrirRegalo() {
+            if (regaloAbierto) return;
+            
+            const usuario_id = localStorage.getItem('usuario_id');
+            
+            try {
+                const response = await fetch('/api/reclamar-regalo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario_id })
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('contador-estrellas-ui').textContent = data.estrellas;
+                    marcarRegaloComoAbierto();
+                } else {
+                    alert(data.mensaje);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("No se pudo conectar con el servidor.");
+            }
+        }
+
+        function marcarRegaloComoAbierto() {
+            const icono = document.getElementById('icono-regalo');
+            const titulo = document.getElementById('titulo-regalo');
+            const texto = document.getElementById('texto-regalo');
+            
+            icono.textContent = '🌟';
+            icono.style.animation = 'none';
+            icono.style.transform = 'scale(1.2)';
+            
+            titulo.textContent = '¡Ya tienes tu premio!';
+            texto.textContent = 'Vuelve mañana por más.';
+            
+            document.getElementById('caja-regalo').style.background = 'linear-gradient(135deg, #38BDF8, #7DD3FC)';
+            regaloAbierto = true;
+        }
+    </script>
+</body>
+</html>
