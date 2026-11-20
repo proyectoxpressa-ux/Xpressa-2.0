@@ -309,6 +309,10 @@
         const vistaDashboard = document.getElementById('vista-dashboard');
         const vistaExpediente = document.getElementById('vista-expediente');
         let pacienteActualId = null; 
+
+        let letrasActivasGlobal = [];
+
+        const todasLasLetras = ['RR-R', 'PR', 'TR', 'DR', 'PL', 'C'];
         
         // Cargar pacientes dinámicamente al entrar
         document.addEventListener('DOMContentLoaded', async () => {
@@ -413,10 +417,13 @@
 
             estadisticas.forEach(stat => {
                 if(!stat.fonema) return;
-                
-                tiempoTotalSegundos += (stat.tiempo_total || 0);
-                const totalIntentos = stat.total_intentos || 1; 
-                const porcentaje = Math.round((stat.total_aciertos / totalIntentos) * 100);
+
+                const segundos = Number(stat.tiempo_total) || 0;
+                tiempoTotalSegundos += segundos;
+
+                const totalIntentos = Number(stat.total_intentos) || 1;
+                const totalAciertos = Number(stat.total_aciertos) || 0;
+                const porcentaje = Math.round((totalAciertos / totalIntentos) * 100);
                 
                 const colorClase = porcentaje >= 70 ? 'progreso-verde' : 'progreso-naranja';
                 const colorTexto = porcentaje >= 70 ? '' : 'style="color: #F59E0B;"';
